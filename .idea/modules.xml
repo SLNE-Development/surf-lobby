@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-server-selector-api/surf-server-selector.surf-server-selector-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-server-selector-api/surf-server-selector.surf-server-selector-api.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-server-selector-api/surf-server-selector.surf-server-selector-api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-server-selector-api/surf-server-selector.surf-server-selector-api.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-server-selector-bukkit/surf-server-selector.surf-server-selector-bukkit.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-server-selector-bukkit/surf-server-selector.surf-server-selector-bukkit.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-server-selector-bukkit/surf-server-selector.surf-server-selector-bukkit.test.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-server-selector-bukkit/surf-server-selector.surf-server-selector-bukkit.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-server-selector-core/surf-server-selector.surf-server-selector-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-server-selector-core/surf-server-selector.surf-server-selector-core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-server-selector-core/surf-server-selector.surf-server-selector-core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-server-selector-core/surf-server-selector.surf-server-selector-core.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-server-selector-velocity/surf-server-selector.surf-server-selector-velocity.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-server-selector-velocity/surf-server-selector.surf-server-selector-velocity.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-server-selector-velocity/surf-server-selector.surf-server-selector-velocity.test.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-server-selector-velocity/surf-server-selector.surf-server-selector-velocity.test.iml" />
+    </modules>
+  </component>
+</project>

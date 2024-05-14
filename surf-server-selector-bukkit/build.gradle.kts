@@ -17,10 +17,10 @@ dependencies {
 
 tasks {
     runServer {
-        minecraftVersion("1.20.4")
+        minecraftVersion("1.20.6")
 
         downloadPlugins {
-            modrinth("commandapi", "9.3.0")
+            modrinth("commandapi", "9.4.1")
         }
     }
 }

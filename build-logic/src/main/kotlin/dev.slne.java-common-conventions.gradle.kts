@@ -7,7 +7,7 @@ plugins {
 repositories {
     mavenCentral()
 
-    maven("https://packages.slne.dev/maven/p/surf/maven") { name = "slne-space" }
+    maven("https://packages.slne.dev/maven/p/surf/maven") { name = "space-maven" }
     maven("https://repository.sonatype.org/content/groups/public/")
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.codemc.io/repository/maven-releases/")
@@ -22,7 +22,7 @@ version = "1.0.0-SNAPSHOT"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
     withSourcesJar()
     withJavadocJar()
@@ -36,7 +36,7 @@ publishing {
     }
     repositories {
         maven {
-            name = "slne-space"
+            name = "space-maven"
             url = uri(System.getenv("REPOSITORY_URL") ?: "https://packages.slne.dev/maven/p/surf/maven")
             credentials {
                 username = System.getenv("JB_SPACE_CLIENT_ID")
