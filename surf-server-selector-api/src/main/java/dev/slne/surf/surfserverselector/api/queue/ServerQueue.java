@@ -1,5 +1,7 @@
 package dev.slne.surf.surfserverselector.api.queue;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import dev.slne.surf.surfserverselector.api.player.ServerSelectorPlayer;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,11 +14,23 @@ import org.jetbrains.annotations.NotNull;
 @NonExtendable
 public interface ServerQueue {
 
-  int getQueuePosition(@NotNull ServerSelectorPlayer player);
+  default int getQueuePosition(@NotNull ServerSelectorPlayer player) {
+    return getQueuePosition(checkNotNull(player, "player").getUuid());
+  }
 
-  void addToQueue(@NotNull ServerSelectorPlayer player);
+  int getQueuePosition(@NotNull UUID uuid);
 
-  void removeFromQueue(@NotNull ServerSelectorPlayer player);
+  default void addToQueue(@NotNull ServerSelectorPlayer player) {
+    addToQueue(checkNotNull(player, "player").getUuid());
+  }
+
+  void addToQueue(@NotNull UUID uuid);
+
+  default void removeFromQueue(@NotNull ServerSelectorPlayer player) {
+    removeFromQueue(checkNotNull(player, "player").getUuid());
+  }
+
+  void removeFromQueue(@NotNull UUID uuid);
 
   void clearQueue();
 

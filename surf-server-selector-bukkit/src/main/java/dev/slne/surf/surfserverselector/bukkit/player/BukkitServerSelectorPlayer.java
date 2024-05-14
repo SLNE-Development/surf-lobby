@@ -1,10 +1,12 @@
 package dev.slne.surf.surfserverselector.bukkit.player;
 
 import dev.slne.surf.surfserverselector.core.player.CoreServerSelectorPlayer;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.change.RequestChangeServerEvent;
 import java.util.Optional;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Contract;
 
 public final class BukkitServerSelectorPlayer extends CoreServerSelectorPlayer {
 
@@ -15,5 +17,11 @@ public final class BukkitServerSelectorPlayer extends CoreServerSelectorPlayer {
   @Override
   public Optional<Player> getPlayer() {
     return Optional.ofNullable(Bukkit.getPlayer(uuid));
+  }
+
+  @Contract(pure = true)
+  @Override
+  public void changeServer(String serverName) {
+    new RequestChangeServerEvent(uuid, serverName).call();
   }
 }

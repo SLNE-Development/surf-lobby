@@ -8,12 +8,14 @@ import dev.slne.surf.surfserverselector.api.queue.ServerQueue;
 import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.UUID;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServerQueueImpl implements ServerQueue {
 
   private final PriorityQueue<UUID> queue;
 
+  @Contract(pure = true)
   public ServerQueueImpl() {
     queue = new PriorityQueue<>((uuid1, uuid2) -> {
       final ServerSelectorPlayer player1 = SurfServerSelectorApi.getPlayer(uuid1);
@@ -24,8 +26,9 @@ public final class ServerQueueImpl implements ServerQueue {
   }
 
   @Override
-  public int getQueuePosition(@NotNull ServerSelectorPlayer player) {
-    final UUID uuid = checkNotNull(player, "player").getUuid();
+  public int getQueuePosition(@NotNull UUID uuid) {
+    checkNotNull(uuid, "uuid");
+
     final Object[] es = queue.toArray();
 
     for (int i = 0, n = queue.size(); i < n; i++) {
@@ -38,12 +41,13 @@ public final class ServerQueueImpl implements ServerQueue {
   }
 
   @Override
-  public void addToQueue(@NotNull ServerSelectorPlayer player) {
+  public void addToQueue(@NotNull UUID uuid) {
+    queue.add(checkNotNull(uuid, "uuid"));
   }
 
   @Override
-  public void removeFromQueue(@NotNull ServerSelectorPlayer player) {
-    queue.remove(checkNotNull(player, "player").getUuid());
+  public void removeFromQueue(@NotNull UUID uuid) {
+    queue.remove(checkNotNull(uuid, "uuid"));
   }
 
   @Override

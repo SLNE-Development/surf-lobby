@@ -2,6 +2,7 @@ package dev.slne.surf.surfserverselector.core.instance;
 
 import dev.slne.surf.surfserverselector.api.instance.SurfServerSelectorInstance;
 import dev.slne.surf.surfserverselector.api.player.ServerSelectorPlayerManager;
+import dev.slne.surf.surfserverselector.api.queue.ServerQueueRegistry;
 import dev.slne.surf.surfserverselector.core.player.CoreServerSelectorPlayerManager;
 import dev.slne.surf.surfserverselector.core.spring.SurfServerSelectorSpringApplication;
 import java.nio.file.Path;
@@ -14,11 +15,13 @@ public abstract class CoreSurfServerSelectorInstance implements SurfServerSelect
 
   protected static final ComponentLogger LOGGER = ComponentLogger.logger("SurfServerSelectorInstance");
   private final CoreServerSelectorPlayerManager playerManager;
+  private final ServerQueueRegistry queueRegistry;
 
   private ConfigurableApplicationContext context;
 
-  public CoreSurfServerSelectorInstance(CoreServerSelectorPlayerManager playerManager) {
+  public CoreSurfServerSelectorInstance(CoreServerSelectorPlayerManager playerManager, ServerQueueRegistry queueRegistry) {
     this.playerManager = playerManager;
+    this.queueRegistry = queueRegistry;
   }
 
   @OverridingMethodsMustInvokeSuper
@@ -43,6 +46,11 @@ public abstract class CoreSurfServerSelectorInstance implements SurfServerSelect
   @Override
   public ServerSelectorPlayerManager getPlayerManager() {
     return this.playerManager;
+  }
+
+  @Override
+  public ServerQueueRegistry getQueueRegistry() {
+    return this.queueRegistry;
   }
 
   protected abstract ClassLoader getClassLoader();

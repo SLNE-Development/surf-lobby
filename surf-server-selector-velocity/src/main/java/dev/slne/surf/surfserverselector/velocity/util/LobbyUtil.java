@@ -17,4 +17,8 @@ public final class LobbyUtil {
         .min(Comparator.comparingInt(server2 -> server2.getPlayersConnected().size()))
         .orElseThrow(() -> new IllegalStateException("No lobby servers found"));
   }
+
+  public static boolean isLobbyServer(String serverName) {
+    return serverName.startsWith(VelocityConfig.get().lobbyServerPrefix());
+  }
 }

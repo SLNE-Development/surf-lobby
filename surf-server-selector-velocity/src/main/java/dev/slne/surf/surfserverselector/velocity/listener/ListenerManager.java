@@ -2,6 +2,7 @@ package dev.slne.surf.surfserverselector.velocity.listener;
 
 import dev.slne.surf.surfserverselector.velocity.VelocityMain;
 import dev.slne.surf.surfserverselector.velocity.listener.player.ChooseInitialServerEventListener;
+import dev.slne.surf.surfserverselector.velocity.listener.player.PlayerQuitEventListener;
 
 public final class ListenerManager {
 
@@ -12,6 +13,7 @@ public final class ListenerManager {
 
   public void registerListeners() {
     register(new ChooseInitialServerEventListener());
+    register(new PlayerQuitEventListener());
   }
 
   private void register(Object listener) {

@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
+import org.jetbrains.annotations.Nullable;
 
 @NonExtendable
 public interface ServerSelectorPlayer {
@@ -12,7 +13,7 @@ public interface ServerSelectorPlayer {
 
   Optional<? extends Audience> getPlayer();
 
-  void changeServer(String serverName);
+  void changeServer(@Nullable String serverName);
 
   int getPriority(); // TODO: use luckperms group weight
 }

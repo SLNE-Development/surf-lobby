@@ -1,5 +1,6 @@
 package dev.slne.surf.surfserverselector.bukkit.instance;
 
+import dev.slne.surf.surfserverselector.api.queue.ServerQueueRegistry;
 import dev.slne.surf.surfserverselector.bukkit.player.BukkitServerPlayerSelectorPlayerManager;
 import dev.slne.surf.surfserverselector.core.instance.CoreSurfServerSelectorInstance;
 import dev.slne.surf.surfserverselector.bukkit.BukkitMain;
@@ -12,7 +13,7 @@ import org.bukkit.plugin.PluginManager;
 public final class BukkitSurfServerSelectorInstance extends CoreSurfServerSelectorInstance {
 
   public BukkitSurfServerSelectorInstance() {
-    super(new BukkitServerPlayerSelectorPlayerManager());
+    super(new BukkitServerPlayerSelectorPlayerManager(), ServerQueueRegistry.createNoOp());
   }
 
   @Override

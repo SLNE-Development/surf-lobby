@@ -3,22 +3,27 @@ package dev.slne.surf.surfserverselector.velocity.queue;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import dev.slne.surf.surfserverselector.api.queue.ServerQueue;
+import dev.slne.surf.surfserverselector.api.queue.ServerQueueRegistry;
+import java.util.UUID;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-public final class ServerQueueRegistry {
-
-  public static final ServerQueueRegistry INSTANCE = new ServerQueueRegistry();
-
+public final class ServerQueueRegistryImpl implements ServerQueueRegistry {
   private final LoadingCache<String, ServerQueue> queues;
 
-  private ServerQueueRegistry() {
+  public ServerQueueRegistryImpl() {
     queues = Caffeine.newBuilder()
         .build(this::createQueue);
   }
 
-  public ServerQueue getQueue(String serverName) {
+  @Override
+  public ServerQueue getQueue(@NotNull String serverName) {
     return queues.get(serverName);
+  }
+
+  @Override
+  public void removeFromQueue(@NotNull UUID uuid) {
+    queues.asMap().values().forEach(queue -> queue.removeFromQueue(uuid));
   }
 
   @Contract(value = "_ -> new", pure = true)
