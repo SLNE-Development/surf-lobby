@@ -4,6 +4,7 @@ import dev.slne.surf.surfserverselector.api.instance.SurfServerSelectorInstance;
 import dev.slne.surf.surfserverselector.api.player.ServerSelectorPlayerManager;
 import dev.slne.surf.surfserverselector.core.player.CoreServerSelectorPlayerManager;
 import dev.slne.surf.surfserverselector.core.spring.SurfServerSelectorSpringApplication;
+import java.nio.file.Path;
 import org.springframework.context.ConfigurableApplicationContext;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 
@@ -45,4 +46,6 @@ public abstract class CoreSurfServerSelectorInstance implements SurfServerSelect
   }
 
   protected abstract ClassLoader getClassLoader();
+
+  protected abstract Path getDataFolder();
 }
