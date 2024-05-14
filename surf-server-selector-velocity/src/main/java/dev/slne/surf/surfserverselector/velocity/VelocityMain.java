@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 @Plugin(
     id = "surf-server-selector-velocity",
     version = "1.0.0-SNAPSHOT",
-    description = "Change me"
+    description = "A plugin that allows players to select a server to connect to."
 )
 public final class VelocityMain {
 
