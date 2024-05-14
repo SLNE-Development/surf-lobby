@@ -6,4 +6,5 @@ plugins {
 dependencies {
     compileOnlyApi(libs.dev.slne.surf.api.core.api)
     compileOnlyApi(libs.dev.slne.data.api)
+    compileOnlyApi(libs.net.luckperms.api)
 }

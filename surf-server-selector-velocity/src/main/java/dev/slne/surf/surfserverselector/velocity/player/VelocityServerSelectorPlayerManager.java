@@ -16,6 +16,6 @@ public final class VelocityServerSelectorPlayerManager extends CoreServerSelecto
   @Contract("_ -> new")
   @Override
   protected @NotNull ServerSelectorPlayer createPlayer(@NotNull UUID uuid) {
-    return new VelocityServerSelectorPlayer(checkNotNull(uuid, "uuid"));
+    return new VelocityServerSelectorPlayer(checkNotNull(uuid, "getUuid"));
   }
 }

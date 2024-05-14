@@ -16,6 +16,6 @@ public final class BukkitServerPlayerSelectorPlayerManager extends CoreServerSel
   @Contract("_ -> new")
   @Override
   protected @NotNull ServerSelectorPlayer createPlayer(@NotNull UUID uuid) {
-    return new BukkitServerSelectorPlayer(checkNotNull(uuid, "uuid"));
+    return new BukkitServerSelectorPlayer(checkNotNull(uuid, "getUuid"));
   }
 }

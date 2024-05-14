@@ -20,7 +20,7 @@ public abstract class CoreServerSelectorPlayerManager implements ServerSelectorP
 
   @Override
   public @NotNull ServerSelectorPlayer getPlayer(@NotNull UUID uuid) {
-    return playerCache.get(checkNotNull(uuid, "uuid"));
+    return playerCache.get(checkNotNull(uuid, "getUuid"));
   }
 
   protected abstract ServerSelectorPlayer createPlayer(@NotNull UUID uuid);

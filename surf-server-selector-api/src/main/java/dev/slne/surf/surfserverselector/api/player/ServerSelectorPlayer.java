@@ -8,7 +8,11 @@ import org.jetbrains.annotations.ApiStatus.NonExtendable;
 @NonExtendable
 public interface ServerSelectorPlayer {
 
-  UUID uuid();
+  UUID getUuid();
 
-  Optional<? extends Audience> player();
+  Optional<? extends Audience> getPlayer();
+
+  void changeServer(String serverName);
+
+  int getPriority(); // TODO: use luckperms group weight
 }

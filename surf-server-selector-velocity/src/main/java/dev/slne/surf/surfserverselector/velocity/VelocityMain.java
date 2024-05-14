@@ -1,5 +1,6 @@
 package dev.slne.surf.surfserverselector.velocity;
 
+import com.velocitypowered.api.plugin.Dependency;
 import dev.slne.surf.surfserverselector.velocity.instance.VelocitySurfServerSelectorInstance;
 import dev.slne.surf.surfserverselector.api.SurfServerSelectorApi;
 import com.google.inject.Inject;
@@ -18,7 +19,10 @@ import java.util.concurrent.ExecutorService;
 @Plugin(
     id = "surf-server-selector-velocity",
     version = "1.0.0-SNAPSHOT",
-    description = "A plugin that allows players to select a server to connect to."
+    description = "A plugin that allows players to select a server to connect to.",
+    dependencies = {
+        @Dependency(id = "luckperms")
+    }
 )
 public final class VelocityMain {
 

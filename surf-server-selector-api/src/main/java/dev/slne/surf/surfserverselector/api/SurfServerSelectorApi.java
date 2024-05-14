@@ -1,5 +1,8 @@
 package dev.slne.surf.surfserverselector.api;
 
+import dev.slne.surf.surfserverselector.api.player.ServerSelectorPlayer;
+import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.ConfigurableApplicationContext;
 import dev.slne.surf.surfserverselector.api.instance.SurfServerSelectorInstance;
 
@@ -17,6 +20,10 @@ public final class SurfServerSelectorApi {
 
   public static SurfServerSelectorInstance getInstance() {
     return instance;
+  }
+
+  public static ServerSelectorPlayer getPlayer(@NotNull UUID uuid) {
+    return instance.getPlayerManager().getPlayer(uuid);
   }
 
   public static ConfigurableApplicationContext getContext() {

@@ -37,6 +37,7 @@ paper {
     serverDependencies {
         registerDepend("SurfBukkitAPI")
         registerDepend("surf-data-bukkit")
+        registerDepend("LuckPerms")
     }
 }
 

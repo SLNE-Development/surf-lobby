@@ -13,7 +13,7 @@ public final class BukkitServerSelectorPlayer extends CoreServerSelectorPlayer {
   }
 
   @Override
-  public Optional<Player> player() {
+  public Optional<Player> getPlayer() {
     return Optional.ofNullable(Bukkit.getPlayer(uuid));
   }
 }
