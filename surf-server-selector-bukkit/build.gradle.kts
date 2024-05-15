@@ -28,10 +28,10 @@ tasks {
 paper {
     name = "surf-server-selector-bukkit"
 
-    main = "dev.slne.surf.surfserverselector.bukkitBukkitMain"
-    bootstrapper = "dev.slne.surf.surfserverselector.bukkitBukkitBootstrapper"
-    loader = "dev.slne.surf.surfserverselector.bukkitBukkitLoader"
-    generateLibrariesJson = true
+    main = "dev.slne.surf.surfserverselector.bukkit.BukkitMain"
+    bootstrapper = "dev.slne.surf.surfserverselector.bukkit.BukkitBootstrapper"
+    loader = "dev.slne.surf.surfserverselector.bukkit.BukkitLoader"
+    generateLibrariesJson = false // TODO: 15.05.2024 17:11 - change me
     apiVersion = "1.20"
 
     serverDependencies {

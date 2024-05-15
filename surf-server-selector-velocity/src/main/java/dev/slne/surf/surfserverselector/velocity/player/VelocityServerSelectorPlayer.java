@@ -2,6 +2,7 @@ package dev.slne.surf.surfserverselector.velocity.player;
 
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.ServerPing.Players;
 import dev.slne.surf.surfserverselector.api.SurfServerSelectorApi;
 import dev.slne.surf.surfserverselector.api.queue.ServerQueue;
@@ -44,6 +45,18 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
     if (isChangingServer) {
       Messages.ALREADY_CHANGING_SERVER.send(this);
       return;
+    }
+
+    final Optional<Player> player = getPlayer();
+
+    if (serverName != null && player.isPresent()) {
+      final Optional<ServerConnection> serverConnection = player.get().getCurrentServer();
+
+      if (serverConnection.isPresent() && serverConnection.get().getServerInfo().getName()
+          .equals(serverName)) {
+        Messages.ALREADY_CONNECTED_TO_SERVER.send(this, Component.text(serverName));
+        return;
+      }
     }
 
     isChangingServer = true;
@@ -170,7 +183,7 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
 
                 if (playerCount >= maxPlayers) {
                   if (player.hasPermission(Permissions.BYPASS_QUEUE_PERMISSION.getPermission())) {
-                    return player.createConnectionRequest(requestedServer)
+                    return player.createConnectionRequest(requestedServer) // TODO: 15.05.2024 17:35 - does not really work
                         .connectWithIndication()
                         .thenApply(
                             success -> success ? ChangeServerResult.SUCCESS_WITH_BYPASS_PERMISSION

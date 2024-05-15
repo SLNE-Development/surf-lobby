@@ -60,4 +60,9 @@ public interface Messages {
       .append(text("Der Lobby-Server "))
       .append(args[0])
       .append(text(" ist voll!"));
+
+  ErrorMessage ALREADY_CONNECTED_TO_SERVER = args -> text()
+      .append(text("Du bist bereits mit dem Server "))
+      .append(args[0])
+      .append(text(" verbunden!"));
 }

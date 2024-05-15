@@ -6,20 +6,21 @@ import dev.slne.surf.surfserverselector.api.SurfServerSelectorApi;
 import dev.slne.surf.surfserverselector.api.player.ServerSelectorPlayer;
 import dev.slne.surf.surfserverselector.api.queue.ServerQueue;
 import java.util.Optional;
-import java.util.PriorityQueue;
 import java.util.UUID;
+import java.util.concurrent.PriorityBlockingQueue;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServerQueueImpl implements ServerQueue {
 
-  private final PriorityQueue<UUID> queue;
+  private final PriorityBlockingQueue<UUID> queue;
   private final String serverName;
 
   @Contract(pure = true)
   public ServerQueueImpl(String serverName) {
     this.serverName = serverName;
-    queue = new PriorityQueue<>((uuid1, uuid2) -> {
+
+    queue = new PriorityBlockingQueue<>(50, (uuid1, uuid2) -> {
       final ServerSelectorPlayer player1 = SurfServerSelectorApi.getPlayer(uuid1);
       final ServerSelectorPlayer player2 = SurfServerSelectorApi.getPlayer(uuid2);
 

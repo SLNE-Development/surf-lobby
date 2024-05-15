@@ -3,6 +3,7 @@ package dev.slne.surf.surfserverselector.velocity.instance;
 import dev.slne.surf.surfapi.velocity.api.SurfVelocityApi;
 import dev.slne.surf.surfserverselector.core.instance.CoreSurfServerSelectorInstance;
 import dev.slne.surf.surfserverselector.velocity.VelocityMain;
+import dev.slne.surf.surfserverselector.velocity.command.CommandManager;
 import dev.slne.surf.surfserverselector.velocity.config.VelocityConfig;
 import dev.slne.surf.surfserverselector.velocity.listener.ListenerManager;
 import dev.slne.surf.surfserverselector.velocity.player.VelocityServerSelectorPlayerManager;
@@ -28,6 +29,7 @@ public final class VelocitySurfServerSelectorInstance extends CoreSurfServerSele
     super.onEnable();
 
     ListenerManager.INSTANCE.registerListeners();
+    CommandManager.INSTANCE.registerCommands();
   }
 
   @Override

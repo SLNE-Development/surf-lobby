@@ -1,7 +1,6 @@
 package dev.slne.surf.surfserverselector.bukkit;
 
 import com.google.gson.Gson;
-import dev.slne.surf.surfapi.core.api.messages.Colors;
 import io.papermc.paper.plugin.loader.PluginClasspathBuilder;
 import io.papermc.paper.plugin.loader.PluginLoader;
 import io.papermc.paper.plugin.loader.library.impl.MavenLibraryResolver;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.graph.Dependency;
@@ -81,7 +81,7 @@ public class BukkitLoader implements PluginLoader {
         return new Gson().fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8),
             PluginLibraries.class);
       } else {
-        logger.warn(Component.text("Failed to load paper-libraries.json", Colors.WARNING));
+        logger.warn(Component.text("Failed to load paper-libraries.json", NamedTextColor.YELLOW));
         return new PluginLibraries(Map.of(), List.of());
       }
     } catch (IOException exception) {
