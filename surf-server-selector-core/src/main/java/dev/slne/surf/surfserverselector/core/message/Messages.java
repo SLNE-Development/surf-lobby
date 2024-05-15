@@ -45,8 +45,14 @@ public interface Messages {
       .append(text("Du bist nun in der Warteschlange für den Server "))
       .append(args[0])
       .append(text("!"));
+
   ErrorMessage COULD_NOT_ESTABLISH_CONNECTION_WITH_SERVER = args -> text()
       .append(text("Es konnte keine Verbindung zum Server "))
       .append(args[0])
       .append(text(" hergestellt werden!"));
+
+  ErrorMessage ALREADY_IN_QUEUE = args -> text()
+      .append(text("Du bist bereits in der Warteschlange für den Server "))
+      .append(args[0])
+      .append(text("!"));
 }

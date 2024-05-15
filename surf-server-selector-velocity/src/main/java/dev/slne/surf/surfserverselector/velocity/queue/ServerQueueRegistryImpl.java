@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import dev.slne.surf.surfserverselector.api.queue.ServerQueue;
 import dev.slne.surf.surfserverselector.api.queue.ServerQueueRegistry;
+import java.util.Optional;
 import java.util.UUID;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -26,8 +27,15 @@ public final class ServerQueueRegistryImpl implements ServerQueueRegistry {
     queues.asMap().values().forEach(queue -> queue.removeFromQueue(uuid));
   }
 
+  @Override
+  public @NotNull Optional<ServerQueue> getCurrentQueue(@NotNull UUID uuid) {
+    return queues.asMap().values().stream()
+        .filter(queue -> queue.isInQueue(uuid))
+        .findFirst();
+  }
+
   @Contract(value = "_ -> new", pure = true)
   private @NotNull ServerQueue createQueue(String serverName) {
-    return new ServerQueueImpl();
+    return new ServerQueueImpl(serverName);
   }
 }

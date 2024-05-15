@@ -3,6 +3,7 @@ package dev.slne.surf.surfserverselector.api.queue;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import dev.slne.surf.surfserverselector.api.player.ServerSelectorPlayer;
+import java.util.Optional;
 import java.util.UUID;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Contract;
@@ -23,6 +24,14 @@ public interface ServerQueueRegistry {
 
   default void removeFromQueue(@NotNull UUID uuid) {
     throw new UnsupportedOperationException("This method is not supported in this implementation.");
+  }
+
+  default Optional<ServerQueue> getCurrentQueue(@NotNull UUID uuid) {
+    throw new UnsupportedOperationException("This method is not supported in this implementation.");
+  }
+
+  default Optional<ServerQueue> getCurrentQueue(@NotNull ServerSelectorPlayer player) {
+    return getCurrentQueue(checkNotNull(player, "player").getUuid());
   }
 
   @Contract(value = " -> new", pure = true)

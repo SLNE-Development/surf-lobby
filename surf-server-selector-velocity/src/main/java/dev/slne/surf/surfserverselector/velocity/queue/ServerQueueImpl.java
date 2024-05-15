@@ -14,15 +14,22 @@ import org.jetbrains.annotations.NotNull;
 public final class ServerQueueImpl implements ServerQueue {
 
   private final PriorityQueue<UUID> queue;
+  private final String serverName;
 
   @Contract(pure = true)
-  public ServerQueueImpl() {
+  public ServerQueueImpl(String serverName) {
+    this.serverName = serverName;
     queue = new PriorityQueue<>((uuid1, uuid2) -> {
       final ServerSelectorPlayer player1 = SurfServerSelectorApi.getPlayer(uuid1);
       final ServerSelectorPlayer player2 = SurfServerSelectorApi.getPlayer(uuid2);
 
       return Integer.compare(player1.getPriority(), player2.getPriority());
     });
+  }
+
+  @Override
+  public String getServerName() {
+    return serverName;
   }
 
   @Override
@@ -48,6 +55,11 @@ public final class ServerQueueImpl implements ServerQueue {
   @Override
   public void removeFromQueue(@NotNull UUID uuid) {
     queue.remove(checkNotNull(uuid, "uuid"));
+  }
+
+  @Override
+  public boolean isInQueue(UUID uuid) {
+    return queue.contains(uuid);
   }
 
   @Override

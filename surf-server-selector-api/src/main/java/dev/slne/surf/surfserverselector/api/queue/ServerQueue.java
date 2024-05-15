@@ -14,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 @NonExtendable
 public interface ServerQueue {
 
+  String getServerName();
+
   default int getQueuePosition(@NotNull ServerSelectorPlayer player) {
     return getQueuePosition(checkNotNull(player, "player").getUuid());
   }
@@ -31,6 +33,12 @@ public interface ServerQueue {
   }
 
   void removeFromQueue(@NotNull UUID uuid);
+
+  boolean isInQueue(UUID uuid);
+
+  default boolean isInQueue(ServerSelectorPlayer player) {
+    return isInQueue(checkNotNull(player, "player").getUuid());
+  }
 
   void clearQueue();
 

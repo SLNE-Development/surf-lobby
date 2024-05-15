@@ -4,6 +4,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.ServerPing.Players;
 import dev.slne.surf.surfserverselector.api.SurfServerSelectorApi;
+import dev.slne.surf.surfserverselector.api.queue.ServerQueue;
 import dev.slne.surf.surfserverselector.core.message.Messages;
 import dev.slne.surf.surfserverselector.core.permissions.Permissions;
 import dev.slne.surf.surfserverselector.core.player.CoreServerSelectorPlayer;
@@ -16,13 +17,23 @@ import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Velocity-specific implementation of {@link CoreServerSelectorPlayer}, handling player actions
+ * such as changing servers and sending messages within the Velocity proxy environment.
+ */
 public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer {
 
   private boolean isChangingServer = false;
 
+  /**
+   * Constructs a new VelocityServerSelectorPlayer with the specified UUID.
+   *
+   * @param uuid the UUID of the player.
+   */
   public VelocityServerSelectorPlayer(UUID uuid) {
     super(uuid);
   }
+
 
   @Override
   public void changeServer(@Nullable String serverName, boolean sendFeedback) {
@@ -54,6 +65,7 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
           case SUCCESS_WITH_BYPASS_PERMISSION -> Messages.CHANGED_TO_FULL_SERVER_WITH_BYPASS_PERMISSION.send(this, Component.text(finalServerName));
           case SUCCESS_BUT_OTHER_LOBBY_SERVER_AS_REQUESTED -> Messages.CHANGED_TO_OTHER_LOBBY_AS_REQUESTED.send(this, Component.text(finalServerName));
           case QUEUE -> Messages.JOINED_QUEUE.send(this, Component.text(finalServerName));
+          case ALREADY_IN_QUEUE -> Messages.ALREADY_IN_QUEUE.send(this, Component.text(finalServerName));
           case LOBBY_SERVER_NOT_AVAILABLE -> Messages.LOBBY_SERVER_NOT_AVAILABLE.send(this, Component.text(finalServerName));
           case COULD_NOT_ESTABLISH_CONNECTION -> Messages.COULD_NOT_ESTABLISH_CONNECTION_WITH_SERVER.send(this, Component.text(finalServerName));
           case ERROR -> Messages.ERROR_CHANGING_SERVER.send(this, Component.text(finalServerName));
@@ -64,6 +76,13 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
     });
   }
 
+  /**
+   * Attempts to connect the player to a lobby server, handling full server situations by
+   * redirecting to another lobby.
+   *
+   * @param serverName the lobby server to attempt connection to.
+   * @return a {@link CompletableFuture} that indicates the result of the attempt.
+   */
   private CompletableFuture<ChangeServerResult> changeToLobbyServer(String serverName) {
     return getPlayer()
         .map(player -> {
@@ -98,6 +117,13 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
         .orElse(CompletableFuture.completedFuture(ChangeServerResult.PLAYER_NOT_ONLINE));
   }
 
+  /**
+   * Attempts to change the server for the player, handling full server scenarios and queue
+   * interactions.
+   *
+   * @param serverName the target server to connect to.
+   * @return a {@link CompletableFuture} indicating the result of the server change attempt.
+   */
   private CompletableFuture<ChangeServerResult> doActualChangeServer(String serverName) {
     return getPlayer().map(player -> {
       final ProxyServer server = VelocityMain.getInstance().getServer();
@@ -110,6 +136,18 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
 
                 final int playerCount = requestedServer.getPlayersConnected().size();
                 final int maxPlayers = players.getMax();
+                final Optional<ServerQueue> currentQueue = SurfServerSelectorApi.getInstance()
+                    .getQueueRegistry().getCurrentQueue(this);
+
+                if (currentQueue.isPresent()) {
+                  final String currentQueueServerName = currentQueue.get().getServerName();
+
+                  if (currentQueueServerName.equals(serverName)) {
+                    return CompletableFuture.completedFuture(ChangeServerResult.ALREADY_IN_QUEUE);
+                  }
+
+                  currentQueue.get().removeFromQueue(uuid);
+                }
 
                 if (playerCount >= maxPlayers) {
                   if (player.hasPermission(Permissions.BYPASS_QUEUE_PERMISSION.getPermission())) {
@@ -139,12 +177,16 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
     return VelocityMain.getInstance().getServer().getPlayer(uuid);
   }
 
+  /**
+   * Defines possible results of a server change attempt, indicating various states and outcomes.
+   */
   private enum ChangeServerResult {
     SUCCESS,
     SUCCESS_LOBBY_SERVER,
     SUCCESS_WITH_BYPASS_PERMISSION,
     SUCCESS_BUT_OTHER_LOBBY_SERVER_AS_REQUESTED,
     QUEUE,
+    ALREADY_IN_QUEUE,
     LOBBY_SERVER_NOT_AVAILABLE,
     COULD_NOT_ESTABLISH_CONNECTION,
     PLAYER_NOT_ONLINE,
