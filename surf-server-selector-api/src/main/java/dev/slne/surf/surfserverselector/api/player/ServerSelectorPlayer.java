@@ -76,4 +76,8 @@ public interface ServerSelectorPlayer {
   default void sendMessage(@NotNull ComponentLike message) {
     this.getPlayer().ifPresent(player -> player.sendMessage(checkNotNull(message, "message")));
   }
+
+  default void sendActionBar(@NotNull ComponentLike message) {
+    this.getPlayer().ifPresent(player -> player.sendActionBar(message));
+  }
 }

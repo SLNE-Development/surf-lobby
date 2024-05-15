@@ -4,9 +4,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import dev.slne.surf.surfserverselector.api.player.ServerSelectorPlayer;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 
 /**
  * <b>Velocity only</b>
@@ -39,6 +41,9 @@ public interface ServerQueue {
   default boolean isInQueue(ServerSelectorPlayer player) {
     return isInQueue(checkNotNull(player, "player").getUuid());
   }
+
+  @UnmodifiableView
+  Set<UUID> getPlayersInQueue();
 
   void clearQueue();
 

@@ -8,6 +8,7 @@ import dev.slne.surf.surfserverselector.velocity.config.VelocityConfig;
 import dev.slne.surf.surfserverselector.velocity.listener.ListenerManager;
 import dev.slne.surf.surfserverselector.velocity.player.VelocityServerSelectorPlayerManager;
 import dev.slne.surf.surfserverselector.velocity.queue.ServerQueueRegistryImpl;
+import dev.slne.surf.surfserverselector.velocity.queue.display.QueueDisplay;
 import java.nio.file.Path;
 
 public final class VelocitySurfServerSelectorInstance extends CoreSurfServerSelectorInstance {
@@ -30,6 +31,14 @@ public final class VelocitySurfServerSelectorInstance extends CoreSurfServerSele
 
     ListenerManager.INSTANCE.registerListeners();
     CommandManager.INSTANCE.registerCommands();
+    QueueDisplay.INSTANCE.setup(VelocityMain.getInstance().getServer(), VelocityMain.getInstance());
+  }
+
+  @Override
+  public void onDisable() {
+    super.onDisable();
+
+    QueueDisplay.INSTANCE.destroy();
   }
 
   @Override

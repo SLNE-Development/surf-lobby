@@ -2,10 +2,12 @@ package dev.slne.surf.surfserverselector.velocity.queue;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.collect.ImmutableSet;
 import dev.slne.surf.surfserverselector.api.SurfServerSelectorApi;
 import dev.slne.surf.surfserverselector.api.player.ServerSelectorPlayer;
 import dev.slne.surf.surfserverselector.api.queue.ServerQueue;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.PriorityBlockingQueue;
 import org.jetbrains.annotations.Contract;
@@ -61,6 +63,11 @@ public final class ServerQueueImpl implements ServerQueue {
   @Override
   public boolean isInQueue(UUID uuid) {
     return queue.contains(uuid);
+  }
+
+  @Override
+  public Set<UUID> getPlayersInQueue() {
+    return ImmutableSet.copyOf(queue);
   }
 
   @Override
