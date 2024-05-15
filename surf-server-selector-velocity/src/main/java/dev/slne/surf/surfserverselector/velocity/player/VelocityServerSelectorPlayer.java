@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +23,8 @@ import org.jetbrains.annotations.Nullable;
  * such as changing servers and sending messages within the Velocity proxy environment.
  */
 public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer {
+
+  private static final ComponentLogger LOGGER = ComponentLogger.logger("ServerSelector");
 
   private boolean isChangingServer = false;
 
@@ -73,6 +76,11 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
           // @formatter:on
         }
       }
+    }).exceptionally(throwable -> {
+      isChangingServer = false;
+      Messages.ERROR_CHANGING_SERVER.send(this, Component.text(finalServerName));
+      LOGGER.error("Error changing server for player {}", uuid, throwable);
+      return null;
     });
   }
 
