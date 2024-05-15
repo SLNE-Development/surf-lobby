@@ -39,7 +39,8 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
 
 
   @Override
-  public void changeServer(@Nullable String serverName, boolean sendFeedback) {
+  public void changeServer(@Nullable String serverName, boolean sendFeedback,
+      boolean fallbackToLobbyWithLowestPlayerCount) {
     if (isChangingServer) {
       Messages.ALREADY_CHANGING_SERVER.send(this);
       return;
@@ -55,7 +56,8 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
 
     final String finalServerName = serverName;
     final CompletableFuture<ChangeServerResult> futureResult = isRequestedServerLobby
-        ? changeToLobbyServer(serverName) : doActualChangeServer(serverName);
+        ? changeToLobbyServer(serverName, fallbackToLobbyWithLowestPlayerCount)
+        : doActualChangeServer(serverName);
 
     futureResult.thenAcceptAsync(result -> {
       isChangingServer = false;
@@ -70,6 +72,7 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
           case QUEUE -> Messages.JOINED_QUEUE.send(this, Component.text(finalServerName));
           case ALREADY_IN_QUEUE -> Messages.ALREADY_IN_QUEUE.send(this, Component.text(finalServerName));
           case LOBBY_SERVER_NOT_AVAILABLE -> Messages.LOBBY_SERVER_NOT_AVAILABLE.send(this, Component.text(finalServerName));
+          case LOBBY_SERVER_FULL -> Messages.LOBBY_SERVER_FULL.send(this, Component.text(finalServerName));
           case COULD_NOT_ESTABLISH_CONNECTION -> Messages.COULD_NOT_ESTABLISH_CONNECTION_WITH_SERVER.send(this, Component.text(finalServerName));
           case ERROR -> Messages.ERROR_CHANGING_SERVER.send(this, Component.text(finalServerName));
           case PLAYER_NOT_ONLINE -> { /* Do nothing */ }
@@ -91,7 +94,8 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
    * @param serverName the lobby server to attempt connection to.
    * @return a {@link CompletableFuture} that indicates the result of the attempt.
    */
-  private CompletableFuture<ChangeServerResult> changeToLobbyServer(String serverName) {
+  private CompletableFuture<ChangeServerResult> changeToLobbyServer(String serverName,
+      boolean fallbackToLobbyWithLowestPlayerCount) {
     return getPlayer()
         .map(player -> {
           final ProxyServer server = VelocityMain.getInstance().getServer();
@@ -105,13 +109,20 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
                     final int playerCount = lobbyServer.getPlayersConnected().size();
                     final int maxPlayers = players.getMax();
 
-                    if (playerCount >= maxPlayers) {
-                      return player.createConnectionRequest(
-                              LobbyUtil.getLobbyServerWithLowestPlayerCount()).connectWithIndication()
-                          .thenApply(
-                              success -> success
-                                  ? ChangeServerResult.SUCCESS_BUT_OTHER_LOBBY_SERVER_AS_REQUESTED
-                                  : ChangeServerResult.ERROR);
+                    if (playerCount >= maxPlayers && !player.hasPermission(
+                        Permissions.BYPASS_PLAYER_LIMIT_PERMISSION.getPermission())) {
+
+                      if (fallbackToLobbyWithLowestPlayerCount) {
+                        return player.createConnectionRequest(
+                                LobbyUtil.getLobbyServerWithLowestPlayerCount()).connectWithIndication()
+                            .thenApply(
+                                success -> success
+                                    ? ChangeServerResult.SUCCESS_BUT_OTHER_LOBBY_SERVER_AS_REQUESTED
+                                    : ChangeServerResult.ERROR);
+                      } else {
+                        return CompletableFuture.completedFuture(
+                            ChangeServerResult.LOBBY_SERVER_FULL);
+                      }
                     }
 
                     return player.createConnectionRequest(lobbyServer).connectWithIndication()
@@ -196,6 +207,7 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
     QUEUE,
     ALREADY_IN_QUEUE,
     LOBBY_SERVER_NOT_AVAILABLE,
+    LOBBY_SERVER_FULL,
     COULD_NOT_ESTABLISH_CONNECTION,
     PLAYER_NOT_ONLINE,
     ERROR;

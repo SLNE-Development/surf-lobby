@@ -12,8 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a player involved in server selection processes, encapsulating operations such as
- * server changing and message sending within a server selector context.
- * This interface is marked as non-extendable.
+ * server changing and message sending within a server selector context. This interface is marked as
+ * non-extendable.
  */
 @NonExtendable
 public interface ServerSelectorPlayer {
@@ -26,22 +26,40 @@ public interface ServerSelectorPlayer {
   UUID getUuid();
 
   /**
-   * Gets an {@link Optional} that may contain the {@link Audience} instance
-   * representing the player.
+   * Gets an {@link Optional} that may contain the {@link Audience} instance representing the
+   * player.
    *
    * @return an Optional possibly containing the Audience of the player.
    */
   Optional<? extends Audience> getPlayer();
 
   /**
-   * Requests the player to change to a specified server.
-   * Optionally sends feedback about the action.
+   * Requests the player to change to a specified server. Optionally sends feedback about the
+   * action.
    *
-   * @param serverName   the name of the server to change to;
-   *                     if null, defaults to the lobby server with the lowest player count.
+   * @param serverName   the name of the server to change to; if null, defaults to the lobby server
+   *                     with the lowest player count.
    * @param sendFeedback whether to send feedback to the player about the server change.
    */
-  void changeServer(@Nullable String serverName, boolean sendFeedback);
+  default void changeServer(@Nullable String serverName, boolean sendFeedback) {
+    changeServer(serverName, sendFeedback, true);
+  }
+
+  /**
+   * Requests the player to change to a specified server. Optionally sends feedback about the
+   * action. Optionally falls back to the lobby server with the lowest player count.
+   *
+   * @param serverName                           the name of the server to change to; if null,
+   *                                             defaults to the lobby server with the lowest player
+   *                                             count.
+   * @param sendFeedback                         whether to send feedback to the player about the
+   *                                             server change.
+   * @param fallbackToLobbyWithLowestPlayerCount whether to fall back to the lobby server with the
+   *                                             lowest player count if the specified lobby server
+   *                                             is full.
+   */
+  void changeServer(@Nullable String serverName, boolean sendFeedback,
+      boolean fallbackToLobbyWithLowestPlayerCount);
 
   /**
    * Retrieves the priority of the player based on server-specific metadata.

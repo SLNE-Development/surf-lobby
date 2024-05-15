@@ -10,15 +10,17 @@ public final class RequestChangeServerEvent extends ServerSelectorRedisEvent {
   private UUID uuid;
   private String requestedServerName;
   private boolean sendFeedback;
+  private boolean fallbackToLobbyWithLowestPlayerCount;
 
   public RequestChangeServerEvent() {
   }
 
-  public RequestChangeServerEvent(UUID uuid, String requestedServerName, boolean sendFeedback) {
+  public RequestChangeServerEvent(UUID uuid, String requestedServerName, boolean sendFeedback, boolean fallbackToLobbyWithLowestPlayerCount) {
     super(CHANNEL);
     this.uuid = uuid;
     this.requestedServerName = requestedServerName;
     this.sendFeedback = sendFeedback;
+    this.fallbackToLobbyWithLowestPlayerCount = fallbackToLobbyWithLowestPlayerCount;
   }
 
   @Contract(pure = true)
@@ -33,5 +35,9 @@ public final class RequestChangeServerEvent extends ServerSelectorRedisEvent {
 
   public boolean isSendFeedback() {
     return sendFeedback;
+  }
+
+  public boolean isFallbackToLobbyWithLowestPlayerCount() {
+    return fallbackToLobbyWithLowestPlayerCount;
   }
 }

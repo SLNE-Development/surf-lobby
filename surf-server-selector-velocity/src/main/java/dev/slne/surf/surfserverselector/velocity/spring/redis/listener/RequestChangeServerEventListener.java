@@ -10,6 +10,8 @@ public final class RequestChangeServerEventListener {
 
   @DataListener(channels = {RequestChangeServerEvent.CHANNEL})
   public void onRequestChangeServer(@NotNull RequestChangeServerEvent event) {
-    SurfServerSelectorApi.getPlayer(event.getUuid()).changeServer(event.getRequestedServerName(), event.isSendFeedback());
+    SurfServerSelectorApi.getPlayer(event.getUuid())
+        .changeServer(event.getRequestedServerName(), event.isSendFeedback(),
+            event.isFallbackToLobbyWithLowestPlayerCount());
   }
 }

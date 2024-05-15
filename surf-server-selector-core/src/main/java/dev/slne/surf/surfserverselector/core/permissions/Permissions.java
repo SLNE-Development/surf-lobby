@@ -3,7 +3,8 @@ package dev.slne.surf.surfserverselector.core.permissions;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public enum Permissions {
-  BYPASS_QUEUE_PERMISSION("surf.server.selector.queue.bypass");
+  BYPASS_QUEUE_PERMISSION("surf.server.selector.queue.bypass"),
+  BYPASS_PLAYER_LIMIT_PERMISSION("surf.server.selector.player-limit.bypass");
 
   private final String permission;
 

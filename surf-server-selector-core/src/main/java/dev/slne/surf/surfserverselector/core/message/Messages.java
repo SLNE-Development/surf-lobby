@@ -55,4 +55,9 @@ public interface Messages {
       .append(text("Du bist bereits in der Warteschlange für den Server "))
       .append(args[0])
       .append(text("!"));
+
+  ErrorMessage LOBBY_SERVER_FULL = args -> text()
+      .append(text("Der Lobby-Server "))
+      .append(args[0])
+      .append(text(" ist voll!"));
 }

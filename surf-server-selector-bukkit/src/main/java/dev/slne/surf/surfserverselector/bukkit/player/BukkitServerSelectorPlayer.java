@@ -21,7 +21,8 @@ public final class BukkitServerSelectorPlayer extends CoreServerSelectorPlayer {
 
   @Contract(pure = true)
   @Override
-  public void changeServer(String serverName, boolean sendFeedback) {
-    new RequestChangeServerEvent(uuid, serverName, sendFeedback).call();
+  public void changeServer(String serverName, boolean sendFeedback,
+      boolean fallbackToLobbyWithLowestPlayerCount) {
+    new RequestChangeServerEvent(uuid, serverName, sendFeedback, fallbackToLobbyWithLowestPlayerCount).call();
   }
 }
