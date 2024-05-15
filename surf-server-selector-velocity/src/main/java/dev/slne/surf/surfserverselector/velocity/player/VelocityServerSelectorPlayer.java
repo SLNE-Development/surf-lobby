@@ -153,7 +153,7 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
                 final Players players = serverPing.getPlayers()
                     .orElseThrow(() -> new IllegalStateException("No players in server ping"));
 
-                final int playerCount = requestedServer.getPlayersConnected().size();
+                final int playerCount = players.getOnline();
                 final int maxPlayers = players.getMax();
                 final Optional<ServerQueue> currentQueue = SurfServerSelectorApi.getInstance()
                     .getQueueRegistry().getCurrentQueue(this);
