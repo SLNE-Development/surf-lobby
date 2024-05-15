@@ -33,7 +33,7 @@ public final class LobbyUtil {
     return server.getAllServers().stream()
         .filter(registeredServer -> registeredServer.getServerInfo().getName()
             .startsWith(lobbyServerPrefix))
-        .min(Comparator.comparingInt(server2 -> server2.getPlayersConnected().size()))
+        .min(Comparator.comparingInt(registeredServer -> registeredServer.getPlayersConnected().size()))
         .orElseThrow(() -> new IllegalStateException("No lobby servers found"));
   }
 
