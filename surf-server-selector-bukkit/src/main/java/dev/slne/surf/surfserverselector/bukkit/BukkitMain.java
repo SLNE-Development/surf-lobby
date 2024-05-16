@@ -1,7 +1,7 @@
 package dev.slne.surf.surfserverselector.bukkit;
 
-import dev.slne.surf.surfserverselector.bukkit.instance.BukkitSurfServerSelectorInstance;
 import dev.slne.surf.surfserverselector.api.SurfServerSelectorApi;
+import dev.slne.surf.surfserverselector.bukkit.instance.BukkitSurfServerSelectorInstance;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class BukkitMain extends JavaPlugin {
@@ -13,6 +13,7 @@ public final class BukkitMain extends JavaPlugin {
     this.instance = new BukkitSurfServerSelectorInstance();
     new SurfServerSelectorApi(this.instance);
 
+    saveDefaultConfig();
     this.instance.onLoad();
   }
 
@@ -32,5 +33,9 @@ public final class BukkitMain extends JavaPlugin {
 
   public static BukkitMain getInstance() {
     return getPlugin(BukkitMain.class);
+  }
+
+  public boolean isLobby() {
+    return getConfig().getBoolean("isLobby", false);
   }
 }

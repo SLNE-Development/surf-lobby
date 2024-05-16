@@ -1,9 +1,10 @@
 package dev.slne.surf.surfserverselector.bukkit.instance;
 
 import dev.slne.surf.surfserverselector.api.queue.ServerQueueRegistry;
+import dev.slne.surf.surfserverselector.bukkit.BukkitMain;
+import dev.slne.surf.surfserverselector.bukkit.listener.ListenerManager;
 import dev.slne.surf.surfserverselector.bukkit.player.BukkitServerPlayerSelectorPlayerManager;
 import dev.slne.surf.surfserverselector.core.instance.CoreSurfServerSelectorInstance;
-import dev.slne.surf.surfserverselector.bukkit.BukkitMain;
 import dev.slne.surf.surfserverselector.core.permissions.Permissions;
 import java.nio.file.Path;
 import org.bukkit.Bukkit;
@@ -24,6 +25,15 @@ public final class BukkitSurfServerSelectorInstance extends CoreSurfServerSelect
     for (final Permissions permissions : Permissions.values()) {
       pluginManager.addPermission(new Permission(permissions.getPermission()));
     }
+
+    ListenerManager.INSTANCE.registerListeners();
+  }
+
+  @Override
+  public void onDisable() {
+    super.onDisable();
+
+    ListenerManager.INSTANCE.unregisterListeners();
   }
 
   @Override
