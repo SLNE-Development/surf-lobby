@@ -1,9 +1,12 @@
-package dev.slne.surf.surfserverselector.bukkit.hotbar.item.lobby;
+package dev.slne.surf.surfserverselector.bukkit.hotbar.item.lobby.switcher;
 
 import dev.slne.surf.surfapi.core.api.messages.Colors;
+import dev.slne.surf.surfserverselector.bukkit.BukkitMain;
 import dev.slne.surf.surfserverselector.bukkit.hotbar.item.HotbarItem;
 import dev.slne.surf.surfserverselector.bukkit.util.ItemStackBuilder;
+import me.devnatan.inventoryframework.ViewFrame;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -34,6 +37,12 @@ public final class LobbySwitcherItem extends HotbarItem {
   @Override
   public void onClick() {
     player.sendPlainMessage("Switch lobby");
-    // TODO: 16.05.2024 10:25 - implement
+    ViewFrame viewFrame = BukkitMain.getInstance().getViewFrame();
+
+    System.out.println(viewFrame.getRegisteredViewByType(LobbySwitcherView.class));
+
+    Bukkit.getScheduler().runTask(BukkitMain.getInstance(), () -> {
+      System.out.println(viewFrame.open(LobbySwitcherView.class, player));
+    });
   }
 }

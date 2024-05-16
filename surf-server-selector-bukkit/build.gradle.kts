@@ -11,8 +11,12 @@ plugins {
 
 dependencies {
     api(project(":surf-server-selector-core"))
+
     compileOnlyApi(libs.dev.slne.surf.api.bukkit.api)
     compileOnlyApi(libs.io.papermc.paper.api)
+
+    paperLibrary(libs.me.devnatan.inventory.framework.bukkit)
+    paperLibrary(libs.me.devnatan.inventory.framework.paper)
 }
 
 tasks {
@@ -31,7 +35,7 @@ paper {
     main = "dev.slne.surf.surfserverselector.bukkit.BukkitMain"
     bootstrapper = "dev.slne.surf.surfserverselector.bukkit.BukkitBootstrapper"
     loader = "dev.slne.surf.surfserverselector.bukkit.BukkitLoader"
-    generateLibrariesJson = false // TODO: 15.05.2024 17:11 - change me
+    generateLibrariesJson = true
     apiVersion = "1.20"
 
     serverDependencies {

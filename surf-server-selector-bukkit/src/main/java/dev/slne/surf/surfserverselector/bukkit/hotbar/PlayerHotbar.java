@@ -3,7 +3,7 @@ package dev.slne.surf.surfserverselector.bukkit.hotbar;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import dev.slne.surf.surfserverselector.bukkit.hotbar.item.HotbarItem;
-import dev.slne.surf.surfserverselector.bukkit.hotbar.item.lobby.LobbySwitcherItem;
+import dev.slne.surf.surfserverselector.bukkit.hotbar.item.lobby.switcher.LobbySwitcherItem;
 import dev.slne.surf.surfserverselector.bukkit.util.pdc.DataTypes;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;

@@ -6,6 +6,7 @@ import dev.slne.surf.surfserverselector.bukkit.listener.ListenerManager;
 import dev.slne.surf.surfserverselector.bukkit.player.BukkitServerPlayerSelectorPlayerManager;
 import dev.slne.surf.surfserverselector.core.instance.CoreSurfServerSelectorInstance;
 import dev.slne.surf.surfserverselector.core.permissions.Permissions;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.RequestSettingsEvent;
 import java.nio.file.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
@@ -15,6 +16,13 @@ public final class BukkitSurfServerSelectorInstance extends CoreSurfServerSelect
 
   public BukkitSurfServerSelectorInstance() {
     super(new BukkitServerPlayerSelectorPlayerManager(), ServerQueueRegistry.createNoOp());
+  }
+
+  @Override
+  public void onLoad() {
+    super.onLoad();
+
+    new RequestSettingsEvent("").call();
   }
 
   @Override

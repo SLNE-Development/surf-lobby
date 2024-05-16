@@ -1,12 +1,15 @@
 package dev.slne.surf.surfserverselector.bukkit;
 
 import dev.slne.surf.surfserverselector.api.SurfServerSelectorApi;
+import dev.slne.surf.surfserverselector.bukkit.hotbar.item.lobby.switcher.LobbySwitcherView;
 import dev.slne.surf.surfserverselector.bukkit.instance.BukkitSurfServerSelectorInstance;
+import me.devnatan.inventoryframework.ViewFrame;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class BukkitMain extends JavaPlugin {
 
   private BukkitSurfServerSelectorInstance instance;
+  private ViewFrame viewFrame;
 
   @Override
   public void onLoad() {
@@ -19,6 +22,11 @@ public final class BukkitMain extends JavaPlugin {
 
   @Override
   public void onEnable() {
+    viewFrame = ViewFrame.create(this)
+        .enableDebug()
+        .with(new LobbySwitcherView())
+        .register();
+
     this.instance.onEnable();
   }
 
@@ -37,5 +45,9 @@ public final class BukkitMain extends JavaPlugin {
 
   public boolean isLobby() {
     return getConfig().getBoolean("isLobby", false);
+  }
+
+  public ViewFrame getViewFrame() {
+    return viewFrame;
   }
 }

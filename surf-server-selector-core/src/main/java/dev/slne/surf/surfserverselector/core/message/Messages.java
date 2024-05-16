@@ -65,4 +65,6 @@ public interface Messages {
       .append(text("Du bist bereits mit dem Server "))
       .append(args[0])
       .append(text(" verbunden!"));
+
+  SimpleErrorMessage EVENT_SERVER_DISABLED = () -> "Aktuell findet kein Event statt!";
 }
