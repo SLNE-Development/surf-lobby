@@ -6,6 +6,8 @@ import dev.slne.surf.surfserverselector.bukkit.util.ItemStackBuilder;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.meta.CompassMeta;
 
 public final class LobbySwitcherItem extends HotbarItem {
 
@@ -23,7 +25,10 @@ public final class LobbySwitcherItem extends HotbarItem {
             Component.text("Klicke um die Lobby zu wechseln.", Colors.SECONDARY),
             Component.empty(),
             Component.empty()
-        );
+        )
+        .withMetaModifier(CompassMeta.class, meta -> meta.setLodestone(null))
+        .withGlint()
+        .withItemFlag(ItemFlag.HIDE_ENCHANTS);
   }
 
   @Override
