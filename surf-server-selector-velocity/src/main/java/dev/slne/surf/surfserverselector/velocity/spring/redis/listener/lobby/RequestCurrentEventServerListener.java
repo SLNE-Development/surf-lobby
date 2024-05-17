@@ -4,15 +4,23 @@ import dev.slne.data.api.spring.redis.event.annotation.DataListener;
 import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.RequestSettingsEvent;
 import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.RequestSettingsResponseEvent;
 import dev.slne.surf.surfserverselector.velocity.config.VelocityConfig;
+import dev.slne.surf.surfserverselector.velocity.util.LobbyUtil;
+import java.util.List;
 
 @dev.slne.data.api.spring.redis.event.annotation.DataListeners
 public final class RequestCurrentEventServerListener {
 
   @DataListener(channels = {RequestSettingsEvent.CHANNEL})
-  public void onRequestCurrentServerState(RequestSettingsEvent event) {
+  public void onRequestCurrentServerState(RequestSettingsEvent __) {
     final VelocityConfig config = VelocityConfig.get();
 
+    final List<String> lobbyServerNames = LobbyUtil.getAllLobbyServer().stream()
+        .map(server -> server.getServerInfo().getName())
+        .toList();
+
+    System.err.println(lobbyServerNames);
+
     new RequestSettingsResponseEvent(config.currentEventServer(),
-        config.eventServerEnabled(), config.communityServerName()).call();
+        config.eventServerEnabled(), config.communityServerName(), lobbyServerNames).call();
   }
 }

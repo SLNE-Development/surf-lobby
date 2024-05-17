@@ -5,6 +5,7 @@ import dev.slne.surf.surfserverselector.api.SurfServerSelectorApi;
 import dev.slne.surf.surfserverselector.bukkit.common.settings.SettingManager;
 import dev.slne.surf.surfserverselector.bukkit.common.util.ItemStackBuilder;
 import dev.slne.surf.surfserverselector.core.message.Messages;
+import dev.slne.surf.surfserverselector.core.util.ListUtil;
 import me.devnatan.inventoryframework.View;
 import me.devnatan.inventoryframework.ViewConfigBuilder;
 import me.devnatan.inventoryframework.ViewType;
@@ -14,6 +15,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class LobbySwitcherView extends View {
 
@@ -47,6 +49,30 @@ public class LobbySwitcherView extends View {
     communityServerSwitch(render, 3, 6);
     communityServerSwitch(render, 3, 7);
     communityServerSwitch(render, 3, 8);
+
+    // Lobby 1
+    lobbySwitches(render, 5, 1, 0);
+    lobbySwitches(render, 5, 2, 0);
+    lobbySwitches(render, 5, 3, 0);
+    lobbySwitches(render, 6, 1, 0);
+    lobbySwitches(render, 6, 2, 0);
+    lobbySwitches(render, 6, 3, 0);
+
+    // Lobby 2
+    lobbySwitches(render, 5, 4, 1);
+    lobbySwitches(render, 5, 5, 1);
+    lobbySwitches(render, 5, 6, 1);
+    lobbySwitches(render, 6, 4, 1);
+    lobbySwitches(render, 6, 5, 1);
+    lobbySwitches(render, 6, 6, 1);
+
+    // Lobby 3
+    lobbySwitches(render, 5, 7, 2);
+    lobbySwitches(render, 5, 8, 2);
+    lobbySwitches(render, 5, 9, 2);
+    lobbySwitches(render, 6, 7, 2);
+    lobbySwitches(render, 6, 8, 2);
+    lobbySwitches(render, 6, 9, 2);
   }
 
   @Override
@@ -91,6 +117,30 @@ public class LobbySwitcherView extends View {
           SurfServerSelectorApi.getPlayer(clicker.getUniqueId())
               .changeServer(SettingManager.getCommunityServer(), true);
         });
+  }
+
+  private void lobbySwitches(RenderContext render, int row, int slot, int lobbyIndex) {
+    final @Nullable String lobbyServerName = ListUtil.getOrNull(
+        SettingManager.getLobbyServerNames(), lobbyIndex);
+
+    render.slot(row, slot)
+        .withItem(ItemStackBuilder.create(Material.ACACIA_LEAVES)
+            .withDisplayName(Component.text("Lobby " + lobbyIndex + 1))
+            .withLore(Component.text("Click to switch lobby"))
+            .build())
+        .onClick(context -> {
+          final Player clicker = context.getPlayer();
+          clicker.closeInventory();
+
+          if (lobbyServerName == null) {
+            Messages.LOBBY_SERVER_NOT_AVAILABLE.send(clicker, Component.text(lobbyIndex + 1));
+            return;
+          }
+
+          SurfServerSelectorApi.getPlayer(clicker.getUniqueId())
+              .changeServer(lobbyServerName, true, false);
+        });
+
   }
 }
 

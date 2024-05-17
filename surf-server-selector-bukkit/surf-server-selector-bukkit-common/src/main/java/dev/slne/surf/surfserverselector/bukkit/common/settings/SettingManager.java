@@ -2,6 +2,7 @@ package dev.slne.surf.surfserverselector.bukkit.common.settings;
 
 import dev.slne.data.api.spring.redis.event.annotation.DataListener;
 import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.RequestSettingsResponseEvent;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 @dev.slne.data.api.spring.redis.event.annotation.DataListeners
@@ -12,6 +13,8 @@ public final class SettingManager {
 
   private static String communityServer = "";
 
+  private static List<String> lobbyServerNames = List.of();
+
 
   @DataListener(channels = {RequestSettingsResponseEvent.CHANNEL})
   public void onRequestCurrentServerStateResponse(
@@ -19,6 +22,10 @@ public final class SettingManager {
     currentEventServer = event.getEventServerName();
     eventServerEnabled = event.isEventServerEnabled();
     communityServer = event.getCommunityServerName();
+    lobbyServerNames = event.getLobbyServerNames();
+
+    System.err.println("AAAAAAAAAAAAAAA");
+    System.err.println(lobbyServerNames);
   }
 
   public static String getCurrentEventServer() {
@@ -31,5 +38,9 @@ public final class SettingManager {
 
   public static String getCommunityServer() {
     return communityServer;
+  }
+
+  public static List<String> getLobbyServerNames() {
+    return lobbyServerNames;
   }
 }

@@ -8,6 +8,7 @@ import dev.slne.surf.surfserverselector.api.queue.ServerQueue;
 import dev.slne.surf.surfserverselector.velocity.VelocityMain;
 import dev.slne.surf.surfserverselector.velocity.config.VelocityConfig;
 import java.util.Comparator;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -33,7 +34,8 @@ public final class LobbyUtil {
     return server.getAllServers().stream()
         .filter(registeredServer -> registeredServer.getServerInfo().getName()
             .startsWith(lobbyServerPrefix))
-        .min(Comparator.comparingInt(registeredServer -> registeredServer.getPlayersConnected().size()))
+        .min(Comparator.comparingInt(
+            registeredServer -> registeredServer.getPlayersConnected().size()))
         .orElseThrow(() -> new IllegalStateException("No lobby servers found"));
   }
 
@@ -58,9 +60,9 @@ public final class LobbyUtil {
   }
 
   /**
-   * Transfers a player from the queue of a specified server if it is not a lobby server.
-   * This method is typically invoked when a player leaves a non-lobby server, allowing the next player in the queue
-   * to be transferred to that server.
+   * Transfers a player from the queue of a specified server if it is not a lobby server. This
+   * method is typically invoked when a player leaves a non-lobby server, allowing the next player
+   * in the queue to be transferred to that server.
    *
    * @param previousServer the server from which a player has left.
    */
@@ -77,5 +79,15 @@ public final class LobbyUtil {
         player.changeServer(previousServerName, true);
       });
     }
+  }
+
+  public static List<RegisteredServer> getAllLobbyServer() {
+    final ProxyServer server = VelocityMain.getInstance().getServer();
+    final String lobbyServerPrefix = VelocityConfig.get().lobbyServerPrefix();
+
+    return server.getAllServers().stream()
+        .filter(registeredServer -> registeredServer.getServerInfo().getName()
+            .startsWith(lobbyServerPrefix))
+        .toList();
   }
 }
