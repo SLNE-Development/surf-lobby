@@ -11,4 +11,5 @@ dependencies {
 
 paper {
     main = "dev.slne.surf.surfserverselector.bukkit.lobby.BukkitMain"
+    generateLibrariesJson = true
 }

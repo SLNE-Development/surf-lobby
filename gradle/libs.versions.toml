@@ -4,7 +4,7 @@ com-velocitypowered-velocity-api-version = "3.3.0-SNAPSHOT"
 dev-slne-data-api-version = "5.4.3-SNAPSHOT"
 dev-slne-api-version = "1.0-SNAPSHOT"
 net-luckperms-api-version = "5.4"
-me-devnatan-inventory-framework-version = "3.0.10-SNAPSHOT"
+me-devnatan-inventory-framework-version = "3.1.0-rc"
 
 [libraries]
 io-papermc-paper-api = { module = "io.papermc.paper:paper-api", version.ref = "io-papermc-paper-api-version" }

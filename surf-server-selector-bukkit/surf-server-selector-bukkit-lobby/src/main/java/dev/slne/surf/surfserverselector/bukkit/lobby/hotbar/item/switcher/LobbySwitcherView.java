@@ -17,30 +17,45 @@ import org.jetbrains.annotations.NotNull;
 
 public class LobbySwitcherView extends View {
 
-  private static final char EVENT_SERVER_SWITCH = 'e', COMMUNITY_SERVER_SWITCH = 'c', LOBBY_SERVER_SWITCH = 'l';
-
   @Override
   public void onInit(@NotNull ViewConfigBuilder config) {
     config
         .title(Component.text("Lobby Switcher", Colors.PRIMARY))
-        .cancelDefaults()
-        .type(ViewType.CHEST);
-//        .layout(
-//            "         ",
-//            "  %s  %s   ".formatted(EVENT_SERVER_SWITCH, COMMUNITY_SERVER_SWITCH),
-//            "         ",
-//            "  %s %s %s  ".formatted(LOBBY_SERVER_SWITCH, LOBBY_SERVER_SWITCH, LOBBY_SERVER_SWITCH),
-//            "         ",
-//            "         "
-//        );
+        .cancelOnClick().cancelOnDrag().cancelOnPickup().cancelOnDrop()
+        .type(ViewType.CHEST)
+        .size(54);
   }
 
   @Override
   public void onFirstRender(@NotNull RenderContext render) {
+    eventServerSwitchItem(render, 1, 2);
+    eventServerSwitchItem(render, 1, 3);
+    eventServerSwitchItem(render, 1, 4);
+    eventServerSwitchItem(render, 2, 2);
+    eventServerSwitchItem(render, 2, 3);
+    eventServerSwitchItem(render, 2, 4);
+    eventServerSwitchItem(render, 3, 2);
+    eventServerSwitchItem(render, 3, 3);
+    eventServerSwitchItem(render, 3, 4);
 
-    System.out.println("First render");
+    communityServerSwitch(render, 1, 6);
+    communityServerSwitch(render, 1, 7);
+    communityServerSwitch(render, 1, 8);
+    communityServerSwitch(render, 2, 6);
+    communityServerSwitch(render, 2, 7);
+    communityServerSwitch(render, 2, 8);
+    communityServerSwitch(render, 3, 6);
+    communityServerSwitch(render, 3, 7);
+    communityServerSwitch(render, 3, 8);
+  }
 
-    render.layoutSlot(EVENT_SERVER_SWITCH)
+  @Override
+  public void onOpen(@NotNull OpenContext open) {
+    System.out.println("Opened");
+  }
+
+  private void eventServerSwitchItem(RenderContext render, int row, int slot) {
+    render.slot(row, slot)
         .withItem(ItemStackBuilder.create(Material.COMPASS)
             .withDisplayName(Component.text("Event Server", Colors.PRIMARY))
             .withLore(
@@ -48,8 +63,8 @@ public class LobbySwitcherView extends View {
             )
             .build())
         .onClick(context -> {
-          context.closeForPlayer();
           final Player clicker = context.getPlayer();
+          clicker.closeInventory();
 
           if (!SettingManager.isEventServerEnabled()) {
             Messages.EVENT_SERVER_DISABLED.send(clicker);
@@ -59,8 +74,10 @@ public class LobbySwitcherView extends View {
           SurfServerSelectorApi.getPlayer(clicker.getUniqueId())
               .changeServer(SettingManager.getCurrentEventServer(), true);
         });
+  }
 
-    render.layoutSlot(COMMUNITY_SERVER_SWITCH)
+  private void communityServerSwitch(RenderContext render, int row, int slot) {
+    render.slot(row, slot)
         .withItem(ItemStackBuilder.create(Material.GRASS_BLOCK)
             .withDisplayName(Component.text("Community Server", Colors.PRIMARY))
             .withLore(
@@ -68,17 +85,12 @@ public class LobbySwitcherView extends View {
             )
             .build())
         .onClick(context -> {
-          context.closeForPlayer();
           final Player clicker = context.getPlayer();
+          clicker.closeInventory();
 
           SurfServerSelectorApi.getPlayer(clicker.getUniqueId())
               .changeServer(SettingManager.getCommunityServer(), true);
         });
-  }
-
-  @Override
-  public void onOpen(@NotNull OpenContext open) {
-    System.out.println("Opened");
   }
 }
 

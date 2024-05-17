@@ -18,6 +18,13 @@ public final class BukkitMain extends CommonBukkitMain {
   public void onLoad() {
     super.onLoad();
 
+
+  }
+
+  @Override
+  public void onEnable() {
+    super.onEnable();
+
     viewFrame = ViewFrame.create(this)
         .enableDebug()
         .with(new LobbySwitcherView())
