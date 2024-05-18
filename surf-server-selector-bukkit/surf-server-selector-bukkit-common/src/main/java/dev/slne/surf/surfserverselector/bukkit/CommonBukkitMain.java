@@ -35,4 +35,8 @@ public abstract class CommonBukkitMain extends JavaPlugin {
   public ClassLoader getClassLoader0() {
     return getClassLoader();
   }
+
+  public static JavaPlugin getProvidingPlugin() {
+    return getProvidingPlugin(CommonBukkitMain.class);
+  }
 }

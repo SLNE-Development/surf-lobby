@@ -2,6 +2,7 @@ package dev.slne.surf.surfserverselector.bukkit.common.instance;
 
 import dev.slne.surf.surfserverselector.api.queue.ServerQueueRegistry;
 import dev.slne.surf.surfserverselector.bukkit.CommonBukkitMain;
+import dev.slne.surf.surfserverselector.bukkit.common.listener.CommonListenerManager;
 import dev.slne.surf.surfserverselector.bukkit.common.player.BukkitServerPlayerSelectorPlayerManager;
 import dev.slne.surf.surfserverselector.core.instance.CoreSurfServerSelectorInstance;
 import dev.slne.surf.surfserverselector.core.permissions.Permissions;
@@ -36,6 +37,8 @@ public abstract class BukkitCommonSurfServerSelectorInstance extends
     for (final Permissions permissions : Permissions.values()) {
       pluginManager.addPermission(new Permission(permissions.getPermission()));
     }
+
+    CommonListenerManager.INSTANCE.registerListeners();
   }
 
   @OverridingMethodsMustInvokeSuper
