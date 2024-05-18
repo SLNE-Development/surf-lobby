@@ -18,7 +18,7 @@ public final class LobbySwitcherItem extends HotbarItem {
   @Override
   protected ItemStackBuilder buildItem() {
     return ItemStackBuilder.create(Material.COMPASS)
-        .withDisplayName(Component.text("Lobby Switcher", Colors.PRIMARY))
+        .withDisplayName(Component.text("Navigator \u200B", Colors.PRIMARY))
         .withLore(
             Component.empty(),
             Component.empty(),
