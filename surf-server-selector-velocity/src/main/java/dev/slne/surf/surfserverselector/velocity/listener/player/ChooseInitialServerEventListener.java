@@ -15,7 +15,6 @@ public final class ChooseInitialServerEventListener {
   public void onPlayerChooseInitialServer(@NotNull PlayerChooseInitialServerEvent event,
       Continuation continuation) {
     LobbyUtil.getLobbyServerWithLowestPlayerCount().thenAcceptAsync(server -> {
-      System.err.println("Server: " + server);
       event.setInitialServer(server);
       continuation.resume();
     }).exceptionally(throwable -> {

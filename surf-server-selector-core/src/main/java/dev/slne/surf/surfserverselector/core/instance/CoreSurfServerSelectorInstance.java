@@ -6,10 +6,9 @@ import dev.slne.surf.surfserverselector.api.queue.ServerQueueRegistry;
 import dev.slne.surf.surfserverselector.core.player.CoreServerSelectorPlayerManager;
 import dev.slne.surf.surfserverselector.core.spring.SurfServerSelectorSpringApplication;
 import java.nio.file.Path;
-import org.springframework.context.ConfigurableApplicationContext;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-
 import javax.annotation.OverridingMethodsMustInvokeSuper;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.springframework.context.ConfigurableApplicationContext;
 
 public abstract class CoreSurfServerSelectorInstance implements SurfServerSelectorInstance {
 

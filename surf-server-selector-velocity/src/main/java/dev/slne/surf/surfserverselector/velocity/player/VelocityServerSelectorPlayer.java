@@ -4,13 +4,13 @@ import com.velocitypowered.api.proxy.ConnectionRequestBuilder;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
-import com.velocitypowered.api.proxy.server.ServerPing.Players;
 import dev.slne.surf.surfserverselector.api.SurfServerSelectorApi;
 import dev.slne.surf.surfserverselector.api.queue.ServerQueue;
 import dev.slne.surf.surfserverselector.core.message.Messages;
 import dev.slne.surf.surfserverselector.core.permissions.Permissions;
 import dev.slne.surf.surfserverselector.core.player.CoreServerSelectorPlayer;
 import dev.slne.surf.surfserverselector.velocity.VelocityMain;
+import dev.slne.surf.surfserverselector.velocity.sync.SyncValue;
 import dev.slne.surf.surfserverselector.velocity.util.LobbyUtil;
 import java.util.Optional;
 import java.util.UUID;
@@ -62,7 +62,8 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
     isChangingServer = true;
 
     final CompletableFuture<String> serverNameFuture = serverName == null
-        ? LobbyUtil.getLobbyServerWithLowestPlayerCount().thenApply(server -> server.getServerInfo().getName())
+        ? LobbyUtil.getLobbyServerWithLowestPlayerCount()
+        .thenApply(server -> server.getServerInfo().getName())
         : CompletableFuture.completedFuture(serverName);
 
     serverNameFuture.thenAcceptAsync(resolvedServerName -> {
@@ -100,7 +101,8 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
       });
     }).exceptionally(throwable -> {
       isChangingServer = false;
-      Messages.ERROR_CHANGING_SERVER.send(this, Component.text(serverName == null ? "__Lobby__" : serverName));
+      Messages.ERROR_CHANGING_SERVER.send(this,
+          Component.text(serverName == null ? "__Lobby__" : serverName));
       LOGGER.error("Error changing server for player {}", uuid, throwable);
       return null;
     });
@@ -113,44 +115,38 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
    * @param serverName the lobby server to attempt connection to.
    * @return a {@link CompletableFuture} that indicates the result of the attempt.
    */
-  private CompletableFuture<ChangeServerResult> changeToLobbyServer(String serverName, boolean fallbackToLobbyWithLowestPlayerCount) {
+  private CompletableFuture<ChangeServerResult> changeToLobbyServer(String serverName,
+      boolean fallbackToLobbyWithLowestPlayerCount) {
     return getPlayer()
         .map(player -> {
           final ProxyServer server = VelocityMain.getInstance().getServer();
 
           return server.getServer(serverName)
-              .map(lobbyServer -> lobbyServer.ping()
-                  .thenComposeAsync(serverPing -> {
-                    final Players players = serverPing.getPlayers()
-                        .orElseThrow(() -> new IllegalStateException("No players in server ping"));
+              .map(lobbyServer -> {
+                final int playerCount = lobbyServer.getPlayersConnected().size();
+                final int maxPlayers = SyncValue.MAX_PLAYER_COUNT.get(serverName);
 
-                    final int playerCount = lobbyServer.getPlayersConnected().size();
-                    final int maxPlayers = players.getMax();
-
-                    if (playerCount >= maxPlayers && !player.hasPermission(
-                        Permissions.BYPASS_PLAYER_LIMIT_PERMISSION.getPermission())) {
-
-                      if (fallbackToLobbyWithLowestPlayerCount) {
-
-                        return LobbyUtil.getLobbyServerWithLowestPlayerCount()
-                            .thenApplyAsync(player::createConnectionRequest)
-                            .thenComposeAsync(ConnectionRequestBuilder::connectWithIndication)
-                            .thenApply(
-                                success -> success
-                                    ? ChangeServerResult.SUCCESS_BUT_OTHER_LOBBY_SERVER_AS_REQUESTED
-                                    : ChangeServerResult.ERROR);
-                      } else {
-                        return CompletableFuture.completedFuture(
-                            ChangeServerResult.LOBBY_SERVER_FULL);
-                      }
-                    }
-
-                    return player.createConnectionRequest(lobbyServer).connectWithIndication()
+                if (playerCount >= maxPlayers
+                    && !SyncValue.READY_STATE.get(serverName)
+                    && !player.hasPermission(
+                    Permissions.BYPASS_PLAYER_LIMIT_PERMISSION.getPermission())) {
+                  if (fallbackToLobbyWithLowestPlayerCount) {
+                    return LobbyUtil.getLobbyServerWithLowestPlayerCount()
+                        .thenApplyAsync(player::createConnectionRequest)
+                        .thenComposeAsync(ConnectionRequestBuilder::connectWithIndication)
                         .thenApply(
-                            success -> success ? ChangeServerResult.SUCCESS
+                            success -> success
+                                ? ChangeServerResult.SUCCESS_BUT_OTHER_LOBBY_SERVER_AS_REQUESTED
                                 : ChangeServerResult.ERROR);
-                  })
-              ).orElseGet(() -> {
+                  } else {
+                    return CompletableFuture.completedFuture(ChangeServerResult.LOBBY_SERVER_FULL);
+                  }
+                }
+
+                return player.createConnectionRequest(lobbyServer).connectWithIndication()
+                    .thenApply(
+                        success -> success ? ChangeServerResult.SUCCESS : ChangeServerResult.ERROR);
+              }).orElseGet(() -> {
                 // If the lobby server is not available, fallback to another lobby server
                 if (fallbackToLobbyWithLowestPlayerCount) {
                   LobbyUtil.getLobbyServerWithLowestPlayerCount()
@@ -161,7 +157,8 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
                               ? ChangeServerResult.SUCCESS_BUT_OTHER_LOBBY_SERVER_AS_REQUESTED
                               : ChangeServerResult.ERROR);
                 }
-                return CompletableFuture.completedFuture(ChangeServerResult.LOBBY_SERVER_NOT_AVAILABLE);
+                return CompletableFuture.completedFuture(
+                    ChangeServerResult.LOBBY_SERVER_NOT_AVAILABLE);
               });
         })
         .orElse(CompletableFuture.completedFuture(ChangeServerResult.PLAYER_NOT_ONLINE));
@@ -180,45 +177,55 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
       final ProxyServer server = VelocityMain.getInstance().getServer();
 
       return server.getServer(serverName)
-          .map(requestedServer -> requestedServer.ping()
-              .thenComposeAsync(serverPing -> {
-                final Players players = serverPing.getPlayers()
-                    .orElseThrow(() -> new IllegalStateException("No players in server ping"));
+          .map(requestedServer -> {
+            final int playerCount = requestedServer.getPlayersConnected().size();
+            final int maxPlayers = SyncValue.MAX_PLAYER_COUNT.get(serverName);
+            final Optional<ServerQueue> currentQueue = SurfServerSelectorApi.getInstance()
+                .getQueueRegistry().getCurrentQueue(this);
 
-                final int playerCount = players.getOnline();
-                final int maxPlayers = players.getMax();
-                final Optional<ServerQueue> currentQueue = SurfServerSelectorApi.getInstance()
-                    .getQueueRegistry().getCurrentQueue(this);
+            if (currentQueue.isPresent()) {
+              final String currentQueueServerName = currentQueue.get().getServerName();
 
-                if (currentQueue.isPresent()) {
-                  final String currentQueueServerName = currentQueue.get().getServerName();
+              if (currentQueueServerName.equals(serverName)) {
+                return CompletableFuture.completedFuture(ChangeServerResult.ALREADY_IN_QUEUE);
+              }
 
-                  if (currentQueueServerName.equals(serverName)) {
-                    return CompletableFuture.completedFuture(ChangeServerResult.ALREADY_IN_QUEUE);
-                  }
+              currentQueue.get().removeFromQueue(uuid);
+            }
 
-                  currentQueue.get().removeFromQueue(uuid);
-                }
-
-                if (playerCount >= maxPlayers) {
-                  if (player.hasPermission(Permissions.BYPASS_QUEUE_PERMISSION.getPermission())) {
-                    return player.createConnectionRequest(requestedServer) // TODO: 15.05.2024 17:35 - does not really work
-                        .connectWithIndication()
-                        .thenApply(
-                            success -> success ? ChangeServerResult.SUCCESS_WITH_BYPASS_PERMISSION
-                                : ChangeServerResult.ERROR);
-                  }
-
-                  SurfServerSelectorApi.getInstance().getQueueRegistry().getQueue(serverName)
-                      .addToQueue(this);
-                  return CompletableFuture.completedFuture(ChangeServerResult.QUEUE);
-                }
-
+            if (!SyncValue.READY_STATE.get(serverName)) {
+              if (player.hasPermission(Permissions.BYPASS_QUEUE_PERMISSION.getPermission())) {
                 return player.createConnectionRequest(requestedServer)
                     .connectWithIndication()
                     .thenApply(
-                        success -> success ? ChangeServerResult.SUCCESS : ChangeServerResult.ERROR);
-              })).orElse(
+                        success -> success ? ChangeServerResult.SUCCESS_WITH_BYPASS_PERMISSION
+                            : ChangeServerResult.ERROR);
+              } else {
+                SurfServerSelectorApi.getInstance().getQueueRegistry().getQueue(serverName)
+                    .addToQueue(this);
+                return CompletableFuture.completedFuture(ChangeServerResult.QUEUE);
+              }
+            }
+
+            if (maxPlayers == -1 || playerCount >= maxPlayers) {
+              if (player.hasPermission(Permissions.BYPASS_QUEUE_PERMISSION.getPermission())) {
+                return player.createConnectionRequest(requestedServer)
+                    .connectWithIndication()
+                    .thenApply(
+                        success -> success ? ChangeServerResult.SUCCESS_WITH_BYPASS_PERMISSION
+                            : ChangeServerResult.ERROR);
+              }
+
+              SurfServerSelectorApi.getInstance().getQueueRegistry().getQueue(serverName)
+                  .addToQueue(this);
+              return CompletableFuture.completedFuture(ChangeServerResult.QUEUE);
+            }
+
+            return player.createConnectionRequest(requestedServer)
+                .connectWithIndication()
+                .thenApply(
+                    success -> success ? ChangeServerResult.SUCCESS : ChangeServerResult.ERROR);
+          }).orElse(
               CompletableFuture.completedFuture(ChangeServerResult.COULD_NOT_ESTABLISH_CONNECTION));
     }).orElse(CompletableFuture.completedFuture(ChangeServerResult.PLAYER_NOT_ONLINE));
   }

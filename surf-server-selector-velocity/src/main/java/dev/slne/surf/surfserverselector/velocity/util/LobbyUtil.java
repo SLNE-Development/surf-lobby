@@ -2,19 +2,16 @@ package dev.slne.surf.surfserverselector.velocity.util;
 
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
-import com.velocitypowered.api.proxy.server.ServerPing.Players;
 import dev.slne.surf.surfserverselector.api.SurfServerSelectorApi;
 import dev.slne.surf.surfserverselector.api.player.ServerSelectorPlayer;
 import dev.slne.surf.surfserverselector.api.queue.ServerQueue;
 import dev.slne.surf.surfserverselector.velocity.VelocityMain;
 import dev.slne.surf.surfserverselector.velocity.config.VelocityConfig;
+import dev.slne.surf.surfserverselector.velocity.sync.SyncValue;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 public final class LobbyUtil {
 
   private static final ComponentLogger LOGGER = ComponentLogger.logger("LobbyUtil");
-  private static final Map<String, ReentrantLock> serverLocks = new ConcurrentHashMap<>();
 
   /**
    * Retrieves the lobby server with the lowest number of connected players. The method filters all
@@ -95,58 +91,29 @@ public final class LobbyUtil {
       final ServerQueue queue = SurfServerSelectorApi.getInstance().getQueueRegistry()
           .getQueue(previousServerName);
 
-      if (!queue.hasPlayersInQueue()) {
-        return;
-      }
+      transferPlayerFromQueue(queue);
+    }
+  }
 
-      // Acquire lock for the server
-      final ReentrantLock serverLock = serverLocks.computeIfAbsent(previousServerName,
-          k -> new ReentrantLock());
+  public static void transferPlayerFromQueue(ServerQueue queue) {
+    if (!queue.hasPlayersInQueue()) {
+      return;
+    }
 
-      // Try to acquire the lock
-      if (serverLock.tryLock()) {
-        try {
-          previousServer.ping()
-              .thenCompose(ping -> {
+    final RegisteredServer queuedServer = (RegisteredServer) queue.getServer();
+    final String queueServerName = queue.getServerName();
 
-                // simulate slow server ping
-                return CompletableFuture.supplyAsync(() -> {
-                  try {
-                    LOGGER.info("Simulating slow server ping for server {}", previousServerName);
-                    Thread.sleep(10000);
-                    LOGGER.info("Server ping completed for server {}", previousServerName);
-                  } catch (InterruptedException e) {
-                    e.printStackTrace();
-                  }
-                  return ping;
-                });
-              })
-              .thenAccept(serverPing -> {
-                final int playerCount = serverPing.getPlayers().map(Players::getOnline).orElse(0);
-                final int maxPlayers = serverPing.getPlayers().map(Players::getMax).orElse(0);
+    final int playerCount = queuedServer.getPlayersConnected().size();
+    final int maxPlayers = SyncValue.MAX_PLAYER_COUNT.get(queueServerName);
 
-                if (playerCount < maxPlayers) {
-                  queue.poll().ifPresent(uuid -> {
-                    final ServerSelectorPlayer player = SurfServerSelectorApi.getPlayer(uuid);
-                    player.changeServer(previousServerName, true);
-                  });
-                } else {
-                  LOGGER.info("Server {} is full. No player will be transferred from the queue.",
-                      previousServerName);
-                }
-              }).exceptionally(throwable -> {
-                LOGGER.error("Failed to ping server {}", previousServerName, throwable);
-                return null;
-              }).join(); // Ensure the ping process completes before releasing the lock
-        } finally {
-          // Release lock for the server
-          serverLock.unlock();
-        }
-      } else {
-        // Could not acquire the lock, handle the case if necessary
-        LOGGER.info("Could not acquire lock for server {}. Skipping transfer from queue.",
-            previousServerName);
-      }
+    if (playerCount < maxPlayers) {
+      queue.poll().ifPresent(uuid -> {
+        final ServerSelectorPlayer player = SurfServerSelectorApi.getPlayer(uuid);
+        player.changeServer(queueServerName, true);
+      });
+    } else {
+      LOGGER.info("Server {} is full. No player will be transferred from the queue.",
+          queueServerName);
     }
   }
 

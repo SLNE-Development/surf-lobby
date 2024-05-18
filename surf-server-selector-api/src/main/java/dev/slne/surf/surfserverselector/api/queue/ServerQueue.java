@@ -50,4 +50,6 @@ public interface ServerQueue {
   Optional<UUID> poll();
 
   boolean hasPlayersInQueue();
+
+  Object getServer();
 }

@@ -4,9 +4,11 @@ import dev.slne.surf.surfserverselector.api.queue.ServerQueueRegistry;
 import dev.slne.surf.surfserverselector.bukkit.CommonBukkitMain;
 import dev.slne.surf.surfserverselector.bukkit.common.listener.CommonListenerManager;
 import dev.slne.surf.surfserverselector.bukkit.common.player.BukkitServerPlayerSelectorPlayerManager;
+import dev.slne.surf.surfserverselector.bukkit.common.tasks.sync.SyncTask;
 import dev.slne.surf.surfserverselector.core.instance.CoreSurfServerSelectorInstance;
 import dev.slne.surf.surfserverselector.core.permissions.Permissions;
 import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.RequestSettingsEvent;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.sync.ReadyStateSync;
 import java.nio.file.Path;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import org.bukkit.Bukkit;
@@ -43,11 +45,19 @@ public abstract class BukkitCommonSurfServerSelectorInstance extends
     }
 
     CommonListenerManager.INSTANCE.registerListeners();
+
+    new SyncTask().runTaskTimerAsynchronously(getInstance(), 0, 20 * 5);
+
+    Bukkit.getScheduler().runTaskLater(getInstance(), () -> {
+      SyncTask.sync();
+      new ReadyStateSync(true).call();
+    }, 1);
   }
 
   @OverridingMethodsMustInvokeSuper
   @Override
   public void onDisable() {
+    new ReadyStateSync(false).call();
     super.onDisable();
   }
 
