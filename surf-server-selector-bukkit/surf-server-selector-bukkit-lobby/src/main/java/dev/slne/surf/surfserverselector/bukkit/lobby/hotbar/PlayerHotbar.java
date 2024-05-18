@@ -37,7 +37,7 @@ public final class PlayerHotbar {
 
   public void populateHotbar() {
     inv.clear();
-    item(0, new LobbySwitcherItem(player));
+    item(4, new LobbySwitcherItem(player));
   }
 
   private void item(int slot, @NotNull HotbarItem item) {
