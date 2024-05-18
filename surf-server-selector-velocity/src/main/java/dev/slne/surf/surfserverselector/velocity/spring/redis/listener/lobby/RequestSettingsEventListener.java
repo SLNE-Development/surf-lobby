@@ -16,6 +16,7 @@ public final class RequestSettingsEventListener {
 
     final List<String> lobbyServerNames = LobbyUtil.getAllLobbyServer().stream()
         .map(server -> server.getServerInfo().getName())
+        .sorted()
         .toList();
 
     new RequestSettingsResponseEvent(config.currentEventServer(),
