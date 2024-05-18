@@ -5,8 +5,7 @@ plugins {
 dependencies {
     api(project(":surf-server-selector-bukkit:surf-server-selector-bukkit-common"))
 
-    paperLibrary(libs.me.devnatan.inventory.framework.bukkit)
-    paperLibrary(libs.me.devnatan.inventory.framework.paper)
+    paperLibrary(libs.com.github.stefvanschie.inventoryframework)
 }
 
 paper {
