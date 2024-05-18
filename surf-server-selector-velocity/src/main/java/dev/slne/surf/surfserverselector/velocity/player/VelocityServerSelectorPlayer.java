@@ -38,7 +38,6 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
     super(uuid);
   }
 
-
   @Override
   public void changeServer(@Nullable String serverName, boolean sendFeedback,
       boolean fallbackToLobbyWithLowestPlayerCount) {

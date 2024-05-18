@@ -48,4 +48,6 @@ public interface ServerQueue {
   void clearQueue();
 
   Optional<UUID> poll();
+
+  boolean hasPlayersInQueue();
 }

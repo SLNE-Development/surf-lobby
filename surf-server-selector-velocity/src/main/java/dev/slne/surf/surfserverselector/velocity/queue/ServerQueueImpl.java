@@ -79,4 +79,9 @@ public final class ServerQueueImpl implements ServerQueue {
   public Optional<UUID> poll() {
     return Optional.ofNullable(queue.poll());
   }
+
+  @Override
+  public boolean hasPlayersInQueue() {
+    return !queue.isEmpty();
+  }
 }
