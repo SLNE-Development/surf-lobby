@@ -21,7 +21,8 @@ import org.slf4j.Logger;
     description = "A plugin that allows players to select a server to connect to.",
     dependencies = {
         @Dependency(id = "luckperms"),
-        @Dependency(id = "surf-api-velocity")
+        @Dependency(id = "surf-api-velocity"),
+        @Dependency(id = "surf-data-velocity")
     }
 )
 public final class VelocityMain {

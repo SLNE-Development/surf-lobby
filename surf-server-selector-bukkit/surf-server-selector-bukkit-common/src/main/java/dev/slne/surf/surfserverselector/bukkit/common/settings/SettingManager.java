@@ -15,7 +15,6 @@ public final class SettingManager {
 
   private static List<String> lobbyServerNames = List.of();
 
-
   @DataListener(channels = {RequestSettingsResponseEvent.CHANNEL})
   public void onRequestCurrentServerStateResponse(
       @NotNull RequestSettingsResponseEvent event) {
@@ -23,9 +22,6 @@ public final class SettingManager {
     eventServerEnabled = event.isEventServerEnabled();
     communityServer = event.getCommunityServerName();
     lobbyServerNames = event.getLobbyServerNames();
-
-    System.err.println("AAAAAAAAAAAAAAA");
-    System.err.println(lobbyServerNames);
   }
 
   public static String getCurrentEventServer() {

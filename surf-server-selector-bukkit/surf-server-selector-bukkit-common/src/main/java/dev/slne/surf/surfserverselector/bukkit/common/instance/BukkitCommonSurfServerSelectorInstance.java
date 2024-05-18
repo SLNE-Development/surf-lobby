@@ -24,7 +24,6 @@ public abstract class BukkitCommonSurfServerSelectorInstance extends
   public void onLoad() {
     super.onLoad();
 
-    System.err.println("Request");
     new RequestSettingsEvent("").call();
   }
 

@@ -8,7 +8,7 @@ import dev.slne.surf.surfserverselector.velocity.util.LobbyUtil;
 import java.util.List;
 
 @dev.slne.data.api.spring.redis.event.annotation.DataListeners
-public final class RequestCurrentEventServerListener {
+public final class RequestSettingsEventListener {
 
   @DataListener(channels = {RequestSettingsEvent.CHANNEL})
   public void onRequestCurrentServerState(RequestSettingsEvent __) {
@@ -17,8 +17,6 @@ public final class RequestCurrentEventServerListener {
     final List<String> lobbyServerNames = LobbyUtil.getAllLobbyServer().stream()
         .map(server -> server.getServerInfo().getName())
         .toList();
-
-    System.err.println(lobbyServerNames);
 
     new RequestSettingsResponseEvent(config.currentEventServer(),
         config.eventServerEnabled(), config.communityServerName(), lobbyServerNames).call();

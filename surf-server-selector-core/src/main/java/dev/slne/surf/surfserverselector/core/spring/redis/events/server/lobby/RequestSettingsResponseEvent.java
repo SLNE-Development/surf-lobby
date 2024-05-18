@@ -3,7 +3,7 @@ package dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby;
 import dev.slne.surf.surfserverselector.core.spring.redis.events.ServerSelectorRedisEvent;
 import java.util.List;
 
-public final class RequestSettingsResponseEvent extends ServerSelectorRedisEvent {
+public class RequestSettingsResponseEvent extends ServerSelectorRedisEvent {
 
   public static final String CHANNEL = "server-selector:lobby:request-settings-response";
 

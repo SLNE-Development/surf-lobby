@@ -4,7 +4,7 @@ import dev.slne.surf.surfserverselector.core.spring.redis.events.ServerSelectorR
 import java.util.UUID;
 import org.jetbrains.annotations.Contract;
 
-public final class RequestChangeServerEvent extends ServerSelectorRedisEvent {
+public class RequestChangeServerEvent extends ServerSelectorRedisEvent {
 
   public static final String CHANNEL = "surf:server-selector:change-server";
   private UUID uuid;

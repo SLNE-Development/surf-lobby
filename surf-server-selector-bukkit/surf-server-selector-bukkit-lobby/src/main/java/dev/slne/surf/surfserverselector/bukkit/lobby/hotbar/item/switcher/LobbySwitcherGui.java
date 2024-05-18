@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class LobbySwitcherGui extends ChestGui {
+public final class LobbySwitcherGui extends ChestGui {
 
   public LobbySwitcherGui() {
     super(6, "<shift:-8><glyph:server_selector>", BukkitMain.getInstance());
@@ -59,8 +59,10 @@ public class LobbySwitcherGui extends ChestGui {
 
   @Contract(pure = true)
   private @NotNull Consumer<InventoryClickEvent> switchCommunityServer() {
-    return toPlayer(player -> SurfServerSelectorApi.getPlayer(player.getUniqueId())
-        .changeServer(SettingManager.getCommunityServer(), true));
+    return toPlayer(player -> {
+      SurfServerSelectorApi.getPlayer(player.getUniqueId())
+          .changeServer(SettingManager.getCommunityServer(), true);
+    });
   }
 
   @Contract(pure = true)
