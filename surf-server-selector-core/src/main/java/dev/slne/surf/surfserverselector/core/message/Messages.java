@@ -72,4 +72,9 @@ public interface Messages {
       .append(text("Der Spieler "))
       .append(args[0])
       .append(text(" wird zum Lobby-Server transferiert!"));
+
+  ErrorMessage COMMUNITY_SERVER_NOT_AVAILABLE = args -> text()
+      .append(text("Aktuell ist der Community Server nur über "))
+      .append(args[0])
+      .append(text(" erreichbar."));
 }

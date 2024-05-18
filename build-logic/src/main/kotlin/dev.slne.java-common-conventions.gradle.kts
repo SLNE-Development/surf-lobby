@@ -16,6 +16,7 @@ repositories {
     maven("https://jitpack.io")
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
     maven("https://oss.sonatype.org/content/repositories/snapshots")
+    maven("https://repo.oraxen.com/releases")
 }
 
 group = "dev.slne.surf"
@@ -23,7 +24,7 @@ version = "1.0.0-SNAPSHOT"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
     withSourcesJar()
     withJavadocJar()
