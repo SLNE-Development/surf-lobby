@@ -61,6 +61,10 @@ public interface ServerSelectorPlayer {
   void changeServer(@Nullable String serverName, boolean sendFeedback,
       boolean fallbackToLobbyWithLowestPlayerCount);
 
+  default void transferToLobby() {
+    changeServer(null, true);
+  }
+
   /**
    * Retrieves the priority of the player based on server-specific metadata.
    *

@@ -67,4 +67,9 @@ public interface Messages {
       .append(text(" verbunden!"));
 
   SimpleErrorMessage EVENT_SERVER_DISABLED = () -> "Aktuell findet kein Event statt!";
+
+  SuccessMessage TRANSFERRING_PLAYER_TO_LOBBY = args -> text()
+      .append(text("Der Spieler "))
+      .append(args[0])
+      .append(text(" wird zum Lobby-Server transferiert!"));
 }

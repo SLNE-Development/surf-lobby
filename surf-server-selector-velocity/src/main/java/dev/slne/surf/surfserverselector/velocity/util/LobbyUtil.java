@@ -11,11 +11,13 @@ import dev.slne.surf.surfserverselector.velocity.config.VelocityConfig;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Utility class for handling lobby server operations within a Velocity-based proxy environment.
@@ -26,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 public final class LobbyUtil {
 
   private static final ComponentLogger LOGGER = ComponentLogger.logger("LobbyUtil");
-
   private static final Map<String, ReentrantLock> serverLocks = new ConcurrentHashMap<>();
 
   /**
@@ -37,16 +38,26 @@ public final class LobbyUtil {
    * server prefix.
    * @throws IllegalStateException if no lobby servers are found based on the defined prefix.
    */
-  public static RegisteredServer getLobbyServerWithLowestPlayerCount() {
+  public static CompletableFuture<RegisteredServer> getLobbyServerWithLowestPlayerCount() {
     final ProxyServer server = VelocityMain.getInstance().getServer();
     final String lobbyServerPrefix = VelocityConfig.get().lobbyServerPrefix();
 
-    return server.getAllServers().stream()
+    final List<CompletableFuture<@Nullable RegisteredServer>> pingFutures = server.getAllServers()
+        .stream()
         .filter(registeredServer -> registeredServer.getServerInfo().getName()
             .startsWith(lobbyServerPrefix))
-        .min(Comparator.comparingInt(
-            registeredServer -> registeredServer.getPlayersConnected().size()))
-        .orElseThrow(() -> new IllegalStateException("No lobby servers found"));
+        .map(registeredServer -> registeredServer.ping()
+            .thenApply(pingResult -> pingResult == null ? null : registeredServer)
+            .exceptionally(throwable -> null))
+        .toList();
+
+    return CompletableFuture.allOf(pingFutures.toArray(CompletableFuture[]::new))
+        .thenApply(v -> pingFutures.stream()
+            .map(CompletableFuture::join)
+            .filter(Objects::nonNull)
+            .min(Comparator.comparingInt(
+                registeredServer -> registeredServer.getPlayersConnected().size()))
+            .orElseThrow(() -> new IllegalStateException("No online lobby servers found")));
   }
 
   /**

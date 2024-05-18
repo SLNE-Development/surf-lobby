@@ -1,5 +1,6 @@
 package dev.slne.surf.surfserverselector.velocity.player;
 
+import com.velocitypowered.api.proxy.ConnectionRequestBuilder;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
@@ -60,40 +61,46 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
 
     isChangingServer = true;
 
-    serverName =
-        serverName == null ? LobbyUtil.getLobbyServerWithLowestPlayerCount().getServerInfo()
-            .getName() : serverName;
+    final CompletableFuture<String> serverNameFuture = serverName == null
+        ? LobbyUtil.getLobbyServerWithLowestPlayerCount().thenApply(server -> server.getServerInfo().getName())
+        : CompletableFuture.completedFuture(serverName);
 
-    final boolean isRequestedServerLobby = LobbyUtil.isLobbyServer(serverName);
+    serverNameFuture.thenAcceptAsync(resolvedServerName -> {
+      final boolean isRequestedServerLobby = LobbyUtil.isLobbyServer(resolvedServerName);
 
-    final String finalServerName = serverName;
-    final CompletableFuture<ChangeServerResult> futureResult = isRequestedServerLobby
-        ? changeToLobbyServer(serverName, fallbackToLobbyWithLowestPlayerCount)
-        : doActualChangeServer(serverName);
+      final CompletableFuture<ChangeServerResult> futureResult = isRequestedServerLobby
+          ? changeToLobbyServer(resolvedServerName, fallbackToLobbyWithLowestPlayerCount)
+          : doActualChangeServer(resolvedServerName);
 
-    futureResult.thenAcceptAsync(result -> {
-      isChangingServer = false;
+      futureResult.thenAcceptAsync(result -> {
+        isChangingServer = false;
 
-      if (sendFeedback) {
-        switch (result) {
-          // @formatter:off
-          case SUCCESS -> Messages.CHANGED_TO_SERVER.send(this, Component.text(finalServerName));
-          case SUCCESS_LOBBY_SERVER -> Messages.CHANGED_TO_LOBBY_SERVER.send(this, Component.text(finalServerName));
-          case SUCCESS_WITH_BYPASS_PERMISSION -> Messages.CHANGED_TO_FULL_SERVER_WITH_BYPASS_PERMISSION.send(this, Component.text(finalServerName));
-          case SUCCESS_BUT_OTHER_LOBBY_SERVER_AS_REQUESTED -> Messages.CHANGED_TO_OTHER_LOBBY_AS_REQUESTED.send(this, Component.text(finalServerName));
-          case QUEUE -> Messages.JOINED_QUEUE.send(this, Component.text(finalServerName));
-          case ALREADY_IN_QUEUE -> Messages.ALREADY_IN_QUEUE.send(this, Component.text(finalServerName));
-          case LOBBY_SERVER_NOT_AVAILABLE -> Messages.LOBBY_SERVER_NOT_AVAILABLE.send(this, Component.text(finalServerName));
-          case LOBBY_SERVER_FULL -> Messages.LOBBY_SERVER_FULL.send(this, Component.text(finalServerName));
-          case COULD_NOT_ESTABLISH_CONNECTION -> Messages.COULD_NOT_ESTABLISH_CONNECTION_WITH_SERVER.send(this, Component.text(finalServerName));
-          case ERROR -> Messages.ERROR_CHANGING_SERVER.send(this, Component.text(finalServerName));
-          case PLAYER_NOT_ONLINE -> { /* Do nothing */ }
-          // @formatter:on
+        if (sendFeedback) {
+          switch (result) {
+            // @formatter:off
+            case SUCCESS -> Messages.CHANGED_TO_SERVER.send(this, Component.text(resolvedServerName));
+            case SUCCESS_LOBBY_SERVER -> Messages.CHANGED_TO_LOBBY_SERVER.send(this, Component.text(resolvedServerName));
+            case SUCCESS_WITH_BYPASS_PERMISSION -> Messages.CHANGED_TO_FULL_SERVER_WITH_BYPASS_PERMISSION.send(this, Component.text(resolvedServerName));
+            case SUCCESS_BUT_OTHER_LOBBY_SERVER_AS_REQUESTED -> Messages.CHANGED_TO_OTHER_LOBBY_AS_REQUESTED.send(this, Component.text(resolvedServerName));
+            case QUEUE -> Messages.JOINED_QUEUE.send(this, Component.text(resolvedServerName));
+            case ALREADY_IN_QUEUE -> Messages.ALREADY_IN_QUEUE.send(this, Component.text(resolvedServerName));
+            case LOBBY_SERVER_NOT_AVAILABLE -> Messages.LOBBY_SERVER_NOT_AVAILABLE.send(this, Component.text(resolvedServerName));
+            case LOBBY_SERVER_FULL -> Messages.LOBBY_SERVER_FULL.send(this, Component.text(resolvedServerName));
+            case COULD_NOT_ESTABLISH_CONNECTION -> Messages.COULD_NOT_ESTABLISH_CONNECTION_WITH_SERVER.send(this, Component.text(resolvedServerName));
+            case ERROR -> Messages.ERROR_CHANGING_SERVER.send(this, Component.text(resolvedServerName));
+            case PLAYER_NOT_ONLINE -> { /* Do nothing */ }
+            // @formatter:on
+          }
         }
-      }
+      }).exceptionally(throwable -> {
+        isChangingServer = false;
+        Messages.ERROR_CHANGING_SERVER.send(this, Component.text(resolvedServerName));
+        LOGGER.error("Error changing server for player {}", uuid, throwable);
+        return null;
+      });
     }).exceptionally(throwable -> {
       isChangingServer = false;
-      Messages.ERROR_CHANGING_SERVER.send(this, Component.text(finalServerName));
+      Messages.ERROR_CHANGING_SERVER.send(this, Component.text(serverName == null ? "__Lobby__" : serverName));
       LOGGER.error("Error changing server for player {}", uuid, throwable);
       return null;
     });
@@ -106,8 +113,7 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
    * @param serverName the lobby server to attempt connection to.
    * @return a {@link CompletableFuture} that indicates the result of the attempt.
    */
-  private CompletableFuture<ChangeServerResult> changeToLobbyServer(String serverName,
-      boolean fallbackToLobbyWithLowestPlayerCount) {
+  private CompletableFuture<ChangeServerResult> changeToLobbyServer(String serverName, boolean fallbackToLobbyWithLowestPlayerCount) {
     return getPlayer()
         .map(player -> {
           final ProxyServer server = VelocityMain.getInstance().getServer();
@@ -125,8 +131,10 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
                         Permissions.BYPASS_PLAYER_LIMIT_PERMISSION.getPermission())) {
 
                       if (fallbackToLobbyWithLowestPlayerCount) {
-                        return player.createConnectionRequest(
-                                LobbyUtil.getLobbyServerWithLowestPlayerCount()).connectWithIndication()
+
+                        return LobbyUtil.getLobbyServerWithLowestPlayerCount()
+                            .thenApplyAsync(player::createConnectionRequest)
+                            .thenComposeAsync(ConnectionRequestBuilder::connectWithIndication)
                             .thenApply(
                                 success -> success
                                     ? ChangeServerResult.SUCCESS_BUT_OTHER_LOBBY_SERVER_AS_REQUESTED
@@ -141,12 +149,24 @@ public final class VelocityServerSelectorPlayer extends CoreServerSelectorPlayer
                         .thenApply(
                             success -> success ? ChangeServerResult.SUCCESS
                                 : ChangeServerResult.ERROR);
-                  }))
-              .orElse(CompletableFuture.completedFuture(
-                  ChangeServerResult.COULD_NOT_ESTABLISH_CONNECTION));
+                  })
+              ).orElseGet(() -> {
+                // If the lobby server is not available, fallback to another lobby server
+                if (fallbackToLobbyWithLowestPlayerCount) {
+                  LobbyUtil.getLobbyServerWithLowestPlayerCount()
+                      .thenApplyAsync(player::createConnectionRequest)
+                      .thenComposeAsync(ConnectionRequestBuilder::connectWithIndication)
+                      .thenApply(
+                          success -> success
+                              ? ChangeServerResult.SUCCESS_BUT_OTHER_LOBBY_SERVER_AS_REQUESTED
+                              : ChangeServerResult.ERROR);
+                }
+                return CompletableFuture.completedFuture(ChangeServerResult.LOBBY_SERVER_NOT_AVAILABLE);
+              });
         })
         .orElse(CompletableFuture.completedFuture(ChangeServerResult.PLAYER_NOT_ONLINE));
   }
+
 
   /**
    * Attempts to change the server for the player, handling full server scenarios and queue

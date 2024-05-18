@@ -35,7 +35,11 @@ public abstract class BukkitCommonSurfServerSelectorInstance extends
 
     final PluginManager pluginManager = Bukkit.getPluginManager();
     for (final Permissions permissions : Permissions.values()) {
-      pluginManager.addPermission(new Permission(permissions.getPermission()));
+      try {
+        pluginManager.addPermission(new Permission(permissions.getPermission()));
+      } catch (final IllegalArgumentException e) {
+        // Permission already exists
+      }
     }
 
     CommonListenerManager.INSTANCE.registerListeners();
