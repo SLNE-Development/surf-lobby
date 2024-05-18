@@ -1,4 +1,4 @@
-package dev.slne.surf.surfserverselector.bukkit.lobby.listener.lobby;
+package dev.slne.surf.surfserverselector.bukkit.lobby.listener.hotbar;
 
 import dev.slne.surf.surfserverselector.bukkit.lobby.hotbar.PlayerHotbar;
 import org.bukkit.entity.Player;

@@ -1,9 +1,9 @@
 package dev.slne.surf.surfserverselector.bukkit.lobby.listener;
 
 import dev.slne.surf.surfserverselector.bukkit.lobby.BukkitMain;
-import dev.slne.surf.surfserverselector.bukkit.lobby.listener.lobby.HotbarItemClickEventListener;
-import dev.slne.surf.surfserverselector.bukkit.lobby.listener.lobby.PlayerJoinListener;
-import dev.slne.surf.surfserverselector.bukkit.lobby.listener.lobby.PlayerQuitEventListener;
+import dev.slne.surf.surfserverselector.bukkit.lobby.listener.hotbar.DestroyPlayerHotbarListener;
+import dev.slne.surf.surfserverselector.bukkit.lobby.listener.hotbar.HotbarItemClickEventListener;
+import dev.slne.surf.surfserverselector.bukkit.lobby.listener.hotbar.PopulatePlayerHotbarListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -17,8 +17,8 @@ public final class ListenerManager {
 
   public void registerListeners() {
     register(new HotbarItemClickEventListener());
-    register(new PlayerJoinListener());
-    register(new PlayerQuitEventListener());
+    register(new PopulatePlayerHotbarListener());
+    register(new DestroyPlayerHotbarListener());
 
   }
 
