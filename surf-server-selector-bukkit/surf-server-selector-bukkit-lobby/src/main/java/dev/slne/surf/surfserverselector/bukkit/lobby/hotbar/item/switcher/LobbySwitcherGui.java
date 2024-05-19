@@ -1,5 +1,8 @@
 package dev.slne.surf.surfserverselector.bukkit.lobby.hotbar.item.switcher;
 
+import static net.kyori.adventure.text.Component.empty;
+import static net.kyori.adventure.text.Component.text;
+
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.slne.surf.surfapi.core.api.messages.Colors;
@@ -9,9 +12,10 @@ import dev.slne.surf.surfserverselector.bukkit.lobby.BukkitMain;
 import dev.slne.surf.surfserverselector.core.message.Messages;
 import dev.slne.surf.surfserverselector.core.util.ListUtil;
 import io.th0rgal.oraxen.api.OraxenItems;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -62,8 +66,8 @@ public final class LobbySwitcherGui extends ChestGui {
       itemMeta.displayName(createNonItalicComponent("Event Server", Colors.PRIMARY));
       itemMeta.lore(createNonItalicLore(
           SettingManager.isEventServerEnabled()
-              ? "Klicke um den Server beizutreten."
-              : "Der Event Server ist derzeit deaktiviert."
+              ? text("Klicke um den Server beizutreten.")
+              : text("Der Event Server ist derzeit deaktiviert.", Colors.ERROR)
       ));
     });
 
@@ -76,8 +80,10 @@ public final class LobbySwitcherGui extends ChestGui {
     item.editMeta(itemMeta -> {
       itemMeta.displayName(createNonItalicComponent("Community Server", Colors.PRIMARY));
       itemMeta.lore(createNonItalicLore(
-          "Aktuell ist der Community Server nur über",
-          "server.castcrafter.de erreichbar."
+          text("Aktuell ist der Community Server nur", Colors.ERROR),
+          text("über ", Colors.ERROR)
+              .append(text("server.castcrafter.de", Colors.VARIABLE_VALUE))
+              .append(text(" erreichbar.", Colors.ERROR))
       ));
     });
 
@@ -89,7 +95,7 @@ public final class LobbySwitcherGui extends ChestGui {
 
     item.editMeta(itemMeta -> {
       itemMeta.displayName(createNonItalicComponent(displayName, Colors.PRIMARY));
-      itemMeta.lore(createNonItalicLore(lore));
+      itemMeta.lore(createNonItalicLore(text(lore)));
     });
 
     return item;
@@ -101,13 +107,18 @@ public final class LobbySwitcherGui extends ChestGui {
 
   @SuppressWarnings("SameParameterValue")
   private Component createNonItalicComponent(String text, TextColor color) {
-    return Component.text(text, color).decoration(TextDecoration.ITALIC, false);
+    return text(text, color).decoration(TextDecoration.ITALIC, false);
   }
 
-  private List<? extends Component> createNonItalicLore(String... lines) {
-    return Stream.of(lines)
-        .map(line -> Component.text(line, Colors.INFO).decoration(TextDecoration.ITALIC, false))
-        .toList();
+  private List<? extends Component> createNonItalicLore(Component... lines) {
+    final List<Component> lore = new ArrayList<>(lines.length + 2);
+    lore.add(empty());
+    lore.addAll(Arrays.stream(lines)
+        .map(line -> line.colorIfAbsent(Colors.INFO).decoration(TextDecoration.ITALIC, false))
+        .toList());
+    lore.add(empty());
+
+    return lore;
   }
 
   @Contract(pure = true)
@@ -128,7 +139,7 @@ public final class LobbySwitcherGui extends ChestGui {
 //      SurfServerSelectorApi.getPlayer(player.getUniqueId())
 //          .changeServer(SettingManager.getCommunityServer(), true);
 
-      Messages.COMMUNITY_SERVER_NOT_AVAILABLE.send(player, Component.text("server.castcrafter.de"));
+      Messages.COMMUNITY_SERVER_NOT_AVAILABLE.send(player, text("server.castcrafter.de"));
     });
   }
 
@@ -138,7 +149,7 @@ public final class LobbySwitcherGui extends ChestGui {
       @Nullable String lobbyServerName = ListUtil.getOrNull(SettingManager.getLobbyServerNames(),
           lobbyIndex);
       if (lobbyServerName == null) {
-        Messages.LOBBY_SERVER_NOT_AVAILABLE.send(player, Component.text(lobbyIndex + 1));
+        Messages.LOBBY_SERVER_NOT_AVAILABLE.send(player, text(lobbyIndex + 1));
         return;
       }
       SurfServerSelectorApi.getPlayer(player.getUniqueId())
