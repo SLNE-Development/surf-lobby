@@ -77,4 +77,8 @@ public interface Messages {
       .append(text("Aktuell ist der Community Server nur über "))
       .append(args[0])
       .append(text(" erreichbar."));
+  SuccessMessage EVENT_SERVER_STATE_SWITCHED = args -> text()
+      .append(text("Der Event-Server ist jetzt "))
+      .append(args[0])
+      .append(text("!"));
 }

@@ -5,11 +5,13 @@ import dev.slne.surf.surfserverselector.core.instance.CoreSurfServerSelectorInst
 import dev.slne.surf.surfserverselector.velocity.VelocityMain;
 import dev.slne.surf.surfserverselector.velocity.command.CommandManager;
 import dev.slne.surf.surfserverselector.velocity.config.VelocityConfig;
+import dev.slne.surf.surfserverselector.velocity.config.VelocityPersistentData;
 import dev.slne.surf.surfserverselector.velocity.listener.ListenerManager;
 import dev.slne.surf.surfserverselector.velocity.player.VelocityServerSelectorPlayerManager;
 import dev.slne.surf.surfserverselector.velocity.queue.ServerQueueRegistryImpl;
 import dev.slne.surf.surfserverselector.velocity.queue.display.QueueDisplay;
 import java.nio.file.Path;
+import org.spongepowered.configurate.ConfigurateException;
 
 public final class VelocitySurfServerSelectorInstance extends CoreSurfServerSelectorInstance {
 
@@ -23,6 +25,13 @@ public final class VelocitySurfServerSelectorInstance extends CoreSurfServerSele
     super.onLoad();
 
     SurfVelocityApi.get().createConfig(VelocityConfig.class, getDataFolder(), "config.yml");
+    try {
+      VelocityPersistentData.load();
+    } catch (ConfigurateException e) {
+      LOGGER.error("Failed to load persistent data", e);
+
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
@@ -39,6 +48,13 @@ public final class VelocitySurfServerSelectorInstance extends CoreSurfServerSele
     super.onDisable();
 
     QueueDisplay.INSTANCE.destroy();
+
+    try {
+      VelocityPersistentData.save();
+    } catch (ConfigurateException e) {
+      LOGGER.error("Failed to save persistent data", e);
+      throw new RuntimeException(e);
+    }
   }
 
   @Override

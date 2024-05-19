@@ -46,6 +46,6 @@
         <module name="surf-server-selector.surf-server-selector-velocity.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="17" />
+    <bytecodeTargetLevel target="21" />
   </component>
 </project>
