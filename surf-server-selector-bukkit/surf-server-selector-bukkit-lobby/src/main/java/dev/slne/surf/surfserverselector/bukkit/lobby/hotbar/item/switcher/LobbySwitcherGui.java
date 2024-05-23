@@ -33,7 +33,7 @@ public final class LobbySwitcherGui extends ChestGui {
   private final BukkitMain plugin = BukkitMain.getInstance();
 
   public LobbySwitcherGui() {
-    super(6, "<shift:-8><glyph:server_selector>", BukkitMain.getInstance());
+    super(6, "<shift:-46><glyph:server_selector>", BukkitMain.getInstance());
 
     setOnGlobalClick(cancel());
     setOnGlobalDrag(cancel());

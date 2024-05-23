@@ -17,6 +17,7 @@ repositories {
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
     maven("https://oss.sonatype.org/content/repositories/snapshots")
     maven("https://repo.oraxen.com/releases")
+    maven("https://hub.jeff-media.com/nexus/repository/jeff-media-public/")
 }
 
 group = "dev.slne.surf"
