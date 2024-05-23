@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Contract;
  * shared by all concrete player classes in different server environments.
  */
 public abstract class CoreServerSelectorPlayer implements ServerSelectorPlayer {
-  private static final String VANISH_LEVEL_META_DATA = "surf.server.selector.queue.priority";
+  private static final String PRIORITY_LEVEL_META_DATA = "priority";
 
   protected final UUID uuid;
 
@@ -45,7 +45,7 @@ public abstract class CoreServerSelectorPlayer implements ServerSelectorPlayer {
     final User user = LuckPermsProvider.get().getUserManager().getUser(uuid);
 
     if (user != null) {
-      return user.getCachedData().getMetaData().getMetaValue(VANISH_LEVEL_META_DATA, Integer::parseInt).orElse(-1);
+      return user.getCachedData().getMetaData().getMetaValue(PRIORITY_LEVEL_META_DATA, Integer::parseInt).orElse(-1);
     }
 
     return -1;

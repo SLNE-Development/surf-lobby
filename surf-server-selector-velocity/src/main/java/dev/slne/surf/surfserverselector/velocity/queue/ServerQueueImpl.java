@@ -33,7 +33,7 @@ public final class ServerQueueImpl implements ServerQueue, PlayerCountChangeList
       final ServerSelectorPlayer player1 = SurfServerSelectorApi.getPlayer(uuid1);
       final ServerSelectorPlayer player2 = SurfServerSelectorApi.getPlayer(uuid2);
 
-      return Integer.compare(player1.getPriority(), player2.getPriority());
+      return Integer.compare(player2.getPriority(), player1.getPriority());
     });
 
     SyncValue.MAX_PLAYER_COUNT.subscribe(this);
