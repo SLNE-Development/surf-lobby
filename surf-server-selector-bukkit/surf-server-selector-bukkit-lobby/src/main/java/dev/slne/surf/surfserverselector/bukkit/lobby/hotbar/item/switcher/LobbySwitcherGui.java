@@ -10,6 +10,8 @@ import dev.slne.surf.surfserverselector.api.SurfServerSelectorApi;
 import dev.slne.surf.surfserverselector.bukkit.common.settings.SettingManager;
 import dev.slne.surf.surfserverselector.bukkit.lobby.BukkitMain;
 import dev.slne.surf.surfserverselector.core.message.Messages;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.data.EventServerData;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.data.LobbyServerData;
 import dev.slne.surf.surfserverselector.core.util.ListUtil;
 import io.th0rgal.oraxen.api.OraxenItems;
 import java.util.ArrayList;
@@ -41,9 +43,9 @@ public final class LobbySwitcherGui extends ChestGui {
     // @formatter:off
     setupPane(createStaticPane(5, 0, 3, 3), createEventServerSwitchItem(), switchEventServer());
     setupPane(createStaticPane(1, 0, 3, 3), createCommunityServerSwitchItem(), switchCommunityServer());
-    setupPane(createStaticPane(0, 4, 3, 2), createLobbySwitchItem("Lobby 1", "Klicke um Lobby 1 zu betreten."), switchLobby(0));
-    setupPane(createStaticPane(3, 4, 3, 2), createLobbySwitchItem("Lobby 2", "Klicke um Lobby 2 zu betreten."), switchLobby(1));
-    setupPane(createStaticPane(6, 4, 3, 2), createLobbySwitchItem("Lobby 3", "Klicke um Lobby 3 zu betreten."), switchLobby(2));
+    setupPane(createStaticPane(0, 4, 3, 2), createLobbySwitchItem(0), switchLobby(0));
+    setupPane(createStaticPane(3, 4, 3, 2), createLobbySwitchItem(0), switchLobby(1));
+    setupPane(createStaticPane(6, 4, 3, 2), createLobbySwitchItem(0), switchLobby(2));
     // @formatter:on
   }
 
@@ -63,9 +65,13 @@ public final class LobbySwitcherGui extends ChestGui {
     final ItemStack item = createInvisibleItem();
 
     item.editMeta(itemMeta -> {
+      final EventServerData eventServerData = SettingManager.getEventServerData();
+
       itemMeta.displayName(createNonItalicComponent("Event Server", Colors.PRIMARY));
       itemMeta.lore(createNonItalicLore(
-          SettingManager.isEventServerEnabled()
+          createPlayersOnlineLore(eventServerData.getOnlinePlayers(), eventServerData.getMaxPlayers()),
+          empty(),
+          eventServerData.isEventServerEnabled()
               ? text("Klicke um den Server beizutreten.")
               : text("Der Event Server ist derzeit deaktiviert.", Colors.ERROR)
       ));
@@ -78,6 +84,8 @@ public final class LobbySwitcherGui extends ChestGui {
     final ItemStack item = createInvisibleItem();
 
     item.editMeta(itemMeta -> {
+//      final CommunityServerData communityServerData = SettingManager.getCommunityServerData();
+
       itemMeta.displayName(createNonItalicComponent("Community Server", Colors.PRIMARY));
       itemMeta.lore(createNonItalicLore(
           text("Aktuell ist der Community Server nur", Colors.ERROR),
@@ -90,15 +98,37 @@ public final class LobbySwitcherGui extends ChestGui {
     return item;
   }
 
-  private ItemStack createLobbySwitchItem(String displayName, String lore) {
+  private @NotNull ItemStack createLobbySwitchItem(int lobbyIndex) {
     final ItemStack item = createInvisibleItem();
 
     item.editMeta(itemMeta -> {
+      final String displayName = "Lobby %d".formatted(lobbyIndex);
+
       itemMeta.displayName(createNonItalicComponent(displayName, Colors.PRIMARY));
-      itemMeta.lore(createNonItalicLore(text(lore)));
+      itemMeta.lore(createNonItalicLore(
+          createLobbyOnlinePlayersLore(lobbyIndex),
+          empty(),
+          text("Klicke um %s zu betreten.".formatted(displayName))
+      ));
     });
 
     return item;
+  }
+
+  private @NotNull Component createLobbyOnlinePlayersLore(int lobbyIndex) {
+    int playersOnline, maxPlayers;
+
+    try {
+      final LobbyServerData lobbyServerData = SettingManager.getLobbyServerData().getValue(lobbyIndex);
+
+      playersOnline = lobbyServerData.getOnlinePlayers();
+      maxPlayers = lobbyServerData.getMaxPlayers();
+    } catch (IndexOutOfBoundsException e) {
+      playersOnline = -1;
+      maxPlayers = -1;
+    }
+
+    return createPlayersOnlineLore(playersOnline, maxPlayers);
   }
 
   private ItemStack createInvisibleItem() {
@@ -121,15 +151,22 @@ public final class LobbySwitcherGui extends ChestGui {
     return lore;
   }
 
+  private @NotNull Component createPlayersOnlineLore(int onlinePlayers, int maxPlayers) {
+    return text("Spieler: ", Colors.INFO)
+        .append(text(onlinePlayers, Colors.VARIABLE_VALUE))
+        .append(text(" / ", Colors.INFO))
+        .append(text(maxPlayers, Colors.VARIABLE_VALUE));
+  }
+
   @Contract(pure = true)
   private @NotNull Consumer<InventoryClickEvent> switchEventServer() {
     return toPlayer(player -> {
-      if (!SettingManager.isEventServerEnabled()) {
+      if (!SettingManager.getEventServerData().isEventServerEnabled()) {
         Messages.EVENT_SERVER_DISABLED.send(player);
         return;
       }
       SurfServerSelectorApi.getPlayer(player.getUniqueId())
-          .changeServer(SettingManager.getCurrentEventServer(), true);
+          .changeServer(SettingManager.getEventServerData().getEventServerName(), true);
     });
   }
 
@@ -146,8 +183,8 @@ public final class LobbySwitcherGui extends ChestGui {
   @Contract(pure = true)
   private @NotNull Consumer<InventoryClickEvent> switchLobby(int lobbyIndex) {
     return toPlayer(player -> {
-      @Nullable String lobbyServerName = ListUtil.getOrNull(SettingManager.getLobbyServerNames(),
-          lobbyIndex);
+      @Nullable String lobbyServerName = ListUtil.getOrNull(
+          SettingManager.getLobbyServerData().keyList(), lobbyIndex);
       if (lobbyServerName == null) {
         Messages.LOBBY_SERVER_NOT_AVAILABLE.send(player, text(lobbyIndex + 1));
         return;

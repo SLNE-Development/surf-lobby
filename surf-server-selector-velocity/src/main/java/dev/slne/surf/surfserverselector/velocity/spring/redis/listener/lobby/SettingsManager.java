@@ -3,10 +3,15 @@ package dev.slne.surf.surfserverselector.velocity.spring.redis.listener.lobby;
 import dev.slne.data.api.spring.redis.event.annotation.DataListener;
 import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.RequestSettingsEvent;
 import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.RequestSettingsResponseEvent;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.data.CommunityServerData;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.data.EventServerData;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.data.LobbyServerData;
+import dev.slne.surf.surfserverselector.velocity.VelocityMain;
 import dev.slne.surf.surfserverselector.velocity.config.VelocityConfig;
 import dev.slne.surf.surfserverselector.velocity.config.VelocityPersistentData;
+import dev.slne.surf.surfserverselector.velocity.sync.SyncValue;
 import dev.slne.surf.surfserverselector.velocity.util.LobbyUtil;
-import java.util.List;
+import org.apache.commons.collections4.map.ListOrderedMap;
 
 @dev.slne.data.api.spring.redis.event.annotation.DataListeners
 public final class SettingsManager {
@@ -19,16 +24,43 @@ public final class SettingsManager {
   public static void update() {
     final VelocityConfig config = VelocityConfig.get();
 
-    final List<String> lobbyServerNames = LobbyUtil.getAllLobbyServer().stream()
-        .map(server -> server.getServerInfo().getName())
-        .sorted()
-        .toList();
-
-    new RequestSettingsResponseEvent(
+    final EventServerData eventServerData = EventServerData.of(
         config.currentEventServer(),
         VelocityPersistentData.get().isEventServerEnabled(),
+        SyncValue.MAX_PLAYER_COUNT.get(config.currentEventServer()),
+        getOnlinePlayerCount(config.currentEventServer())
+    );
+
+    final CommunityServerData communityServerData = CommunityServerData.of(
         config.communityServerName(),
+        SyncValue.MAX_PLAYER_COUNT.get(config.communityServerName()),
+        getOnlinePlayerCount(config.communityServerName())
+    );
+
+    final ListOrderedMap<String, LobbyServerData> lobbyServerNames = LobbyUtil.getAllLobbyServer()
+        .stream()
+        .map(server -> {
+          final String serverName = server.getServerInfo().getName();
+
+          return LobbyServerData.of(
+              serverName,
+              SyncValue.MAX_PLAYER_COUNT.get(serverName),
+              getOnlinePlayerCount(serverName)
+          );
+        })
+        .sorted()
+        .collect(LobbyServerData.toMap());
+
+    new RequestSettingsResponseEvent(
+        eventServerData,
+        communityServerData,
         lobbyServerNames
     ).call();
+  }
+
+  private static int getOnlinePlayerCount(String serverName) {
+    return VelocityMain.getInstance().getServer().getServer(serverName)
+        .map(server -> server.getPlayersConnected().size())
+        .orElse(-1);
   }
 }

@@ -1,11 +1,18 @@
 package dev.slne.surf.surfserverselector.velocity.listener.sync;
 
 import dev.slne.data.api.spring.redis.event.annotation.DataListener;
+import dev.slne.data.api.spring.redis.event.annotation.DataListeners;
 import dev.slne.surf.surfserverselector.core.spring.redis.events.server.sync.MaxPlayerCountSync;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.sync.ReadyStateSync;
 import dev.slne.surf.surfserverselector.velocity.sync.SyncValue;
 
-@dev.slne.data.api.spring.redis.event.annotation.DataListeners
-public class MaxPlayerCountSyncListener {
+@DataListeners
+public class SyncReceiveListener {
+
+  @DataListener(channels = {ReadyStateSync.CHANNEL})
+  public void onReadyStateSync(ReadyStateSync event) {
+    SyncValue.READY_STATE.sync(event.getServerName(), event.getReadyState());
+  }
 
   @DataListener(channels = {MaxPlayerCountSync.CHANNEL})
   public void onMaxPlayerCountSync(MaxPlayerCountSync event) {

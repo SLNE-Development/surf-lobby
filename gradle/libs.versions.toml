@@ -7,6 +7,7 @@ net-luckperms-api-version = "5.4"
 me-devnatan-inventory-framework-version = "3.0.10"
 com-github-stefvanschie-inventoryframework-version = "0.10.14"
 io-th0rgal-oraxen-version = "1.175.0"
+org-apache-commons-commons-collections4-version = "4.5.0-M1"
 
 [libraries]
 io-papermc-paper-api = { module = "io.papermc.paper:paper-api", version.ref = "io-papermc-paper-api-version" }
@@ -20,3 +21,4 @@ me-devnatan-inventory-framework-paper = { module = "me.devnatan:inventory-framew
 me-devnatan-inventory-framework-bukkit = { module = "me.devnatan:inventory-framework-platform-bukkit", version.ref = "me-devnatan-inventory-framework-version" }
 com-github-stefvanschie-inventoryframework = { module = "com.github.stefvanschie.inventoryframework:IF", version.ref = "com-github-stefvanschie-inventoryframework-version" }
 io-th0rgal-oraxen = { module = "io.th0rgal:oraxen", version.ref = "io-th0rgal-oraxen-version" }
+org-apache-commons-commons-collections4 = { module = "org.apache.commons:commons-collections4", version.ref = "org-apache-commons-commons-collections4-version" }

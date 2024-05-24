@@ -1,42 +1,38 @@
 package dev.slne.surf.surfserverselector.bukkit.common.settings;
 
 import dev.slne.data.api.spring.redis.event.annotation.DataListener;
+import dev.slne.data.api.spring.redis.event.annotation.DataListeners;
 import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.RequestSettingsResponseEvent;
-import java.util.List;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.data.CommunityServerData;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.data.EventServerData;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.data.LobbyServerData;
+import org.apache.commons.collections4.map.ListOrderedMap;
 import org.jetbrains.annotations.NotNull;
 
-@dev.slne.data.api.spring.redis.event.annotation.DataListeners
+@DataListeners
 public final class SettingManager {
 
-  private static String currentEventServer = "";
-  private static boolean eventServerEnabled = false;
-
-  private static String communityServer = "";
-
-  private static List<String> lobbyServerNames = List.of();
+  private static EventServerData eventServerData = new EventServerData();
+  private static CommunityServerData communityServerData = new CommunityServerData();
+  private static ListOrderedMap<String, LobbyServerData> lobbyServerData = new ListOrderedMap<>();
 
   @DataListener(channels = {RequestSettingsResponseEvent.CHANNEL})
   public void onRequestCurrentServerStateResponse(
       @NotNull RequestSettingsResponseEvent event) {
-    currentEventServer = event.getEventServerName();
-    eventServerEnabled = event.isEventServerEnabled();
-    communityServer = event.getCommunityServerName();
-    lobbyServerNames = event.getLobbyServerNames();
+    eventServerData = event.getEventServerData();
+    communityServerData = event.getCommunityServerData();
+    lobbyServerData = event.getLobbyServerData();
   }
 
-  public static String getCurrentEventServer() {
-    return currentEventServer;
+  public static CommunityServerData getCommunityServerData() {
+    return communityServerData;
   }
 
-  public static boolean isEventServerEnabled() {
-    return eventServerEnabled;
+  public static EventServerData getEventServerData() {
+    return eventServerData;
   }
 
-  public static String getCommunityServer() {
-    return communityServer;
-  }
-
-  public static List<String> getLobbyServerNames() {
-    return lobbyServerNames;
+  public static ListOrderedMap<String, LobbyServerData> getLobbyServerData() {
+    return lobbyServerData;
   }
 }

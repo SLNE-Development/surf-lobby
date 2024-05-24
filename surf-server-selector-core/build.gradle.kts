@@ -5,4 +5,6 @@ plugins {
 
 dependencies {
     api(project(":surf-server-selector-api"))
+
+    compileOnlyApi(libs.org.apache.commons.commons.collections4)
 }

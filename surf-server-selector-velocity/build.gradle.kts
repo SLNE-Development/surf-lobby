@@ -5,8 +5,11 @@ plugins {
 
 dependencies {
     api(project(":surf-server-selector-core"))
+
     compileOnlyApi(libs.dev.slne.surf.api.velocity.api)
     compileOnlyApi(libs.com.velocitypowered.velocity.api)
+
+    api(libs.org.apache.commons.commons.collections4)
 
     annotationProcessor(libs.com.velocitypowered.velocity.api)
 }

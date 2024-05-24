@@ -1,43 +1,40 @@
 package dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby;
 
 import dev.slne.surf.surfserverselector.core.spring.redis.events.ServerSelectorRedisEvent;
-import java.util.List;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.data.CommunityServerData;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.data.EventServerData;
+import dev.slne.surf.surfserverselector.core.spring.redis.events.server.lobby.data.LobbyServerData;
+import org.apache.commons.collections4.map.ListOrderedMap;
 
 public class RequestSettingsResponseEvent extends ServerSelectorRedisEvent {
 
   public static final String CHANNEL = "server-selector:lobby:request-settings-response";
 
-  private String eventServerName;
-  private boolean eventServerEnabled;
-  private String communityServerName;
-  private List<String> lobbyServerNames;
+  private EventServerData eventServerData;
+  private CommunityServerData communityServerData;
+  private ListOrderedMap<String, LobbyServerData> lobbyServerData;
 
   public RequestSettingsResponseEvent() {
     super();
   }
 
-  public RequestSettingsResponseEvent(String eventServerName, boolean eventServerEnabled, String communityServerName, List<String> lobbyServerNames) {
+  public RequestSettingsResponseEvent(EventServerData eventServerData, CommunityServerData communityServerData, ListOrderedMap<String, LobbyServerData> lobbyServerData) {
     super(CHANNEL);
 
-    this.eventServerName = eventServerName;
-    this.eventServerEnabled = eventServerEnabled;
-    this.communityServerName = communityServerName;
-    this.lobbyServerNames = lobbyServerNames;
+    this.eventServerData = eventServerData;
+    this.communityServerData = communityServerData;
+    this.lobbyServerData = lobbyServerData;
   }
 
-  public boolean isEventServerEnabled() {
-    return eventServerEnabled;
+  public EventServerData getEventServerData() {
+    return eventServerData;
   }
 
-  public String getEventServerName() {
-    return eventServerName;
+  public CommunityServerData getCommunityServerData() {
+    return communityServerData;
   }
 
-  public String getCommunityServerName() {
-    return communityServerName;
-  }
-
-  public List<String> getLobbyServerNames() {
-    return lobbyServerNames;
+  public ListOrderedMap<String, LobbyServerData> getLobbyServerData() {
+    return lobbyServerData;
   }
 }
