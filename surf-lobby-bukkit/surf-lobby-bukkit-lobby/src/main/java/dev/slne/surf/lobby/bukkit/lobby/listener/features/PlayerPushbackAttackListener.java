@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 
 public class PlayerPushbackAttackListener implements Listener {
 
-  private static final double PUSHBACK_FORCE = 0.5;
+  private static final double PUSHBACK_FORCE = 2;
 
   @EventHandler(ignoreCancelled = true)
   public void onAttack(PrePlayerAttackEntityEvent event) {
