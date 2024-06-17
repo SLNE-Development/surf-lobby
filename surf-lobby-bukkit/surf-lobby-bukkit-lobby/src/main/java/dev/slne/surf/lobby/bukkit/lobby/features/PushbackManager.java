@@ -1,6 +1,7 @@
 package dev.slne.surf.lobby.bukkit.lobby.features;
 
 import dev.slne.surf.lobby.bukkit.lobby.scheduler.LobbySchedulerChild;
+import dev.slne.surf.lobby.core.permissions.Permissions;
 import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.Effect;
@@ -40,9 +41,9 @@ public class PushbackManager implements LobbySchedulerChild, Listener {
         }
 
         // throw closePlayer away
-//        if(closePlayer.hasPermission(Permissions.FEATURE_USE_PLAYER_PUSHBACK_ITEM)) {
-//          continue;
-//        }
+        if(closePlayer.hasPermission(Permissions.FEATURE_USE_PLAYER_PUSHBACK_ITEM.getPermission())) {
+          continue;
+        }
 
         closePlayer.setVelocity(player.getLocation().toVector().subtract(closePlayer.getLocation().toVector()).multiply(FORCE).setY(Y_FORCE));
       }
