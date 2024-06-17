@@ -10,7 +10,7 @@ import org.apache.commons.collections4.map.ListOrderedMap;
 import org.jetbrains.annotations.NotNull;
 
 @DataListeners
-public final class SettingManager {
+public class SettingManager {
 
   private static EventServerData eventServerData = new EventServerData();
   private static CommunityServerData communityServerData = new CommunityServerData();

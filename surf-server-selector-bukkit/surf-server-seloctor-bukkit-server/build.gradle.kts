@@ -4,8 +4,10 @@ plugins {
 
 dependencies {
     api(project(":surf-server-selector-bukkit:surf-server-selector-bukkit-common"))
+    paperLibrary(libs.org.apache.commons.commons.collections4)
 }
 
 paper {
     main = "dev.slne.surf.surfserverselector.bukkit.server.BukkitMain"
+    generateLibrariesJson = true
 }

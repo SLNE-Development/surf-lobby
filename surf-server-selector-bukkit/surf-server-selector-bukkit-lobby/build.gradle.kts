@@ -7,6 +7,7 @@ dependencies {
 
     paperLibrary(libs.com.github.stefvanschie.inventoryframework)
     compileOnly(libs.io.th0rgal.oraxen)
+    paperLibrary(libs.org.apache.commons.commons.collections4)
 }
 
 paper {

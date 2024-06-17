@@ -44,8 +44,8 @@ public final class LobbySwitcherGui extends ChestGui {
     setupPane(createStaticPane(5, 0, 3, 3), createEventServerSwitchItem(), switchEventServer());
     setupPane(createStaticPane(1, 0, 3, 3), createCommunityServerSwitchItem(), switchCommunityServer());
     setupPane(createStaticPane(0, 4, 3, 2), createLobbySwitchItem(0), switchLobby(0));
-    setupPane(createStaticPane(3, 4, 3, 2), createLobbySwitchItem(0), switchLobby(1));
-    setupPane(createStaticPane(6, 4, 3, 2), createLobbySwitchItem(0), switchLobby(2));
+    setupPane(createStaticPane(3, 4, 3, 2), createLobbySwitchItem(1), switchLobby(1));
+    setupPane(createStaticPane(6, 4, 3, 2), createLobbySwitchItem(2), switchLobby(2));
     // @formatter:on
   }
 
@@ -102,7 +102,7 @@ public final class LobbySwitcherGui extends ChestGui {
     final ItemStack item = createInvisibleItem();
 
     item.editMeta(itemMeta -> {
-      final String displayName = "Lobby %d".formatted(lobbyIndex);
+      final String displayName = "Lobby %d".formatted(lobbyIndex+1);
 
       itemMeta.displayName(createNonItalicComponent(displayName, Colors.PRIMARY));
       itemMeta.lore(createNonItalicLore(
