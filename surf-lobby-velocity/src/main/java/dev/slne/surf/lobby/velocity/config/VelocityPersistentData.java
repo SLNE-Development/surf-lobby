@@ -1,7 +1,7 @@
 package dev.slne.surf.lobby.velocity.config;
 
 import dev.slne.surf.lobby.velocity.VelocityMain;
-import dev.slne.surf.lobby.velocity.spring.redis.listener.lobby.SettingsManager;
+import dev.slne.surf.lobby.velocity.spring.redis.listener.lobby.SettingsSyncTask;
 import java.nio.file.Path;
 import org.jetbrains.annotations.Contract;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -26,7 +26,7 @@ public class VelocityPersistentData {
 
   public void setEventServerEnabled(boolean eventServerEnabled) {
     this.eventServerEnabled = eventServerEnabled;
-    SettingsManager.update();
+    SettingsSyncTask.update();
   }
 
   public static void load() throws ConfigurateException {

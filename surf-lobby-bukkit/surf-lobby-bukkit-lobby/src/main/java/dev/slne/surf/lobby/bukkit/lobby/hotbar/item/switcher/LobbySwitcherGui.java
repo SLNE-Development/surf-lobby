@@ -67,14 +67,19 @@ public final class LobbySwitcherGui extends ChestGui {
     item.editMeta(itemMeta -> {
       final EventServerData eventServerData = SettingManager.getEventServerData();
 
+      final List<Component> lore = new ArrayList<>(3);
+
+      if (eventServerData.isEventServerEnabled()) {
+        lore.add(createPlayersOnlineLore(eventServerData.getOnlinePlayers(), eventServerData.getMaxPlayers()));
+        lore.add(empty());
+      }
+
+      lore.add(eventServerData.isEventServerEnabled()
+          ? text("Klicke um den Server beizutreten.")
+          : text("Der Event Server ist derzeit deaktiviert.", Colors.ERROR));
+
       itemMeta.displayName(createNonItalicComponent("Event Server", Colors.PRIMARY));
-      itemMeta.lore(createNonItalicLore(
-          createPlayersOnlineLore(eventServerData.getOnlinePlayers(), eventServerData.getMaxPlayers()),
-          empty(),
-          eventServerData.isEventServerEnabled()
-              ? text("Klicke um den Server beizutreten.")
-              : text("Der Event Server ist derzeit deaktiviert.", Colors.ERROR)
-      ));
+      itemMeta.lore(createNonItalicLore(lore.toArray(Component[]::new)));
     });
 
     return item;
@@ -102,7 +107,7 @@ public final class LobbySwitcherGui extends ChestGui {
     final ItemStack item = createInvisibleItem();
 
     item.editMeta(itemMeta -> {
-      final String displayName = "Lobby %d".formatted(lobbyIndex+1);
+      final String displayName = "Lobby %d".formatted(lobbyIndex + 1);
 
       itemMeta.displayName(createNonItalicComponent(displayName, Colors.PRIMARY));
       itemMeta.lore(createNonItalicLore(

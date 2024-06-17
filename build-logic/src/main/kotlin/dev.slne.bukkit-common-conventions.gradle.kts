@@ -22,6 +22,7 @@ tasks {
 
         downloadPlugins {
             modrinth("commandapi", "9.4.1")
+            url("https://repo.slne.dev/service/rest/v1/search/assets/download?repository=maven-snapshots&group=dev.slne&name=surf-data-bukkit&sort=version&direction=desc")
         }
     }
 }

@@ -16,4 +16,17 @@ public class CommunityServerData {
   public static CommunityServerData of(String communityServerName, int maxPlayers, int onlinePlayers) {
     return new CommunityServerData(communityServerName, maxPlayers, onlinePlayers);
   }
+
+  public String getCommunityServerName() {
+    return communityServerName;
+  }
+
+  public int getMaxPlayers() {
+    return maxPlayers;
+  }
+
+  public int getOnlinePlayers() {
+    return onlinePlayers;
+  }
+
 }

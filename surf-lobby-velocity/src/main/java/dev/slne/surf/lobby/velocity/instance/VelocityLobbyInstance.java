@@ -1,7 +1,5 @@
 package dev.slne.surf.lobby.velocity.instance;
 
-import dev.slne.surf.lobby.velocity.queue.ServerQueueRegistryImpl;
-import dev.slne.surf.surfapi.velocity.api.SurfVelocityApi;
 import dev.slne.surf.lobby.core.instance.CoreLobbyInstance;
 import dev.slne.surf.lobby.velocity.VelocityMain;
 import dev.slne.surf.lobby.velocity.command.CommandManager;
@@ -9,8 +7,12 @@ import dev.slne.surf.lobby.velocity.config.VelocityConfig;
 import dev.slne.surf.lobby.velocity.config.VelocityPersistentData;
 import dev.slne.surf.lobby.velocity.listener.ListenerManager;
 import dev.slne.surf.lobby.velocity.player.VelocityLobbyPlayerManager;
+import dev.slne.surf.lobby.velocity.queue.ServerQueueRegistryImpl;
 import dev.slne.surf.lobby.velocity.queue.display.QueueDisplay;
+import dev.slne.surf.lobby.velocity.spring.redis.listener.lobby.SettingsSyncTask;
+import dev.slne.surf.surfapi.velocity.api.SurfVelocityApi;
 import java.nio.file.Path;
+import java.time.Duration;
 import org.spongepowered.configurate.ConfigurateException;
 
 public final class VelocityLobbyInstance extends CoreLobbyInstance {
@@ -37,10 +39,13 @@ public final class VelocityLobbyInstance extends CoreLobbyInstance {
   @Override
   public void onEnable() {
     super.onEnable();
+    final VelocityMain plugin = VelocityMain.getInstance();
 
     ListenerManager.INSTANCE.registerListeners();
     CommandManager.INSTANCE.registerCommands();
-    QueueDisplay.INSTANCE.setup(VelocityMain.getInstance().getServer(), VelocityMain.getInstance());
+    QueueDisplay.INSTANCE.setup(plugin.getServer(), plugin);
+
+    plugin.getServer().getScheduler().buildTask(plugin, new SettingsSyncTask()).repeat(Duration.ofSeconds(1)).schedule();
   }
 
   @Override

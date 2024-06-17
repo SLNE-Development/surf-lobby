@@ -47,11 +47,13 @@ public abstract class BukkitCommonLobbyInstance extends
     CommonListenerManager.INSTANCE.registerListeners();
 
     new SyncTask().runTaskTimerAsynchronously(getInstance(), 0, 20 * 5);
+    Bukkit.getScheduler().runTaskLater(getInstance(), this::afterEnable, 1);
+  }
 
-    Bukkit.getScheduler().runTaskLater(getInstance(), () -> {
-      SyncTask.sync();
-      new ReadyStateSync(true).call();
-    }, 1);
+  @OverridingMethodsMustInvokeSuper
+  public void afterEnable() {
+    SyncTask.sync();
+    new ReadyStateSync(true).call();
   }
 
   @OverridingMethodsMustInvokeSuper

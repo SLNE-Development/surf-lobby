@@ -1,7 +1,5 @@
 package dev.slne.surf.lobby.velocity.spring.redis.listener.lobby;
 
-import dev.slne.data.api.spring.redis.event.annotation.DataListener;
-import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.RequestSettingsEvent;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.RequestSettingsResponseEvent;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.CommunityServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.EventServerData;
@@ -9,15 +7,15 @@ import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.LobbyServe
 import dev.slne.surf.lobby.velocity.VelocityMain;
 import dev.slne.surf.lobby.velocity.config.VelocityConfig;
 import dev.slne.surf.lobby.velocity.config.VelocityPersistentData;
-import dev.slne.surf.lobby.velocity.util.LobbyUtil;
 import dev.slne.surf.lobby.velocity.sync.SyncValue;
+import dev.slne.surf.lobby.velocity.util.LobbyUtil;
 import org.apache.commons.collections4.map.ListOrderedMap;
 
 @dev.slne.data.api.spring.redis.event.annotation.DataListeners
-public final class SettingsManager {
+public final class SettingsSyncTask implements Runnable {
 
-  @DataListener(channels = {RequestSettingsEvent.CHANNEL})
-  public void onRequestCurrentServerState(RequestSettingsEvent __) {
+  @Override
+  public void run() {
     update();
   }
 
