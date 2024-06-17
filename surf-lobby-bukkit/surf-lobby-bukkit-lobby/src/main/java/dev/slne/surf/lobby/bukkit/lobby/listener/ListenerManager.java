@@ -1,6 +1,7 @@
 package dev.slne.surf.lobby.bukkit.lobby.listener;
 
 import dev.slne.surf.lobby.bukkit.lobby.BukkitMain;
+import dev.slne.surf.lobby.bukkit.lobby.listener.features.PlayerPushbackAttackListener;
 import dev.slne.surf.lobby.bukkit.lobby.listener.hotbar.DestroyPlayerHotbarListener;
 import dev.slne.surf.lobby.bukkit.lobby.listener.hotbar.HotbarItemClickEventListener;
 import dev.slne.surf.lobby.bukkit.lobby.listener.hotbar.PopulatePlayerHotbarListener;
@@ -24,6 +25,9 @@ public final class ListenerManager {
 
     register(new DoubleJumpListener());
     register(new PlayerAttackListener());
+
+//    Features
+    register(new PlayerPushbackAttackListener());
   }
 
   public void unregisterListeners() {
