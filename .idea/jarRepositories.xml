@@ -81,5 +81,20 @@
       <option name="name" value="maven10" />
       <option name="url" value="https://hub.jeff-media.com/nexus/repository/jeff-media-public/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven-proxy" />
+      <option name="name" value="maven-proxy" />
+      <option name="url" value="https://repo.slne.dev/repository/maven-proxy/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven-public" />
+      <option name="name" value="maven-public" />
+      <option name="url" value="https://repo.slne.dev/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven-snapshots" />
+      <option name="name" value="maven-snapshots" />
+      <option name="url" value="https://repo.slne.dev/repository/maven-snapshots/" />
+    </remote-repository>
   </component>
 </project>

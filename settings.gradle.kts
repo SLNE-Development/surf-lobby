@@ -3,14 +3,17 @@ pluginManagement {
     includeBuild("build-logic")
 }
 
-rootProject.name = "surf-server-selector"
-include(":surf-server-selector-api")
-include(":surf-server-selector-core")
-include(":surf-server-selector-bukkit")
-include(":surf-server-selector-velocity")
-include("surf-server-selector-bukkit:surf-server-selector-bukkit-common")
-findProject(":surf-server-selector-bukkit:surf-server-selector-bukkit-common")?.name = "surf-server-selector-bukkit-common"
-include("surf-server-selector-bukkit:surf-server-seloctor-bukkit-server")
-findProject(":surf-server-selector-bukkit:surf-server-seloctor-bukkit-server")?.name = "surf-server-seloctor-bukkit-server"
-include("surf-server-selector-bukkit:surf-server-selector-bukkit-lobby")
-findProject(":surf-server-selector-bukkit:surf-server-selector-bukkit-lobby")?.name = "surf-server-selector-bukkit-lobby"
+rootProject.name = "surf-lobby"
+
+// Core
+include(":surf-lobby-api")
+include(":surf-lobby-core")
+
+// Velocity
+include(":surf-lobby-velocity")
+
+// Bukkit
+include(":surf-lobby-bukkit")
+include(":surf-lobby-bukkit:surf-lobby-bukkit-common")
+include(":surf-lobby-bukkit:surf-lobby-bukkit-server")
+include(":surf-lobby-bukkit:surf-lobby-bukkit-lobby")

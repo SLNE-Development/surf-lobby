@@ -10,7 +10,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":surf-server-selector-core"))
+    api(project(":surf-lobby-core"))
 
     compileOnlyApi(libs.dev.slne.surf.api.bukkit.api)
     compileOnlyApi(libs.io.papermc.paper.api)
@@ -27,11 +27,11 @@ tasks {
 }
 
 paper {
-    name = "surf-server-selector-bukkit"
+    name = "surf-lobby-bukkit"
 
     main = "SHOULD_BE_CHANGED_BY_SUBPROJECTS"
-    bootstrapper = "dev.slne.surf.surfserverselector.bukkit.BukkitBootstrapper"
-    loader = "dev.slne.surf.surfserverselector.bukkit.BukkitLoader"
+    bootstrapper = "dev.slne.surf.lobby.bukkit.BukkitBootstrapper"
+    loader = "dev.slne.surf.lobby.bukkit.BukkitLoader"
     generateLibrariesJson = false
     apiVersion = "1.20"
 
