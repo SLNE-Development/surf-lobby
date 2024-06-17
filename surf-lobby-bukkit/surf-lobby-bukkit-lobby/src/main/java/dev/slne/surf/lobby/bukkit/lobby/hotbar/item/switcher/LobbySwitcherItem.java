@@ -11,8 +11,8 @@ import org.bukkit.inventory.meta.CompassMeta;
 
 public final class LobbySwitcherItem extends HotbarItem {
 
-  public LobbySwitcherItem(Player player) {
-    super(player, "lobby-switcher");
+  public LobbySwitcherItem() {
+    super("lobby-switcher", 4, false);
   }
 
   @Override
@@ -32,7 +32,7 @@ public final class LobbySwitcherItem extends HotbarItem {
   }
 
   @Override
-  public void onClick() {
+  public void onClick(Player player) {
     new LobbySwitcherGui().show(player);
   }
 }

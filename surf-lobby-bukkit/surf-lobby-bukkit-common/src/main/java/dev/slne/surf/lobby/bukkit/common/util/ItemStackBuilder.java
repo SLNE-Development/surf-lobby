@@ -2,6 +2,7 @@ package dev.slne.surf.lobby.bukkit.common.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import dev.slne.surf.surfapi.core.api.messages.Colors;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap.Entry;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -145,8 +146,16 @@ public class ItemStackBuilder {
     return this;
   }
 
-  public ItemStackBuilder withGlint() {
+  public ItemStackBuilder withGlint(boolean hideEnchants) {
+    if (hideEnchants) {
+      withItemFlag(ItemFlag.HIDE_ENCHANTS);
+    }
+
     return withEnchantment(Enchantment.LURE);
+  }
+
+  public ItemStackBuilder withGlint() {
+    return withGlint(true);
   }
 
   public ItemStackBuilder withItemFlag(@NotNull ItemFlag @NotNull ... itemFlag) {
@@ -168,6 +177,7 @@ public class ItemStackBuilder {
       if (lore != null) {
         meta.lore(lore.stream()
             .map(this::removeItalic)
+            .map(component -> component.colorIfAbsent(Colors.GRAY))
             .toList());
       }
 

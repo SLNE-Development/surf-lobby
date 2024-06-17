@@ -20,7 +20,7 @@ public final class HotbarItemClickEventListener implements Listener {
       return;
     }
 
-    if (PlayerHotbar.handleItemClick(event.getPlayer(), event.getItem())) {
+    if (PlayerHotbar.handleStaticItemClick(event.getPlayer(), event.getItem())) {
       event.setCancelled(true);
     }
   }
@@ -32,7 +32,7 @@ public final class HotbarItemClickEventListener implements Listener {
     }
 
     final ItemStack currentItem = event.getCurrentItem();
-    if (currentItem != null && PlayerHotbar.handleItemClick(clicker, currentItem)) {
+    if (currentItem != null && PlayerHotbar.handleStaticItemClick(clicker, currentItem)) {
       event.setCancelled(true);
     }
   }

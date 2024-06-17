@@ -13,8 +13,6 @@ public final class BukkitMain extends CommonBukkitMain {
   @Override
   public void onLoad() {
     super.onLoad();
-
-
   }
 
   @Override
