@@ -12,6 +12,7 @@ public class PlayerAttackListener implements Listener {
     if (event.getPlayer().hasPermission(Permissions.BYPASS_HUB_ATTACK_PERMISSION.getPermission())) {
       return;
     }
+
     event.setCancelled(true);
   }
 
