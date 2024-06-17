@@ -5,6 +5,7 @@ import dev.slne.surf.surfserverselector.bukkit.lobby.listener.hotbar.DestroyPlay
 import dev.slne.surf.surfserverselector.bukkit.lobby.listener.hotbar.HotbarItemClickEventListener;
 import dev.slne.surf.surfserverselector.bukkit.lobby.listener.hotbar.PopulatePlayerHotbarListener;
 import dev.slne.surf.surfserverselector.bukkit.lobby.listener.qole.DoubleJumpListener;
+import dev.slne.surf.surfserverselector.bukkit.lobby.listener.qole.PlayerAttackListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -22,6 +23,7 @@ public final class ListenerManager {
     register(new DestroyPlayerHotbarListener());
 
     register(new DoubleJumpListener());
+    register(new PlayerAttackListener());
   }
 
   public void unregisterListeners() {

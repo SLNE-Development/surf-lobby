@@ -5,19 +5,9 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
-
-    maven("https://packages.slne.dev/maven/p/surf/maven") { name = "space-maven" }
-    maven("https://repository.sonatype.org/content/groups/public/")
-    maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://repo.codemc.io/repository/maven-releases/")
-    maven("https://repo.codemc.io/repository/maven-snapshots/")
-    maven("https://oss.sonatype.org/content/repositories/snapshots/")
-    maven("https://jitpack.io")
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
-    maven("https://oss.sonatype.org/content/repositories/snapshots")
-    maven("https://repo.oraxen.com/releases")
-    maven("https://hub.jeff-media.com/nexus/repository/jeff-media-public/")
+    maven("https://repo.slne.dev/repository/maven-public/") { name = "maven-public" }
+    maven("https://repo.slne.dev/repository/maven-snapshots/") { name = "maven-snapshots" }
+    maven("https://repo.slne.dev/repository/maven-proxy/") { name = "maven-proxy" }
 }
 
 group = "dev.slne.surf"

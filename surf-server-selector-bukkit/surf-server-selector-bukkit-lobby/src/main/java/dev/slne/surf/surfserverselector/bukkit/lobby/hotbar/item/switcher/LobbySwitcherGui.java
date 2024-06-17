@@ -86,12 +86,12 @@ public final class LobbySwitcherGui extends ChestGui {
     item.editMeta(itemMeta -> {
 //      final CommunityServerData communityServerData = SettingManager.getCommunityServerData();
 
-      itemMeta.displayName(createNonItalicComponent("Community Server", Colors.PRIMARY));
+      itemMeta.displayName(createNonItalicComponent("Survival Server", Colors.PRIMARY));
       itemMeta.lore(createNonItalicLore(
-          text("Aktuell ist der Community Server nur", Colors.ERROR),
-          text("über ", Colors.ERROR)
-              .append(text("server.castcrafter.de", Colors.VARIABLE_VALUE))
-              .append(text(" erreichbar.", Colors.ERROR))
+          text("Der Server ist aktuell geschlossen!", Colors.ERROR),
+          text("Für Informationen zum Start der ", Colors.ERROR)
+              .append(text("1.21 Season", Colors.VARIABLE_VALUE))
+              .append(text(" besuche unseren Discord.", Colors.ERROR))
       ));
     });
 
