@@ -1,7 +1,7 @@
 package dev.slne.surf.lobby.bukkit.lobby.jnr.game.location;
 
 import dev.slne.surf.lobby.bukkit.lobby.jnr.config.JNRConfig;
-import dev.slne.surf.surfserverselector.bukkit.lobby.jnr.random.JNRRandomAccessor;
+import dev.slne.surf.lobby.bukkit.lobby.jnr.random.JNRRandomAccessor;
 import java.security.SecureRandom;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

@@ -2,8 +2,8 @@ package dev.slne.surf.lobby.bukkit.lobby.jnr.data;
 
 import com.jeff_media.morepersistentdatatypes.DataType;
 import dev.slne.surf.lobby.bukkit.lobby.jnr.data.type.Data;
-import dev.slne.surf.surfserverselector.bukkit.lobby.jnr.random.JNRRandomAccessor;
-import dev.slne.surf.surfserverselector.bukkit.lobby.jnr.registry.JNRBlockRegistry;
+import dev.slne.surf.lobby.bukkit.lobby.jnr.random.JNRRandomAccessor;
+import dev.slne.surf.lobby.bukkit.lobby.jnr.registry.JNRBlockRegistry;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
