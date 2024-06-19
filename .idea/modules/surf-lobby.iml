@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="AdditionalModuleElements">
+    <content url="file://$MODULE_DIR$/../.." dumb="true">
+      <excludeFolder url="file://$MODULE_DIR$/../../surf-server-selector-api/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../surf-server-selector-bukkit/surf-server-selector-bukkit-common/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../surf-server-selector-bukkit/surf-server-selector-bukkit-lobby/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../surf-server-selector-bukkit/surf-server-seloctor-bukkit-server/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../surf-server-selector-core/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../surf-server-selector-velocity/build" />
+    </content>
+  </component>
+</module>
