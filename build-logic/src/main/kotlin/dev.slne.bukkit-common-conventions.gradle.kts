@@ -18,10 +18,10 @@ dependencies {
 
 tasks {
     runServer {
-        minecraftVersion("1.20.4")
+        minecraftVersion("1.21")
 
         downloadPlugins {
-            modrinth("commandapi", "9.4.1")
+            modrinth("commandapi", "9.5.1")
             url("https://repo.slne.dev/service/rest/v1/search/assets/download?repository=maven-snapshots&group=dev.slne&name=surf-data-bukkit&sort=version&direction=desc")
         }
     }
@@ -34,10 +34,10 @@ paper {
     bootstrapper = "dev.slne.surf.lobby.bukkit.BukkitBootstrapper"
     loader = "dev.slne.surf.lobby.bukkit.BukkitLoader"
     generateLibrariesJson = false
-    apiVersion = "1.20"
+    apiVersion = "1.21"
 
     serverDependencies {
-        registerDepend("SurfBukkitAPI")
+        registerDepend("surf-bukkit-api")
         registerDepend("surf-data-bukkit")
         registerDepend("LuckPerms")
     }
