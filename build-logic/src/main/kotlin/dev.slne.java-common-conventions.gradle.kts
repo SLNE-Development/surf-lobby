@@ -11,7 +11,7 @@ repositories {
 }
 
 group = "dev.slne.surf"
-version = "1.0.0-SNAPSHOT"
+version = "1.21-1.0.0-SNAPSHOT"
 
 java {
     toolchain {
@@ -28,14 +28,7 @@ publishing {
         }
     }
     repositories {
-        maven {
-            name = "space-maven"
-            url = uri(System.getenv("REPOSITORY_URL") ?: "https://packages.slne.dev/maven/p/surf/maven")
-            credentials {
-                username = System.getenv("JB_SPACE_CLIENT_ID")
-                password = System.getenv("JB_SPACE_CLIENT_SECRET")
-            }
-        }
+        maven("https://repo.slne.dev/repository/maven-snapshots/") { name = "maven-snapshots" }
     }
 }
 

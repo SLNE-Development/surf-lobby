@@ -37,7 +37,7 @@ public final class DoubleJumpListener implements Listener {
     final Location loc = player.getLocation();
 
     player.setVelocity(direction.multiply(2).setY(1));
-    loc.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 10);
+    loc.getWorld().spawnParticle(Particle.EXPLOSION, loc, 10);
 
     player.setAllowFlight(false);
     player.setFlying(false);
