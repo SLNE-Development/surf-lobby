@@ -34,10 +34,10 @@ paper {
     bootstrapper = "dev.slne.surf.lobby.bukkit.BukkitBootstrapper"
     loader = "dev.slne.surf.lobby.bukkit.BukkitLoader"
     generateLibrariesJson = false
-    apiVersion = "1.21"
+    apiVersion = "1.20"
 
     serverDependencies {
-        registerDepend("surf-bukkit-api")
+        registerDepend("SurfBukkitAPI")
         registerDepend("surf-data-bukkit")
         registerDepend("LuckPerms")
     }

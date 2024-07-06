@@ -2,7 +2,7 @@ package dev.slne.surf.lobby.bukkit.lobby.instance;
 
 import dev.slne.surf.lobby.bukkit.common.instance.BukkitCommonLobbyInstance;
 import dev.slne.surf.lobby.bukkit.lobby.BukkitMain;
-import dev.slne.surf.lobby.bukkit.lobby.jnr.JNRManager;
+import dev.slne.surf.lobby.bukkit.lobby.jnr.JnrManager;
 import dev.slne.surf.lobby.bukkit.lobby.listener.ListenerManager;
 import dev.slne.surf.lobby.bukkit.lobby.scheduler.LobbyScheduler;
 import org.jetbrains.annotations.NotNull;
@@ -18,8 +18,6 @@ public final class BukkitLobbyInstance extends BukkitCommonLobbyInstance {
   public void onLoad() {
     super.onLoad();
 
-    JNRManager.INSTANCE.onLoad();
-
     scheduler = new LobbyScheduler();
   }
 
@@ -28,7 +26,7 @@ public final class BukkitLobbyInstance extends BukkitCommonLobbyInstance {
     super.onEnable();
 
     ListenerManager.INSTANCE.registerListeners();
-    JNRManager.INSTANCE.onEnable();
+    JnrManager.INSTANCE.generateJnr();
 
     scheduler.start();
   }
@@ -36,8 +34,6 @@ public final class BukkitLobbyInstance extends BukkitCommonLobbyInstance {
   @Override
   public void afterEnable() {
     super.afterEnable();
-
-    JNRManager.INSTANCE.afterEnable();
   }
 
   @Override
@@ -45,7 +41,6 @@ public final class BukkitLobbyInstance extends BukkitCommonLobbyInstance {
     super.onDisable();
 
     ListenerManager.INSTANCE.unregisterListeners();
-    JNRManager.INSTANCE.onDisable();
 
     scheduler.stop();
   }
