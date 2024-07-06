@@ -50,17 +50,23 @@ public interface LobbyPlayer {
    * action. Optionally falls back to the lobby server with the lowest player count.
    *
    * @param serverName                           the name of the server to change to; if null,
-   *                                             defaults to the lobby server with the lowest player
+   *                                                                                   defaults to
+   *                                             the lobby server with the lowest player
    *                                             count.
    * @param sendFeedback                         whether to send feedback to the player about the
-   *                                             server change.
+   *                                                                                      server
+   *                                             change.
    * @param fallbackToLobbyWithLowestPlayerCount whether to fall back to the lobby server with the
-   *                                             lowest player count if the specified lobby server
+   *                                                                                       lowest
+   *                                             player count if the specified lobby server
    *                                             is full.
    */
   void changeServer(@Nullable String serverName, boolean sendFeedback,
       boolean fallbackToLobbyWithLowestPlayerCount);
 
+  /**
+   * Transfer to lobby.
+   */
   default void transferToLobby() {
     changeServer(null, true);
   }
@@ -73,6 +79,20 @@ public interface LobbyPlayer {
   int getPriority(); // TODO: use luckperms group weight
 
   /**
+   * Gets queue position.
+   *
+   * @return the queue position
+   */
+  int getQueuePosition();
+
+  /**
+   * Sets queue position.
+   *
+   * @param position the position
+   */
+  void setQueuePosition(int position);
+
+  /**
    * Sends a message to the player.
    *
    * @param message the message to send to the player, must not be null.
@@ -81,6 +101,11 @@ public interface LobbyPlayer {
     this.getPlayer().ifPresent(player -> player.sendMessage(checkNotNull(message, "message")));
   }
 
+  /**
+   * Send action bar.
+   *
+   * @param message the message
+   */
   default void sendActionBar(@NotNull ComponentLike message) {
     this.getPlayer().ifPresent(player -> player.sendActionBar(message));
   }

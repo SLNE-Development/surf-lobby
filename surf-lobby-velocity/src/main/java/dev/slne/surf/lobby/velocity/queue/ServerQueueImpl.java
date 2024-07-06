@@ -33,7 +33,10 @@ public final class ServerQueueImpl implements ServerQueue, PlayerCountChangeList
       final LobbyPlayer player1 = LobbyApi.getPlayer(uuid1);
       final LobbyPlayer player2 = LobbyApi.getPlayer(uuid2);
 
-      return Integer.compare(player2.getPriority(), player1.getPriority());
+      int priorityCompare = Integer.compare(player1.getPriority(), player2.getPriority());
+      int queuePositionCompare = Integer.compare(player1.getQueuePosition(), player2.getQueuePosition());
+
+      return priorityCompare != 0 ? priorityCompare : queuePositionCompare;
     });
 
     SyncValue.MAX_PLAYER_COUNT.subscribe(this);

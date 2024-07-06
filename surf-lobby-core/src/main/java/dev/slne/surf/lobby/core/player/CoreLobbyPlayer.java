@@ -7,13 +7,14 @@ import net.luckperms.api.model.user.User;
 import org.jetbrains.annotations.Contract;
 
 /**
- * Abstract implementation of {@link LobbyPlayer} that provides core functionality
- * shared by all concrete player classes in different server environments.
+ * Abstract implementation of {@link LobbyPlayer} that provides core functionality shared by all
+ * concrete player classes in different server environments.
  */
 public abstract class CoreLobbyPlayer implements LobbyPlayer {
   private static final String PRIORITY_LEVEL_META_DATA = "priority";
 
   protected final UUID uuid;
+  private int currentQueuePosition = -1;
 
   /**
    * Constructs a new CoreLobbyPlayer with the specified UUID.
@@ -49,5 +50,15 @@ public abstract class CoreLobbyPlayer implements LobbyPlayer {
     }
 
     return -1;
+  }
+
+  @Override
+  public int getQueuePosition() {
+    return currentQueuePosition;
+  }
+
+  @Override
+  public void setQueuePosition(int position) {
+    this.currentQueuePosition = position;
   }
 }
