@@ -12,6 +12,7 @@ public final class SyncTask extends BukkitRunnable {
   }
 
   public static void sync() {
-    new MaxPlayerCountSync(Bukkit.getMaxPlayers()).call();
+    int maxPlayers = Bukkit.getMaxPlayers();
+    new MaxPlayerCountSync(maxPlayers).call();
   }
 }

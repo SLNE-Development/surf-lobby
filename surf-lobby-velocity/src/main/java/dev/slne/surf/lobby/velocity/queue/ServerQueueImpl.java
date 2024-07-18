@@ -7,6 +7,7 @@ import com.velocitypowered.api.proxy.server.RegisteredServer;
 import dev.slne.surf.lobby.api.LobbyApi;
 import dev.slne.surf.lobby.api.player.LobbyPlayer;
 import dev.slne.surf.lobby.api.queue.ServerQueue;
+import dev.slne.surf.lobby.core.util.SurfBlockingQueue;
 import dev.slne.surf.lobby.velocity.VelocityMain;
 import dev.slne.surf.lobby.velocity.sync.SyncValue;
 import dev.slne.surf.lobby.velocity.sync.SyncValue.PlayerCountChangeListener;
@@ -15,29 +16,19 @@ import dev.slne.surf.lobby.velocity.util.LobbyUtil;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.PriorityBlockingQueue;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 public final class ServerQueueImpl implements ServerQueue, PlayerCountChangeListener,
     ReadyStateChangeListener {
 
-  private final PriorityBlockingQueue<QueueEntry> queue;
+  private final SurfBlockingQueue<QueueEntry> queue;
   private final String serverName;
 
   @Contract(pure = true)
   public ServerQueueImpl(String serverName) {
     this.serverName = serverName;
-
-    queue = new PriorityBlockingQueue<>(50, (uuid1, uuid2) -> {
-      final LobbyPlayer player1 = LobbyApi.getPlayer(uuid1.uuid());
-      final LobbyPlayer player2 = LobbyApi.getPlayer(uuid2.uuid());
-
-      int priorityCompare = Integer.compare(player1.getPriority(), player2.getPriority());
-      int timeCompare = Long.compare(uuid1.timestamp(), uuid2.timestamp());
-
-      return (priorityCompare != 0 ? priorityCompare : timeCompare);
-    });
+    this.queue = new SurfBlockingQueue<>();
 
     SyncValue.MAX_PLAYER_COUNT.subscribe(this);
     SyncValue.READY_STATE.subscribe(this);
@@ -52,30 +43,22 @@ public final class ServerQueueImpl implements ServerQueue, PlayerCountChangeList
   public int getQueuePosition(@NotNull UUID uuid) {
     checkNotNull(uuid, "uuid");
 
-    final Object[] es = queue.toArray();
-
-    for (int i = 0, n = queue.size(); i < n; i++) {
-      if (uuid.equals(es[i])) {
-        return i;
-      }
-    }
-
-    return -1;
+    return queue.findIndexOf(entry -> entry.uuid().equals(uuid));
   }
 
   @Override
   public void addToQueue(@NotNull UUID uuid) {
-    queue.add(new QueueEntry(checkNotNull(uuid, "uuid")));
+    queue.push(new QueueEntry(checkNotNull(uuid, "uuid")));
   }
 
   @Override
   public void removeFromQueue(@NotNull UUID uuid) {
-    queue.removeIf(entry -> entry.uuid().equals(uuid));
+    queue.remove(entry -> entry.uuid().equals(uuid));
   }
 
   @Override
   public boolean isInQueue(UUID uuid) {
-    return queue.stream().anyMatch(entry -> entry.uuid().equals(uuid));
+    return queue.contains(entry -> entry.uuid().equals(uuid));
   }
 
   @Override
@@ -90,7 +73,7 @@ public final class ServerQueueImpl implements ServerQueue, PlayerCountChangeList
 
   @Override
   public Optional<UUID> poll() {
-    return Optional.ofNullable(queue.poll()).map(QueueEntry::uuid);
+    return queue.pop().map(QueueEntry::uuid);
   }
 
   @Override
@@ -134,9 +117,22 @@ public final class ServerQueueImpl implements ServerQueue, PlayerCountChangeList
     }
   }
 
-  private record QueueEntry(UUID uuid, long timestamp) {
+  private record QueueEntry(UUID uuid, long timestamp) implements Comparable<QueueEntry> {
     private QueueEntry(UUID uuid) {
       this(uuid, System.currentTimeMillis());
+    }
+
+    @Override
+    public int compareTo(@NotNull ServerQueueImpl.QueueEntry other) {
+      final LobbyPlayer player1 = LobbyApi.getPlayer(this.uuid());
+      final LobbyPlayer player2 = LobbyApi.getPlayer(other.uuid());
+
+      int player1PriorityValue = player1.getPriority();
+      int player2Priority = player2.getPriority();
+      int priorityCompare = -Integer.compare(player1PriorityValue, player2Priority);
+      int timeCompare = Long.compare(this.timestamp(), other.timestamp());
+
+      return (priorityCompare != 0 ? priorityCompare : timeCompare);
     }
   }
 }
