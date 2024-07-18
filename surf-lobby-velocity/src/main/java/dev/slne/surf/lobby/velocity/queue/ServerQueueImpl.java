@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 public final class ServerQueueImpl implements ServerQueue, PlayerCountChangeListener,
     ReadyStateChangeListener {
 
-  private final PriorityBlockingQueue<UUID> queue;
+  private final PriorityBlockingQueue<QueueEntry> queue;
   private final String serverName;
 
   @Contract(pure = true)
@@ -30,13 +30,13 @@ public final class ServerQueueImpl implements ServerQueue, PlayerCountChangeList
     this.serverName = serverName;
 
     queue = new PriorityBlockingQueue<>(50, (uuid1, uuid2) -> {
-      final LobbyPlayer player1 = LobbyApi.getPlayer(uuid1);
-      final LobbyPlayer player2 = LobbyApi.getPlayer(uuid2);
+      final LobbyPlayer player1 = LobbyApi.getPlayer(uuid1.uuid());
+      final LobbyPlayer player2 = LobbyApi.getPlayer(uuid2.uuid());
 
       int priorityCompare = Integer.compare(player1.getPriority(), player2.getPriority());
-      int queuePositionCompare = Integer.compare(player1.getQueuePosition(), player2.getQueuePosition());
+      int timeCompare = Long.compare(uuid1.timestamp(), uuid2.timestamp());
 
-      return priorityCompare != 0 ? priorityCompare : queuePositionCompare;
+      return (priorityCompare != 0 ? priorityCompare : timeCompare);
     });
 
     SyncValue.MAX_PLAYER_COUNT.subscribe(this);
@@ -65,22 +65,22 @@ public final class ServerQueueImpl implements ServerQueue, PlayerCountChangeList
 
   @Override
   public void addToQueue(@NotNull UUID uuid) {
-    queue.add(checkNotNull(uuid, "uuid"));
+    queue.add(new QueueEntry(checkNotNull(uuid, "uuid")));
   }
 
   @Override
   public void removeFromQueue(@NotNull UUID uuid) {
-    queue.remove(checkNotNull(uuid, "uuid"));
+    queue.removeIf(entry -> entry.uuid().equals(uuid));
   }
 
   @Override
   public boolean isInQueue(UUID uuid) {
-    return queue.contains(uuid);
+    return queue.stream().anyMatch(entry -> entry.uuid().equals(uuid));
   }
 
   @Override
   public Set<UUID> getPlayersInQueue() {
-    return ImmutableSet.copyOf(queue);
+    return ImmutableSet.copyOf(queue.stream().map(QueueEntry::uuid).iterator());
   }
 
   @Override
@@ -90,7 +90,7 @@ public final class ServerQueueImpl implements ServerQueue, PlayerCountChangeList
 
   @Override
   public Optional<UUID> poll() {
-    return Optional.ofNullable(queue.poll());
+    return Optional.ofNullable(queue.poll()).map(QueueEntry::uuid);
   }
 
   @Override
@@ -131,6 +131,12 @@ public final class ServerQueueImpl implements ServerQueue, PlayerCountChangeList
       for (int i = 0; i < SyncValue.MAX_PLAYER_COUNT.get(serverName); i++) {
         LobbyUtil.transferPlayerFromQueue(this);
       }
+    }
+  }
+
+  private record QueueEntry(UUID uuid, long timestamp) {
+    private QueueEntry(UUID uuid) {
+      this(uuid, System.currentTimeMillis());
     }
   }
 }
