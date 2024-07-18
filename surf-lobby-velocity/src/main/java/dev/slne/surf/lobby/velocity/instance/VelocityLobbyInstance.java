@@ -1,6 +1,7 @@
 package dev.slne.surf.lobby.velocity.instance;
 
 import dev.slne.surf.lobby.core.instance.CoreLobbyInstance;
+import dev.slne.surf.lobby.core.spring.redis.events.server.sync.RequestReadyStateSync;
 import dev.slne.surf.lobby.velocity.VelocityMain;
 import dev.slne.surf.lobby.velocity.command.CommandManager;
 import dev.slne.surf.lobby.velocity.config.VelocityConfig;
@@ -45,6 +46,7 @@ public final class VelocityLobbyInstance extends CoreLobbyInstance {
     CommandManager.INSTANCE.registerCommands();
     QueueDisplay.INSTANCE.setup(plugin.getServer(), plugin);
 
+    new RequestReadyStateSync(null).call();
     plugin.getServer().getScheduler().buildTask(plugin, new SettingsSyncTask()).repeat(Duration.ofSeconds(1)).schedule();
   }
 
