@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 
 @Plugin(
     id = "surf-lobby-velocity",
-    version = "1.21-1.1.0-SNAPSHOT",
+    version = "1.20.4-1.1.0-SNAPSHOT",
     description = "A plugin that allows players to select a server to connect to.",
     dependencies = {
         @Dependency(id = "luckperms"),

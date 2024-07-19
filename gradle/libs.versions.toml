@@ -1,5 +1,5 @@
 [versions]
-io-papermc-paper-api-version = "1.21-R0.1-SNAPSHOT"
+io-papermc-paper-api-version = "1.20.4-R0.1-SNAPSHOT"
 com-velocitypowered-velocity-api-version = "3.3.0-SNAPSHOT"
 dev-slne-data-api-version = "1.21-+"
 dev-slne-api-version = "1.21-+"
