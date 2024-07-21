@@ -79,20 +79,6 @@ public interface LobbyPlayer {
   int getPriority(); // TODO: use luckperms group weight
 
   /**
-   * Gets queue position.
-   *
-   * @return the queue position
-   */
-  int getQueuePosition();
-
-  /**
-   * Sets queue position.
-   *
-   * @param position the position
-   */
-  void setQueuePosition(int position);
-
-  /**
    * Sends a message to the player.
    *
    * @param message the message to send to the player, must not be null.

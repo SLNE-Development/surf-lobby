@@ -91,6 +91,7 @@ public final class LobbyUtil {
       final ServerQueue queue = LobbyApi.getInstance().getQueueRegistry()
           .getQueue(previousServerName);
 
+      LOGGER.error("Transferring player from queue of server {}.10111001101", previousServerName);
       transferPlayerFromQueue(queue);
     }
   }
@@ -108,11 +109,12 @@ public final class LobbyUtil {
 
     if (playerCount < maxPlayers) {
       queue.poll().ifPresent(uuid -> {
+        LOGGER.error("Transferring player {} from queue to server {}.awqEÄGÖhi", uuid, queueServerName);
         final LobbyPlayer player = LobbyApi.getPlayer(uuid);
         player.changeServer(queueServerName, true);
       });
     } else {
-      LOGGER.info("Server {} is full. No player will be transferred from the queue.",
+      LOGGER.error("Server {} is full. No player will be transferred from the queue.",
           queueServerName);
     }
   }

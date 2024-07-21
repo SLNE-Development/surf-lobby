@@ -16,6 +16,8 @@ public class SyncReceiveListener {
 
   @DataListener(channels = {MaxPlayerCountSync.CHANNEL})
   public void onMaxPlayerCountSync(MaxPlayerCountSync event) {
-    SyncValue.MAX_PLAYER_COUNT.sync(event.getServerName(), event.getMaxPlayerCount());
+    String serverName = event.getServerName();
+
+    SyncValue.MAX_PLAYER_COUNT.sync(serverName, event.getMaxPlayerCount());
   }
 }

@@ -6,7 +6,6 @@ public class MaxPlayerCountSync extends SyncEvent {
   private int maxPlayerCount;
 
   public MaxPlayerCountSync() {
-    super();
   }
 
   public MaxPlayerCountSync(int maxPlayerCount) {
