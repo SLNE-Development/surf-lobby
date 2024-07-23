@@ -16,12 +16,22 @@ public class SettingManager {
   private static CommunityServerData communityServerData = new CommunityServerData();
   private static ListOrderedMap<String, LobbyServerData> lobbyServerData = new ListOrderedMap<>();
 
+  private static EventServerData eventServerOneData = new EventServerData();
+  private static EventServerData eventServerTwoData = new EventServerData();
+  private static EventServerData eventServerThreeData = new EventServerData();
+  private static EventServerData eventServerFourData = new EventServerData();
+
   @DataListener(channels = {RequestSettingsResponseEvent.CHANNEL})
   public void onRequestCurrentServerStateResponse(
       @NotNull RequestSettingsResponseEvent event) {
     eventServerData = event.getEventServerData();
     communityServerData = event.getCommunityServerData();
     lobbyServerData = event.getLobbyServerData();
+
+    eventServerOneData = event.getEventServerOneData();
+    eventServerTwoData = event.getEventServerTwoData();
+    eventServerThreeData = event.getEventServerThreeData();
+    eventServerFourData = event.getEventServerFourData();
   }
 
   public static CommunityServerData getCommunityServerData() {
@@ -34,5 +44,21 @@ public class SettingManager {
 
   public static ListOrderedMap<String, LobbyServerData> getLobbyServerData() {
     return lobbyServerData;
+  }
+
+  public static EventServerData getEventServerOneData() {
+    return eventServerOneData;
+  }
+
+  public static EventServerData getEventServerTwoData() {
+    return eventServerTwoData;
+  }
+
+  public static EventServerData getEventServerThreeData() {
+    return eventServerThreeData;
+  }
+
+  public static EventServerData getEventServerFourData() {
+    return eventServerFourData;
   }
 }

@@ -8,6 +8,7 @@ import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import dev.slne.surf.lobby.api.LobbyApi;
 import dev.slne.surf.lobby.bukkit.common.settings.SettingManager;
 import dev.slne.surf.lobby.bukkit.lobby.BukkitMain;
+import dev.slne.surf.lobby.bukkit.lobby.hotbar.item.selector.SelectorGui;
 import dev.slne.surf.lobby.core.message.Messages;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.EventServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.LobbyServerData;
@@ -66,11 +67,59 @@ public final class LobbySwitcherGui extends ChestGui {
 
     item.editMeta(itemMeta -> {
       final EventServerData eventServerData = SettingManager.getEventServerData();
+      final EventServerData eventServerOneData = SettingManager.getEventServerOneData();
+      final EventServerData eventServerTwoData = SettingManager.getEventServerTwoData();
+      final EventServerData eventServerThreeData = SettingManager.getEventServerThreeData();
+      final EventServerData eventServerFourData = SettingManager.getEventServerFourData();
 
       final List<Component> lore = new ArrayList<>(3);
 
       if (eventServerData.isEventServerEnabled()) {
-        lore.add(createPlayersOnlineLore(eventServerData.getOnlinePlayers(), eventServerData.getMaxPlayers()));
+        int playersOnlineOne = eventServerOneData.getOnlinePlayers();
+        int maxPlayersOne = eventServerOneData.getMaxPlayers();
+        int playersOnlineTwo = eventServerTwoData.getOnlinePlayers();
+        int maxPlayersTwo = eventServerTwoData.getMaxPlayers();
+        int playersOnlineThree = eventServerThreeData.getOnlinePlayers();
+        int maxPlayersThree = eventServerThreeData.getMaxPlayers();
+        int playersOnlineFour = eventServerFourData.getOnlinePlayers();
+        int maxPlayersFour = eventServerFourData.getMaxPlayers();
+
+        int playersOnline = 0;
+        int maxPlayers = 0;
+
+        if(playersOnlineOne != -1) {
+          playersOnline += playersOnlineOne;
+        }
+
+        if(playersOnlineTwo != -1) {
+          playersOnline += playersOnlineTwo;
+        }
+
+        if(playersOnlineThree != -1) {
+          playersOnline += playersOnlineThree;
+        }
+
+        if(playersOnlineFour != -1) {
+          playersOnline += playersOnlineFour;
+        }
+
+        if(maxPlayersOne != -1) {
+          maxPlayers += maxPlayersOne;
+        }
+
+        if(maxPlayersTwo != -1) {
+          maxPlayers += maxPlayersTwo;
+        }
+
+        if(maxPlayersThree != -1) {
+          maxPlayers += maxPlayersThree;
+        }
+
+        if(maxPlayersFour != -1) {
+          maxPlayers += maxPlayersFour;
+        }
+
+        lore.add(createPlayersOnlineLore(playersOnline, maxPlayers));
         lore.add(empty());
       }
 
@@ -170,8 +219,8 @@ public final class LobbySwitcherGui extends ChestGui {
         Messages.EVENT_SERVER_DISABLED.send(player);
         return;
       }
-      LobbyApi.getPlayer(player.getUniqueId())
-          .changeServer(SettingManager.getEventServerData().getEventServerName(), true);
+
+      new SelectorGui().show(player);
     });
   }
 

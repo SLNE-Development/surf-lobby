@@ -14,16 +14,26 @@ public class RequestSettingsResponseEvent extends LobbyRedisEvent {
   private CommunityServerData communityServerData;
   private ListOrderedMap<String, LobbyServerData> lobbyServerData;
 
+  private EventServerData eventServerOneData;
+  private EventServerData eventServerTwoData;
+  private EventServerData eventServerThreeData;
+  private EventServerData eventServerFourData;
+
   public RequestSettingsResponseEvent() {
     super();
   }
 
-  public RequestSettingsResponseEvent(EventServerData eventServerData, CommunityServerData communityServerData, ListOrderedMap<String, LobbyServerData> lobbyServerData) {
+  public RequestSettingsResponseEvent(EventServerData eventServerData, CommunityServerData communityServerData, ListOrderedMap<String, LobbyServerData> lobbyServerData, EventServerData eventServerOneData, EventServerData eventServerTwoData, EventServerData eventServerThreeData, EventServerData eventServerFourData) {
     super(CHANNEL);
 
     this.eventServerData = eventServerData;
     this.communityServerData = communityServerData;
     this.lobbyServerData = lobbyServerData;
+
+    this.eventServerOneData = eventServerOneData;
+    this.eventServerTwoData = eventServerTwoData;
+    this.eventServerThreeData = eventServerThreeData;
+    this.eventServerFourData = eventServerFourData;
   }
 
   public EventServerData getEventServerData() {
@@ -36,5 +46,21 @@ public class RequestSettingsResponseEvent extends LobbyRedisEvent {
 
   public ListOrderedMap<String, LobbyServerData> getLobbyServerData() {
     return lobbyServerData;
+  }
+
+  public EventServerData getEventServerOneData() {
+    return eventServerOneData;
+  }
+
+  public EventServerData getEventServerTwoData() {
+    return eventServerTwoData;
+  }
+
+  public EventServerData getEventServerThreeData() {
+    return eventServerThreeData;
+  }
+
+  public EventServerData getEventServerFourData() {
+    return eventServerFourData;
   }
 }

@@ -37,7 +37,8 @@ paper {
     apiVersion = "1.20"
 
     serverDependencies {
-        registerDepend("SurfBukkitAPI")
+        registerSoft("SurfBukkitApi")
+        registerSoft("surf-bukkit-api")
         registerDepend("surf-data-bukkit")
         registerDepend("LuckPerms")
     }

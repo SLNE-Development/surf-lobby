@@ -35,6 +35,34 @@ public final class SettingsSyncTask implements Runnable {
         getOnlinePlayerCount(config.communityServerName())
     );
 
+    final EventServerData eventServerOneData = EventServerData.of(
+        config.currentEventServer(),
+        VelocityPersistentData.get().isEventServerEnabled(),
+        SyncValue.MAX_PLAYER_COUNT.get(config.currentEventServer() + "-1"),
+        getOnlinePlayerCount(config.currentEventServer() + "-1")
+    );
+
+    final EventServerData eventServerTwoData = EventServerData.of(
+        config.currentEventServer(),
+        VelocityPersistentData.get().isEventServerEnabled(),
+        SyncValue.MAX_PLAYER_COUNT.get(config.currentEventServer() + "-2"),
+        getOnlinePlayerCount(config.currentEventServer() + "-2")
+    );
+
+    final EventServerData eventServerThreeData = EventServerData.of(
+        config.currentEventServer(),
+        VelocityPersistentData.get().isEventServerEnabled(),
+        SyncValue.MAX_PLAYER_COUNT.get(config.currentEventServer() + "-3"),
+        getOnlinePlayerCount(config.currentEventServer() + "-3")
+    );
+
+    final EventServerData eventServerFourData = EventServerData.of(
+        config.currentEventServer(),
+        VelocityPersistentData.get().isEventServerEnabled(),
+        SyncValue.MAX_PLAYER_COUNT.get(config.currentEventServer() + "-4"),
+        getOnlinePlayerCount(config.currentEventServer() + "-4")
+    );
+
     final ListOrderedMap<String, LobbyServerData> lobbyServerNames = LobbyUtil.getAllLobbyServer()
         .stream()
         .map(server -> {
@@ -52,7 +80,11 @@ public final class SettingsSyncTask implements Runnable {
     new RequestSettingsResponseEvent(
         eventServerData,
         communityServerData,
-        lobbyServerNames
+        lobbyServerNames,
+        eventServerOneData,
+        eventServerTwoData,
+        eventServerThreeData,
+        eventServerFourData
     ).call();
   }
 
