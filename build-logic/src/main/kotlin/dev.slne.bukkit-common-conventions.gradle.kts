@@ -5,7 +5,7 @@ val libs = the<LibrariesForLibs>()
 plugins {
     id("dev.slne.java-library-conventions")
     id("dev.slne.java-shadow-conventions")
-    id("net.minecrell.plugin-yml.paper")
+    id("net.minecrell.plugin-yml.bukkit")
     id("xyz.jpenilla.run-paper")
 }
 
@@ -27,19 +27,27 @@ tasks {
     }
 }
 
-paper {
+bukkit {
     name = "surf-lobby-bukkit"
-
     main = "SHOULD_BE_CHANGED_BY_SUBPROJECTS"
-    bootstrapper = "dev.slne.surf.lobby.bukkit.BukkitBootstrapper"
-    loader = "dev.slne.surf.lobby.bukkit.BukkitLoader"
-    generateLibrariesJson = false
     apiVersion = "1.21"
-
-    serverDependencies {
-        registerDepend("surf-bukkit-api")
-        registerDepend("surf-data-bukkit")
-        registerDepend("LuckPerms")
-    }
+    authors = listOf("SLNE Development")
+    depend = arrayListOf("surf-bukkit-api", "surf-data-bukkit", "LuckPerms")
 }
+
+//paper {
+//    name = "surf-lobby-bukkit"
+//
+//    main = "SHOULD_BE_CHANGED_BY_SUBPROJECTS"
+//    bootstrapper = "dev.slne.surf.lobby.bukkit.BukkitBootstrapper"
+//    loader = "dev.slne.surf.lobby.bukkit.BukkitLoader"
+//    generateLibrariesJson = false
+//    apiVersion = "1.21"
+//
+//    serverDependencies {
+//        registerDepend("surf-bukkit-api")
+//        registerDepend("surf-data-bukkit")
+//        registerDepend("LuckPerms")
+//    }
+//}
 

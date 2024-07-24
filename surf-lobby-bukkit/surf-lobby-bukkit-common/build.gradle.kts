@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    paperLibrary(libs.org.apache.commons.commons.collections4)
+    implementation(libs.org.apache.commons.commons.collections4)
 }

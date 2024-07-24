@@ -4,10 +4,9 @@ plugins {
 
 dependencies {
     api(project(":surf-lobby-bukkit:surf-lobby-bukkit-common"))
-    paperLibrary(libs.org.apache.commons.commons.collections4)
+    implementation(libs.org.apache.commons.commons.collections4)
 }
 
-paper {
+bukkit {
     main = "dev.slne.surf.lobby.bukkit.server.BukkitMain"
-    generateLibrariesJson = true
 }
