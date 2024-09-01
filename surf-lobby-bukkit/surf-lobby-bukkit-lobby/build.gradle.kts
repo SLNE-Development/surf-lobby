@@ -5,7 +5,6 @@ plugins {
 dependencies {
     api(project(":surf-lobby-bukkit:surf-lobby-bukkit-common"))
 
-    paperLibrary(libs.com.github.stefvanschie.inventoryframework)
     compileOnly(libs.io.th0rgal.oraxen)
     paperLibrary(libs.org.apache.commons.commons.collections4)
 }
