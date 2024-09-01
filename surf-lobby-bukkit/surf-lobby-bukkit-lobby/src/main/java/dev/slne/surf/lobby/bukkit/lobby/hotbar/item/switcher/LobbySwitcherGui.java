@@ -9,6 +9,7 @@ import dev.slne.surf.lobby.api.LobbyApi;
 import dev.slne.surf.lobby.bukkit.common.settings.SettingManager;
 import dev.slne.surf.lobby.bukkit.lobby.BukkitMain;
 import dev.slne.surf.lobby.core.message.Messages;
+import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.CommunityServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.EventServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.LobbyServerData;
 import dev.slne.surf.lobby.core.util.ListUtil;
@@ -89,14 +90,12 @@ public final class LobbySwitcherGui extends ChestGui {
     final ItemStack item = createInvisibleItem();
 
     item.editMeta(itemMeta -> {
-//      final CommunityServerData communityServerData = SettingManager.getCommunityServerData();
+      final CommunityServerData communityServerData = SettingManager.getCommunityServerData();
 
       itemMeta.displayName(createNonItalicComponent("Survival Server", Colors.PRIMARY));
       itemMeta.lore(createNonItalicLore(
-          text("Der Server ist aktuell geschlossen!", Colors.ERROR),
-          text("Für Informationen zum Start der ", Colors.ERROR)
-              .append(text("1.21 Season", Colors.VARIABLE_VALUE))
-              .append(text(" besuche unseren Discord.", Colors.ERROR))
+          createPlayersOnlineLore(communityServerData.getOnlinePlayers(),
+              communityServerData.getMaxPlayers())
       ));
     });
 
@@ -178,10 +177,15 @@ public final class LobbySwitcherGui extends ChestGui {
   @Contract(pure = true)
   private @NotNull Consumer<InventoryClickEvent> switchCommunityServer() {
     return toPlayer(player -> {
-//      SurfServerSelectorApi.getPlayer(player.getUniqueId())
-//          .changeServer(SettingManager.getCommunityServer(), true);
+      if(!player.hasPermission("lobby.community.temp")) {
+        player.sendMessage(Component.text("Aktuell haben nur Veteranen Zugriff auf den Survival Server. Für weitere Informationen, besuche den Discord.", Colors.ERROR));
+        return;
+      }
 
-      Messages.COMMUNITY_SERVER_NOT_AVAILABLE.send(player, text("server.castcrafter.de"));
+      LobbyApi.getPlayer(player.getUniqueId())
+          .changeServer(SettingManager.getCommunityServerData().getCommunityServerName(), true);
+
+//      Messages.COMMUNITY_SERVER_NOT_AVAILABLE.send(player, text("server.castcrafter.de"));
     });
   }
 
