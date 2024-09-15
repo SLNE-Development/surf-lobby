@@ -9,9 +9,9 @@ import dev.slne.surf.lobby.api.LobbyApi;
 import dev.slne.surf.lobby.bukkit.common.settings.SettingManager;
 import dev.slne.surf.lobby.bukkit.lobby.BukkitMain;
 import dev.slne.surf.lobby.core.message.Messages;
-import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.CommunityServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.EventServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.LobbyServerData;
+import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.SurvivalServerData;
 import dev.slne.surf.lobby.core.util.ListUtil;
 import dev.slne.surf.surfapi.core.api.messages.Colors;
 import io.th0rgal.oraxen.api.OraxenItems;
@@ -29,6 +29,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 public final class LobbySwitcherGui extends ChestGui {
 
@@ -43,7 +44,7 @@ public final class LobbySwitcherGui extends ChestGui {
 
     // @formatter:off
     setupPane(createStaticPane(5, 0, 3, 3), createEventServerSwitchItem(), switchEventServer());
-    setupPane(createStaticPane(1, 0, 3, 3), createCommunityServerSwitchItem(), switchCommunityServer());
+    setupPane(createStaticPane(1, 0, 3, 3), createSurvivalServerSwitchItem(), switchSurvivalServer());
     setupPane(createStaticPane(0, 4, 3, 2), createLobbySwitchItem(0), switchLobby(0));
     setupPane(createStaticPane(3, 4, 3, 2), createLobbySwitchItem(1), switchLobby(1));
     setupPane(createStaticPane(6, 4, 3, 2), createLobbySwitchItem(2), switchLobby(2));
@@ -71,7 +72,8 @@ public final class LobbySwitcherGui extends ChestGui {
       final List<Component> lore = new ArrayList<>(3);
 
       if (eventServerData.isEventServerEnabled()) {
-        lore.add(createPlayersOnlineLore(eventServerData.getOnlinePlayers(), eventServerData.getMaxPlayers()));
+        lore.add(createPlayersOnlineLore(eventServerData.getOnlinePlayers(),
+            eventServerData.getMaxPlayers()));
         lore.add(empty());
       }
 
@@ -86,16 +88,22 @@ public final class LobbySwitcherGui extends ChestGui {
     return item;
   }
 
-  private ItemStack createCommunityServerSwitchItem() {
+  private ItemStack createSurvivalServerSwitchItem() {
     final ItemStack item = createInvisibleItem();
 
     item.editMeta(itemMeta -> {
-      final CommunityServerData communityServerData = SettingManager.getCommunityServerData();
+      final String displayName = "Survival Server";
+      final SurvivalServerData dataOne = SettingManager.getSurvivalServerDataOne();
+      final SurvivalServerData dataTwo = SettingManager.getSurvivalServerDataTwo();
 
-      itemMeta.displayName(createNonItalicComponent("Survival Server", Colors.PRIMARY));
+      final int onlinePlayers = dataOne.getOnlinePlayers() + dataTwo.getOnlinePlayers();
+      final int maxPlayers = dataOne.getMaxPlayers() + dataTwo.getMaxPlayers();
+
+
+      itemMeta.displayName(createNonItalicComponent(displayName, Colors.PRIMARY));
       itemMeta.lore(createNonItalicLore(
-          createPlayersOnlineLore(communityServerData.getOnlinePlayers(),
-              communityServerData.getMaxPlayers())
+          createPlayersOnlineLore(onlinePlayers, maxPlayers),
+          empty()
       ));
     });
 
@@ -123,7 +131,8 @@ public final class LobbySwitcherGui extends ChestGui {
     int playersOnline, maxPlayers;
 
     try {
-      final LobbyServerData lobbyServerData = SettingManager.getLobbyServerData().getValue(lobbyIndex);
+      final LobbyServerData lobbyServerData = SettingManager.getLobbyServerData()
+          .getValue(lobbyIndex);
 
       playersOnline = lobbyServerData.getOnlinePlayers();
       maxPlayers = lobbyServerData.getMaxPlayers();
@@ -174,19 +183,8 @@ public final class LobbySwitcherGui extends ChestGui {
     });
   }
 
-  @Contract(pure = true)
-  private @NotNull Consumer<InventoryClickEvent> switchCommunityServer() {
-    return toPlayer(player -> {
-      if(!player.hasPermission("lobby.community.temp")) {
-        player.sendMessage(Component.text("Aktuell haben nur Veteranen Zugriff auf den Survival Server. Für weitere Informationen, besuche den Discord.", Colors.ERROR));
-        return;
-      }
-
-      LobbyApi.getPlayer(player.getUniqueId())
-          .changeServer(SettingManager.getCommunityServerData().getCommunityServerName(), true);
-
-//      Messages.COMMUNITY_SERVER_NOT_AVAILABLE.send(player, text("server.castcrafter.de"));
-    });
+  private Consumer<InventoryClickEvent> switchSurvivalServer() {
+    return toPlayer(player -> new SurvivalServerGui().show(player));
   }
 
   @Contract(pure = true)
@@ -216,5 +214,71 @@ public final class LobbySwitcherGui extends ChestGui {
   @Contract(pure = true)
   private <T extends Cancellable> @NotNull Consumer<T> cancel() {
     return event -> event.setCancelled(true);
+  }
+
+  private class SurvivalServerGui extends ChestGui {
+
+    public SurvivalServerGui() {
+      super(6, "<shift:-46><glyph:survival_server_selector>", BukkitMain.getInstance());
+
+      setOnGlobalClick(cancel());
+      setOnGlobalDrag(cancel());
+
+      // @formatter:off
+      setupPane(createStaticPane(0, 0, 3, 3), createCommunityServerSwitchItem(1), switchSurvivalServer(1));
+      setupPane(createStaticPane(3, 0, 3, 3), createCommunityServerSwitchItem(2), switchSurvivalServer(2));
+      // @formatter:on
+    }
+
+    private ItemStack createCommunityServerSwitchItem(
+        @Range(from = 1, to = 2) int survivalServerId
+    ) {
+      final ItemStack item = createInvisibleItem();
+
+      item.editMeta(itemMeta -> {
+        final SurvivalServerData survivalServerData = getSurvivalServerData(survivalServerId);
+
+        itemMeta.displayName(
+            createNonItalicComponent("Survival Server " + survivalServerId, Colors.PRIMARY));
+        itemMeta.lore(createNonItalicLore(
+            createPlayersOnlineLore(survivalServerData.getOnlinePlayers(),
+                survivalServerData.getMaxPlayers())
+        ));
+      });
+
+      return item;
+    }
+
+    @Contract(pure = true)
+    private @NotNull Consumer<InventoryClickEvent> switchSurvivalServer(
+        @Range(from = 1, to = 2) int survivalServerId
+    ) {
+      return toPlayer(player -> {
+        if (!player.hasPermission("lobby.community.temp")) { // TODO: 15.09.2024 13:33 - needed?
+          player.sendMessage(Component.text(
+              "Aktuell haben nur Veteranen Zugriff auf den Survival Server. Für weitere Informationen, besuche den Discord.",
+              Colors.ERROR));
+          return;
+        }
+
+        final SurvivalServerData survivalServerData = getSurvivalServerData(survivalServerId);
+
+        LobbyApi.getPlayer(player.getUniqueId())
+            .changeServer(survivalServerData.getSurvivalServerName(), true);
+
+//      Messages.COMMUNITY_SERVER_NOT_AVAILABLE.send(player, text("server.castcrafter.de"));
+      });
+    }
+
+    private SurvivalServerData getSurvivalServerData(
+        @Range(from = 1, to = 2) int survivalServerId
+    ) {
+      return switch (survivalServerId) {
+        case 1 -> SettingManager.getSurvivalServerDataOne();
+        case 2 -> SettingManager.getSurvivalServerDataTwo();
+        default ->
+            throw new IllegalArgumentException("Invalid survival server ID: " + survivalServerId);
+      };
+    }
   }
 }

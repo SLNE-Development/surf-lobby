@@ -1,9 +1,9 @@
 package dev.slne.surf.lobby.velocity.spring.redis.listener.lobby;
 
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.RequestSettingsResponseEvent;
-import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.CommunityServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.EventServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.LobbyServerData;
+import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.SurvivalServerData;
 import dev.slne.surf.lobby.velocity.VelocityMain;
 import dev.slne.surf.lobby.velocity.config.VelocityConfig;
 import dev.slne.surf.lobby.velocity.config.VelocityPersistentData;
@@ -29,10 +29,16 @@ public final class SettingsSyncTask implements Runnable {
         getOnlinePlayerCount(config.currentEventServer())
     );
 
-    final CommunityServerData communityServerData = CommunityServerData.of(
+    final SurvivalServerData survivalServerDataOne = SurvivalServerData.of(
         config.communityServerName(),
         SyncValue.MAX_PLAYER_COUNT.get(config.communityServerName()),
         getOnlinePlayerCount(config.communityServerName())
+    );
+
+    final SurvivalServerData survivalServerDataTwo = SurvivalServerData.of(
+        config.secondaryCommunityServerName(),
+        SyncValue.MAX_PLAYER_COUNT.get(config.secondaryCommunityServerName()),
+        getOnlinePlayerCount(config.secondaryCommunityServerName())
     );
 
     final ListOrderedMap<String, LobbyServerData> lobbyServerNames = LobbyUtil.getAllLobbyServer()
@@ -51,7 +57,8 @@ public final class SettingsSyncTask implements Runnable {
 
     new RequestSettingsResponseEvent(
         eventServerData,
-        communityServerData,
+        survivalServerDataOne,
+        survivalServerDataTwo,
         lobbyServerNames
     ).call();
   }
