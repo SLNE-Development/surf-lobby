@@ -1,9 +1,9 @@
 package dev.slne.surf.lobby.core.spring.redis.events.server.lobby;
 
 import dev.slne.surf.lobby.core.spring.redis.events.LobbyRedisEvent;
-import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.CommunityServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.EventServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.LobbyServerData;
+import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.SurvivalServerData;
 import org.apache.commons.collections4.map.ListOrderedMap;
 
 public class RequestSettingsResponseEvent extends LobbyRedisEvent {
@@ -11,18 +11,25 @@ public class RequestSettingsResponseEvent extends LobbyRedisEvent {
   public static final String CHANNEL = "surf:lobby:request-settings-response";
 
   private EventServerData eventServerData;
-  private CommunityServerData communityServerData;
+  private SurvivalServerData survivalServerDataOne;
+  private SurvivalServerData survivalServerDataTwo;
   private ListOrderedMap<String, LobbyServerData> lobbyServerData;
 
   public RequestSettingsResponseEvent() {
     super();
   }
 
-  public RequestSettingsResponseEvent(EventServerData eventServerData, CommunityServerData communityServerData, ListOrderedMap<String, LobbyServerData> lobbyServerData) {
+  public RequestSettingsResponseEvent(
+      EventServerData eventServerData,
+      SurvivalServerData survivalServerDataOne,
+      SurvivalServerData survivalServerDataTwo,
+      ListOrderedMap<String, LobbyServerData> lobbyServerData
+  ) {
     super(CHANNEL);
 
     this.eventServerData = eventServerData;
-    this.communityServerData = communityServerData;
+    this.survivalServerDataOne = survivalServerDataOne;
+    this.survivalServerDataTwo = survivalServerDataTwo;
     this.lobbyServerData = lobbyServerData;
   }
 
@@ -30,8 +37,12 @@ public class RequestSettingsResponseEvent extends LobbyRedisEvent {
     return eventServerData;
   }
 
-  public CommunityServerData getCommunityServerData() {
-    return communityServerData;
+  public SurvivalServerData getCommunityServerDataOne() {
+    return survivalServerDataOne;
+  }
+
+  public SurvivalServerData getCommunityServerDataTwo() {
+    return survivalServerDataTwo;
   }
 
   public ListOrderedMap<String, LobbyServerData> getLobbyServerData() {

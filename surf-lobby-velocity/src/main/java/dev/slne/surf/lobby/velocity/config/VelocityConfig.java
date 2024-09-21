@@ -23,6 +23,10 @@ public interface VelocityConfig {
   @DefaultString("community-server")
   String communityServerName();
 
+  @ConfComments("The name of the secondary community server as defined in the velocity.toml file")
+  @DefaultString("community-server-2")
+  String secondaryCommunityServerName();
+
   static VelocityConfig get() {
     return SurfVelocityApi.get().getConfig(VelocityConfig.class);
   }
