@@ -21,8 +21,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Velocity-specific implementation of {@link CoreLobbyPlayer}, handling player actions
- * such as changing servers and sending messages within the Velocity proxy environment.
+ * Velocity-specific implementation of {@link CoreLobbyPlayer}, handling player actions such as
+ * changing servers and sending messages within the Velocity proxy environment.
  */
 public final class VelocityLobbyPlayer extends CoreLobbyPlayer {
 
@@ -178,8 +178,8 @@ public final class VelocityLobbyPlayer extends CoreLobbyPlayer {
 
       return server.getServer(serverName)
           .map(requestedServer -> {
-            final int playerCount = requestedServer.getPlayersConnected().size();
-            final int maxPlayers = SyncValue.MAX_PLAYER_COUNT.get(serverName);
+//            final int playerCount = requestedServer.getPlayersConnected().size();
+//            final int maxPlayers = SyncValue.MAX_PLAYER_COUNT.get(serverName);
             final Optional<ServerQueue> currentQueue = LobbyApi.getInstance()
                 .getQueueRegistry().getCurrentQueue(this);
 
@@ -207,7 +207,7 @@ public final class VelocityLobbyPlayer extends CoreLobbyPlayer {
               }
             }
 
-            if (maxPlayers == -1 || playerCount >= maxPlayers) {
+//            if (maxPlayers == -1 || playerCount >= maxPlayers) {
               if (player.hasPermission(Permissions.BYPASS_QUEUE_PERMISSION.getPermission())) {
                 return player.createConnectionRequest(requestedServer)
                     .connectWithIndication()
@@ -219,12 +219,12 @@ public final class VelocityLobbyPlayer extends CoreLobbyPlayer {
               LobbyApi.getInstance().getQueueRegistry().getQueue(serverName)
                   .addToQueue(this);
               return CompletableFuture.completedFuture(ChangeServerResult.QUEUE);
-            }
+//            }
 
-            return player.createConnectionRequest(requestedServer)
-                .connectWithIndication()
-                .thenApply(
-                    success -> success ? ChangeServerResult.SUCCESS : ChangeServerResult.ERROR);
+//            return player.createConnectionRequest(requestedServer)
+//                .connectWithIndication()
+//                .thenApply(
+//                    success -> success ? ChangeServerResult.SUCCESS : ChangeServerResult.ERROR);
           }).orElse(
               CompletableFuture.completedFuture(ChangeServerResult.COULD_NOT_ESTABLISH_CONNECTION));
     }).orElse(CompletableFuture.completedFuture(ChangeServerResult.PLAYER_NOT_ONLINE));

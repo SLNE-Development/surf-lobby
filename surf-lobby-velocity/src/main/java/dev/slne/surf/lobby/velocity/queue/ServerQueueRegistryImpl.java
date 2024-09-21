@@ -8,10 +8,12 @@ import dev.slne.surf.lobby.api.queue.ServerQueue;
 import dev.slne.surf.lobby.api.queue.ServerQueueRegistry;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 public final class ServerQueueRegistryImpl implements ServerQueueRegistry {
 
@@ -53,6 +55,11 @@ public final class ServerQueueRegistryImpl implements ServerQueueRegistry {
     return getQueues().entrySet().stream()
         .collect(Collectors.toMap(entry -> LobbyApi.getPlayer(entry.getKey()),
             Map.Entry::getValue));
+  }
+
+  @Override
+  public @Unmodifiable Set<ServerQueue> getGlobalQueues() {
+    return Set.copyOf(queues.asMap().values());
   }
 
   @Contract(value = "_ -> new", pure = true)
