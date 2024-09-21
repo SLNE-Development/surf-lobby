@@ -1,5 +1,6 @@
 package dev.slne.surf.lobby.velocity.util;
 
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import dev.slne.surf.lobby.api.LobbyApi;
@@ -111,7 +112,10 @@ public final class LobbyUtil {
       queue.poll().ifPresent(uuid -> {
         LOGGER.error("Transferring player {} from queue to server {}.awqEÄGÖhi", uuid, queueServerName);
         final LobbyPlayer player = LobbyApi.getPlayer(uuid);
-        player.changeServer(queueServerName, true);
+//        player.changeServer(queueServerName, true);
+
+        ((Player) player.getPlayer().orElseThrow()).createConnectionRequest(queuedServer)
+                .connectWithIndication();
       });
     } else {
       LOGGER.error("Server {} is full. No player will be transferred from the queue.",
@@ -127,5 +131,17 @@ public final class LobbyUtil {
         .filter(registeredServer -> registeredServer.getServerInfo().getName()
             .startsWith(lobbyServerPrefix))
         .toList();
+  }
+
+  public static int getCurrentPlayerCount(String serverName) {
+    final ProxyServer server = VelocityMain.getInstance().getServer();
+    final RegisteredServer serverInstance = server.getServer(serverName)
+        .orElseThrow(() -> new IllegalStateException("Server not found: " + serverName));
+
+    return getCurrentPlayerCount(serverInstance);
+  }
+
+  public static int getCurrentPlayerCount(RegisteredServer server) {
+    return server.getPlayersConnected().size();
   }
 }

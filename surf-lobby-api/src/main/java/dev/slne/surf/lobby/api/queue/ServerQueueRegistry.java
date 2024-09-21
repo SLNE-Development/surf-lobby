@@ -5,10 +5,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import dev.slne.surf.lobby.api.player.LobbyPlayer;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 /**
  * <b>Velocity only</b>
@@ -40,6 +42,11 @@ public interface ServerQueueRegistry {
   }
 
   default Map<LobbyPlayer, ServerQueue> getPlayerQueues() {
+    throw new UnsupportedOperationException("This method is not supported in this implementation.");
+  }
+
+  @Unmodifiable
+  default Set<ServerQueue> getGlobalQueues() {
     throw new UnsupportedOperationException("This method is not supported in this implementation.");
   }
 

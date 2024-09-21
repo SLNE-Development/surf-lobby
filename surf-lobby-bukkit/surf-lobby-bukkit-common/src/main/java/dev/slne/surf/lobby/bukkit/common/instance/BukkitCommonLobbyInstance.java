@@ -46,7 +46,7 @@ public abstract class BukkitCommonLobbyInstance extends
 
     CommonListenerManager.INSTANCE.registerListeners();
 
-    new SyncTask().runTaskTimerAsynchronously(getInstance(), 0, 20 * 5);
+    new SyncTask().runTaskTimerAsynchronously(getInstance(), 0, 20);
     Bukkit.getScheduler().runTaskLater(getInstance(), this::afterEnable, 1);
   }
 
