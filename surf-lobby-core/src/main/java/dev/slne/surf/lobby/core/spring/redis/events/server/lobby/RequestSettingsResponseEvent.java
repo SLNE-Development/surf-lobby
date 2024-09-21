@@ -37,11 +37,11 @@ public class RequestSettingsResponseEvent extends LobbyRedisEvent {
     return eventServerData;
   }
 
-  public SurvivalServerData getCommunityServerDataOne() {
+  public SurvivalServerData getSurvivalServerDataOne() {
     return survivalServerDataOne;
   }
 
-  public SurvivalServerData getCommunityServerDataTwo() {
+  public SurvivalServerData getSurvivalServerDataTwo() {
     return survivalServerDataTwo;
   }
 

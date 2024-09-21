@@ -21,8 +21,8 @@ public class SettingManager {
   public void onRequestCurrentServerStateResponse(
       @NotNull RequestSettingsResponseEvent event) {
     eventServerData = event.getEventServerData();
-    survivalServerDataOne = event.getCommunityServerDataOne();
-    survivalServerDataTwo = event.getCommunityServerDataTwo();
+    survivalServerDataOne = event.getSurvivalServerDataOne();
+    survivalServerDataTwo = event.getSurvivalServerDataTwo();
     lobbyServerData = event.getLobbyServerData();
   }
 

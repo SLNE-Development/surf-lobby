@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
@@ -43,19 +44,19 @@ public final class LobbySwitcherGui extends ChestGui {
     setOnGlobalDrag(cancel());
 
     // @formatter:off
-    setupPane(createStaticPane(5, 0, 3, 3), createEventServerSwitchItem(), switchEventServer());
-    setupPane(createStaticPane(1, 0, 3, 3), createSurvivalServerSwitchItem(), switchSurvivalServer());
-    setupPane(createStaticPane(0, 4, 3, 2), createLobbySwitchItem(0), switchLobby(0));
-    setupPane(createStaticPane(3, 4, 3, 2), createLobbySwitchItem(1), switchLobby(1));
-    setupPane(createStaticPane(6, 4, 3, 2), createLobbySwitchItem(2), switchLobby(2));
+    setupPane(this, createStaticPane(5, 0, 3, 3), createEventServerSwitchItem(), switchEventServer());
+    setupPane(this, createStaticPane(1, 0, 3, 3), createSurvivalServerSwitchItem(), switchSurvivalServer());
+    setupPane(this, createStaticPane(0, 4, 3, 2), createLobbySwitchItem(0), switchLobby(0));
+    setupPane(this, createStaticPane(3, 4, 3, 2), createLobbySwitchItem(1), switchLobby(1));
+    setupPane(this, createStaticPane(6, 4, 3, 2), createLobbySwitchItem(2), switchLobby(2));
     // @formatter:on
   }
 
-  private void setupPane(StaticPane pane, ItemStack item,
+  private void setupPane(ChestGui gui, StaticPane pane, ItemStack item,
       Consumer<InventoryClickEvent> clickHandler) {
     pane.fillWith(item, null, plugin);
     pane.setOnClick(clickHandler);
-    addPane(pane);
+    gui.addPane(pane);
   }
 
   @SuppressWarnings("SameParameterValue")
@@ -219,16 +220,17 @@ public final class LobbySwitcherGui extends ChestGui {
   private class SurvivalServerGui extends ChestGui {
 
     public SurvivalServerGui() {
-      super(6, "<shift:-46><glyph:survival_server_selector>", BukkitMain.getInstance());
+      super(3, "<shift:-46><glyph:survival_server_selector>", BukkitMain.getInstance());
 
       setOnGlobalClick(cancel());
       setOnGlobalDrag(cancel());
 
       // @formatter:off
-      setupPane(createStaticPane(0, 0, 3, 3), createCommunityServerSwitchItem(1), switchSurvivalServer(1));
-      setupPane(createStaticPane(3, 0, 3, 3), createCommunityServerSwitchItem(2), switchSurvivalServer(2));
+      setupPane(this, createStaticPane(0, 0, 3, 3), createCommunityServerSwitchItem(1), switchSurvivalServer(1));
+      setupPane(this, createStaticPane(5, 0, 3, 3), createCommunityServerSwitchItem(2), switchSurvivalServer(2));
       // @formatter:on
     }
+
 
     private ItemStack createCommunityServerSwitchItem(
         @Range(from = 1, to = 2) int survivalServerId
@@ -253,6 +255,38 @@ public final class LobbySwitcherGui extends ChestGui {
     private @NotNull Consumer<InventoryClickEvent> switchSurvivalServer(
         @Range(from = 1, to = 2) int survivalServerId
     ) {
+      if(survivalServerId == 2) {
+        return (event) -> new SwitchConfirmationGui(
+            List.of(
+                text("Möchtest diesen Server wirklich betreten?"),
+                text(""),
+                text("Wenn du vor dem 22.09.2024 auf dem Survival01 Server gespielt hast, "),
+                text("musst du mindestens einmal auf Survival01 joinen, um deine Items zu behalten."),
+                text(""),
+                text("Andernfalls werden deine Items auf ALLEN Servern überschrieben",
+                    NamedTextColor.RED, TextDecoration.BOLD),
+                text("und können auch vom Support nicht wiederhergestellt werden!", NamedTextColor.RED, TextDecoration.BOLD)
+            ),
+            executeSurvivalServerSwitch(survivalServerId)
+        ).show(event.getWhoClicked());
+      }
+
+      return executeSurvivalServerSwitch(survivalServerId);
+    }
+
+    private SurvivalServerData getSurvivalServerData(
+        @Range(from = 1, to = 2) int survivalServerId
+    ) {
+      return switch (survivalServerId) {
+        case 1 -> SettingManager.getSurvivalServerDataOne();
+        case 2 -> SettingManager.getSurvivalServerDataTwo();
+        default ->
+            throw new IllegalArgumentException("Invalid survival server ID: " + survivalServerId);
+      };
+    }
+
+    private @NotNull Consumer<InventoryClickEvent> executeSurvivalServerSwitch(
+        int survivalServerId) {
       return toPlayer(player -> {
         if (!player.hasPermission("lobby.community.temp")) { // TODO: 15.09.2024 13:33 - needed?
           player.sendMessage(Component.text(
@@ -268,17 +302,6 @@ public final class LobbySwitcherGui extends ChestGui {
 
 //      Messages.COMMUNITY_SERVER_NOT_AVAILABLE.send(player, text("server.castcrafter.de"));
       });
-    }
-
-    private SurvivalServerData getSurvivalServerData(
-        @Range(from = 1, to = 2) int survivalServerId
-    ) {
-      return switch (survivalServerId) {
-        case 1 -> SettingManager.getSurvivalServerDataOne();
-        case 2 -> SettingManager.getSurvivalServerDataTwo();
-        default ->
-            throw new IllegalArgumentException("Invalid survival server ID: " + survivalServerId);
-      };
     }
   }
 }

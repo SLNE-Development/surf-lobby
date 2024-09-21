@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServerQueueMover {
 
-  @Scheduled(fixedRate = 250L) // 4 players per second
+  @Scheduled(fixedRate = 1010L) // 1 player per second
   protected void moveIfFree() {
     for (final ServerQueue queue : LobbyApi.getInstance().getQueueRegistry().getGlobalQueues()) {
       final int playerCount = LobbyUtil.getCurrentPlayerCount((RegisteredServer) queue.getServer());
