@@ -13,16 +13,23 @@ import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.EventServe
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.LobbyServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.SurvivalServerData;
 import dev.slne.surf.lobby.core.util.ListUtil;
+import dev.slne.surf.proxy.api.ProxyApi;
+import dev.slne.surf.proxy.api.user.ProxyUser;
+import dev.slne.surf.proxy.api.user.playtime.Playtime;
 import dev.slne.surf.surfapi.core.api.messages.Colors;
 import io.th0rgal.oraxen.api.OraxenItems;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
+import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.sound.Sound.Emitter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -99,7 +106,6 @@ public final class LobbySwitcherGui extends ChestGui {
 
       final int onlinePlayers = dataOne.getOnlinePlayers() + dataTwo.getOnlinePlayers();
       final int maxPlayers = dataOne.getMaxPlayers() + dataTwo.getMaxPlayers();
-
 
       itemMeta.displayName(createNonItalicComponent(displayName, Colors.PRIMARY));
       itemMeta.lore(createNonItalicLore(
@@ -255,20 +261,35 @@ public final class LobbySwitcherGui extends ChestGui {
     private @NotNull Consumer<InventoryClickEvent> switchSurvivalServer(
         @Range(from = 1, to = 2) int survivalServerId
     ) {
-      if(survivalServerId == 2) {
-        return (event) -> new SwitchConfirmationGui(
-            List.of(
-                text("Möchtest diesen Server wirklich betreten?"),
-                text(""),
-                text("Wenn du vor dem 22.09.2024 auf dem Survival01 Server gespielt hast, "),
-                text("musst du mindestens einmal auf Survival01 joinen, um deine Items zu behalten."),
-                text(""),
-                text("Andernfalls werden deine Items auf ALLEN Servern überschrieben",
-                    NamedTextColor.RED, TextDecoration.BOLD),
-                text("und können auch vom Support nicht wiederhergestellt werden!", NamedTextColor.RED, TextDecoration.BOLD)
-            ),
-            executeSurvivalServerSwitch(survivalServerId)
-        ).show(event.getWhoClicked());
+      if (survivalServerId == 2) {
+
+        return (event) -> {
+          HumanEntity whoClicked = event.getWhoClicked();
+          UUID uuid = whoClicked.getUniqueId();
+
+          ProxyApi.getOrCreateUser(uuid).thenAccept(user -> {
+            Optional<Long> survivalPlaytime = user.getPlaytime("freebuild", "survival")
+                .map(Playtime::getPlaytime);
+            Optional<Long> survival01Playtime = user.getPlaytime("freebuild", "survival01")
+                .map(Playtime::getPlaytime);
+            Optional<Long> survival02Playtime = user.getPlaytime("freebuild", "survival02")
+                .map(Playtime::getPlaytime);
+
+            if (survivalPlaytime.isEmpty()
+                || survival01Playtime.isPresent()
+                || survival02Playtime.isPresent()) {
+              LobbyApi.getPlayer(uuid)
+                  .changeServer(SettingManager.getSurvivalServerDataTwo().getSurvivalServerName(),
+                      true);
+            } else {
+              Messages.SURVIVAL_2_NOT_SYNCED_YET.send(whoClicked);
+              whoClicked.playSound(Sound.sound().type(org.bukkit.Sound.BLOCK_NOTE_BLOCK_BASS).build(), Emitter.self());
+              whoClicked.getScheduler().run(BukkitMain.getInstance(), (scheduledTask) -> {
+                whoClicked.closeInventory();
+              }, null);
+            }
+          });
+        };
       }
 
       return executeSurvivalServerSwitch(survivalServerId);

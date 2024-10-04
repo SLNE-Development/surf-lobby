@@ -81,4 +81,6 @@ public interface Messages {
       .append(text("Der Event-Server ist jetzt "))
       .append(args[0])
       .append(text("!"));
+  ErrorMessage SURVIVAL_2_NOT_SYNCED_YET = args -> text()
+      .append(text("Deine Daten wurden noch nicht synchronisiert. Bitte betrete zuerst Survival01, um die automatische Synchronisation durchzuführen. Anschließend kannst du Survival02 betreten."));
 }
