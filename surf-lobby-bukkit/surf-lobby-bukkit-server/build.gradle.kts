@@ -10,4 +10,5 @@ dependencies {
 paper {
     main = "dev.slne.surf.lobby.bukkit.server.BukkitMain"
     generateLibrariesJson = true
+    foliaSupported = true
 }
