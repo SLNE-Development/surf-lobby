@@ -1,5 +1,7 @@
+import dev.slne.surf.surfapi.gradle.util.registerRequired
+
 plugins {
-    id("dev.slne.bukkit-common-conventions")
+    id("dev.slne.surf.surfapi.gradle.paper-plugin")
 }
 
 dependencies {
@@ -7,8 +9,12 @@ dependencies {
     paperLibrary(libs.org.apache.commons.commons.collections4)
 }
 
-paper {
-    main = "dev.slne.surf.lobby.bukkit.server.BukkitMain"
-    generateLibrariesJson = true
-    foliaSupported = true
+surfPaperPluginApi {
+    mainClass("dev.slne.surf.lobby.bukkit.server.BukkitMain")
+    foliaSupported(true)
+
+    serverDependencies {
+        registerRequired("surf-data-bukkit")
+        registerRequired("LuckPerms")
+    }
 }

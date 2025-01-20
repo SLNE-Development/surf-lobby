@@ -11,6 +11,7 @@ import dev.slne.surf.lobby.velocity.player.VelocityLobbyPlayerManager;
 import dev.slne.surf.lobby.velocity.queue.ServerQueueRegistryImpl;
 import dev.slne.surf.lobby.velocity.queue.display.QueueDisplay;
 import dev.slne.surf.lobby.velocity.spring.redis.listener.lobby.SettingsSyncTask;
+import dev.slne.surf.surfapi.core.api.config.SurfConfigApiKt;
 import dev.slne.surf.surfapi.velocity.api.SurfVelocityApi;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -27,7 +28,7 @@ public final class VelocityLobbyInstance extends CoreLobbyInstance {
   public void onLoad() {
     super.onLoad();
 
-    SurfVelocityApi.get().createConfig(VelocityConfig.class, getDataFolder(), "config.yml");
+    SurfConfigApiKt.getSurfConfigApi().createDazzlConfig(VelocityPersistentData.class, getDataFolder(), "config.yml");
     try {
       VelocityPersistentData.load();
     } catch (ConfigurateException e) {

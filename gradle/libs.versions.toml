@@ -1,12 +1,11 @@
 [versions]
-io-papermc-paper-api-version = "1.21-R0.1-SNAPSHOT"
+io-papermc-paper-api-version = "1.21.4-R0.1-SNAPSHOT"
 com-velocitypowered-velocity-api-version = "3.3.0-SNAPSHOT"
 dev-slne-data-api-version = "1.21-+"
 dev-slne-api-version = "1.21-+"
 dev-slne-surf-proxy-api-version = "1.21-+"
 net-luckperms-api-version = "5.4"
-me-devnatan-inventory-framework-version = "3.0.10"
-com-github-stefvanschie-inventoryframework-version = "0.10.14"
+com-github-stefvanschie-inventoryframework-version = "0.10.18"
 io-th0rgal-oraxen-version = "1.175.0"
 org-apache-commons-commons-collections4-version = "4.5.0-M1"
 
@@ -19,8 +18,6 @@ dev-slne-surf-api-bukkit-api = { module = "dev.slne.surf:surf-api-bukkit-api", v
 dev-slne-surf-api-velocity-api = { module = "dev.slne.surf:surf-api-velocity-api", version.ref = "dev-slne-api-version" }
 dev-slne-surf-proxy-api = { module = "dev.slne:surf-proxy-api", version.ref = "dev-slne-surf-proxy-api-version" }
 net-luckperms-api = { module = "net.luckperms:api", version.ref = "net-luckperms-api-version" }
-me-devnatan-inventory-framework-paper = { module = "me.devnatan:inventory-framework-platform-paper", version.ref = "me-devnatan-inventory-framework-version" }
-me-devnatan-inventory-framework-bukkit = { module = "me.devnatan:inventory-framework-platform-bukkit", version.ref = "me-devnatan-inventory-framework-version" }
 com-github-stefvanschie-inventoryframework = { module = "com.github.stefvanschie.inventoryframework:IF", version.ref = "com-github-stefvanschie-inventoryframework-version" }
 io-th0rgal-oraxen = { module = "io.th0rgal:oraxen", version.ref = "io-th0rgal-oraxen-version" }
 org-apache-commons-commons-collections4 = { module = "org.apache.commons:commons-collections4", version.ref = "org-apache-commons-commons-collections4-version" }

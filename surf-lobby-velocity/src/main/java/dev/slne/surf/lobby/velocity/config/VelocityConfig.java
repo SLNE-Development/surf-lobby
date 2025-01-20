@@ -1,5 +1,7 @@
 package dev.slne.surf.lobby.velocity.config;
 
+import dev.slne.surf.surfapi.core.api.SurfCoreApi;
+import dev.slne.surf.surfapi.core.api.config.SurfConfigApiKt;
 import dev.slne.surf.surfapi.velocity.api.SurfVelocityApi;
 import space.arim.dazzleconf.annote.ConfComments;
 import space.arim.dazzleconf.annote.ConfDefault.DefaultBoolean;
@@ -28,6 +30,6 @@ public interface VelocityConfig {
   String secondaryCommunityServerName();
 
   static VelocityConfig get() {
-    return SurfVelocityApi.get().getConfig(VelocityConfig.class);
+    return SurfConfigApiKt.getSurfConfigApi().getDazzlConfig(VelocityConfig.class);
   }
 }

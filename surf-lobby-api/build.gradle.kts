@@ -1,10 +1,8 @@
 plugins {
-    id("dev.slne.java-library-conventions")
-    id("dev.slne.java-shadow-conventions")
+    id("dev.slne.surf.surfapi.gradle.core")
 }
 
 dependencies {
-    compileOnlyApi(libs.dev.slne.surf.api.core.api)
-    compileOnlyApi(libs.dev.slne.data.api)
     compileOnlyApi(libs.net.luckperms.api)
+    compileOnlyApi(libs.dev.slne.data.api)
 }

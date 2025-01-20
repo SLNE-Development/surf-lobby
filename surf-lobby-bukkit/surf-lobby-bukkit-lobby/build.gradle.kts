@@ -1,6 +1,7 @@
+import dev.slne.surf.surfapi.gradle.util.registerRequired
 
 plugins {
-    id("dev.slne.bukkit-common-conventions")
+    id("dev.slne.surf.surfapi.gradle.paper-plugin")
 }
 
 dependencies {
@@ -11,12 +12,13 @@ dependencies {
     paperLibrary(libs.org.apache.commons.commons.collections4)
 }
 
-paper {
-    main = "dev.slne.surf.lobby.bukkit.lobby.BukkitMain"
-    generateLibrariesJson = true
+surfPaperPluginApi {
+    mainClass("dev.slne.surf.lobby.bukkit.lobby.BukkitMain")
 
     serverDependencies {
-        registerDepend("Oraxen")
-        registerDepend("surf-proxy-bukkit")
+        registerRequired("Oraxen")
+        registerRequired("surf-data-bukkit")
+        registerRequired("surf-proxy-bukkit")
+        registerRequired("LuckPerms")
     }
 }
