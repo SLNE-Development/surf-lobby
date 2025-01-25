@@ -28,7 +28,7 @@ public final class VelocityLobbyInstance extends CoreLobbyInstance {
   public void onLoad() {
     super.onLoad();
 
-    SurfConfigApiKt.getSurfConfigApi().createDazzlConfig(VelocityPersistentData.class, getDataFolder(), "config.yml");
+    SurfConfigApiKt.getSurfConfigApi().createDazzlConfig(VelocityConfig.class, getDataFolder(), "config.yml");
     try {
       VelocityPersistentData.load();
     } catch (ConfigurateException e) {

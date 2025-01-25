@@ -1,8 +1,6 @@
 package dev.slne.surf.lobby.velocity.config;
 
-import dev.slne.surf.surfapi.core.api.SurfCoreApi;
 import dev.slne.surf.surfapi.core.api.config.SurfConfigApiKt;
-import dev.slne.surf.surfapi.velocity.api.SurfVelocityApi;
 import space.arim.dazzleconf.annote.ConfComments;
 import space.arim.dazzleconf.annote.ConfDefault.DefaultBoolean;
 import space.arim.dazzleconf.annote.ConfDefault.DefaultString;
