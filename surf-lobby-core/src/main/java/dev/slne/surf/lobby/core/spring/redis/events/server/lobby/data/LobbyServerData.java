@@ -2,6 +2,7 @@ package dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data;
 
 import java.util.stream.Collector;
 import org.apache.commons.collections4.map.ListOrderedMap;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.jetbrains.annotations.NotNull;
 
 public class LobbyServerData implements Comparable<LobbyServerData> {
@@ -36,6 +37,11 @@ public class LobbyServerData implements Comparable<LobbyServerData> {
 
   public int getOnlinePlayers() {
     return onlinePlayers;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this);
   }
 
   public static Collector<LobbyServerData, ?, ListOrderedMap<String, LobbyServerData>> toMap() {
