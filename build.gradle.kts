@@ -12,7 +12,7 @@ buildscript {
 
 allprojects {
     group = "dev.slne.surf"
-    version = "1.21.4-1.2.0-SNAPSHOT"
+    version = "1.21.4-1.3.0-SNAPSHOT"
 
     repositories {
         slnePrivate()
