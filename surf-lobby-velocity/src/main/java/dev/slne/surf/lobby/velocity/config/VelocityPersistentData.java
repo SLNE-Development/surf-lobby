@@ -20,12 +20,24 @@ public class VelocityPersistentData {
   @Comment("Whether the event server is enabled")
   private boolean eventServerEnabled = false;
 
+  @Comment("Whether the BMBF server is enabled")
+  private boolean bmbfServerEnabled = false;
+
   public boolean isEventServerEnabled() {
     return eventServerEnabled;
   }
 
   public void setEventServerEnabled(boolean eventServerEnabled) {
     this.eventServerEnabled = eventServerEnabled;
+    SettingsSyncTask.update();
+  }
+
+  public boolean isBmbfServerEnabled() {
+    return bmbfServerEnabled;
+  }
+
+  public void setBmbfServerEnabled(boolean bmbfServerEnabled) {
+    this.bmbfServerEnabled = bmbfServerEnabled;
     SettingsSyncTask.update();
   }
 

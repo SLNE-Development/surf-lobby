@@ -15,6 +15,10 @@ public interface VelocityConfig {
   @DefaultString("event")
   String currentEventServer();
 
+  @ConfComments("The name of the BMBF server as defined in the velocity.toml file")
+  @DefaultString("bmbf-name")
+  String bmbfServerName();
+
   @ConfComments("Whether the event server is enabled")
   @DefaultBoolean(false)
   boolean eventServerEnabled();

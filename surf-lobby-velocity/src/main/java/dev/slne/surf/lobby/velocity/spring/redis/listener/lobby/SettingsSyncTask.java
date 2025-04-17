@@ -1,6 +1,7 @@
 package dev.slne.surf.lobby.velocity.spring.redis.listener.lobby;
 
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.RequestSettingsResponseEvent;
+import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.BmbfServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.EventServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.LobbyServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.SurvivalServerData;
@@ -27,6 +28,13 @@ public final class SettingsSyncTask implements Runnable {
         VelocityPersistentData.get().isEventServerEnabled(),
         SyncValue.MAX_PLAYER_COUNT.get(config.currentEventServer()),
         getOnlinePlayerCount(config.currentEventServer())
+    );
+
+    final BmbfServerData bmbfServerData = BmbfServerData.of(
+        config.bmbfServerName(),
+        VelocityPersistentData.get().isBmbfServerEnabled(),
+        SyncValue.MAX_PLAYER_COUNT.get(config.bmbfServerName()),
+        getOnlinePlayerCount(config.bmbfServerName())
     );
 
     final SurvivalServerData survivalServerDataOne = SurvivalServerData.of(
@@ -57,6 +65,7 @@ public final class SettingsSyncTask implements Runnable {
 
     new RequestSettingsResponseEvent(
         eventServerData,
+        bmbfServerData,
         survivalServerDataOne,
         survivalServerDataTwo,
         lobbyServerNames

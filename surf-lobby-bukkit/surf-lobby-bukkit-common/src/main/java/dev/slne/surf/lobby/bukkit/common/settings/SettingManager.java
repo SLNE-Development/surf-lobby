@@ -3,6 +3,7 @@ package dev.slne.surf.lobby.bukkit.common.settings;
 import dev.slne.data.api.spring.redis.event.annotation.DataListener;
 import dev.slne.data.api.spring.redis.event.annotation.DataListeners;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.RequestSettingsResponseEvent;
+import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.BmbfServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.EventServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.LobbyServerData;
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.SurvivalServerData;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 public class SettingManager {
 
   private static EventServerData eventServerData = new EventServerData();
+  private static BmbfServerData bmbfServerData = new BmbfServerData();
   private static SurvivalServerData survivalServerDataOne = new SurvivalServerData();
   private static SurvivalServerData survivalServerDataTwo = new SurvivalServerData();
   private static ListOrderedMap<String, LobbyServerData> lobbyServerData = new ListOrderedMap<>();
@@ -21,6 +23,7 @@ public class SettingManager {
   public void onRequestCurrentServerStateResponse(
       @NotNull RequestSettingsResponseEvent event) {
     eventServerData = event.getEventServerData();
+    bmbfServerData = event.getBmbfServerData();
     survivalServerDataOne = event.getSurvivalServerDataOne();
     survivalServerDataTwo = event.getSurvivalServerDataTwo();
     lobbyServerData = event.getLobbyServerData();
@@ -36,6 +39,10 @@ public class SettingManager {
 
   public static EventServerData getEventServerData() {
     return eventServerData;
+  }
+
+  public static BmbfServerData getBmbfServerData() {
+    return bmbfServerData;
   }
 
   public static ListOrderedMap<String, LobbyServerData> getLobbyServerData() {

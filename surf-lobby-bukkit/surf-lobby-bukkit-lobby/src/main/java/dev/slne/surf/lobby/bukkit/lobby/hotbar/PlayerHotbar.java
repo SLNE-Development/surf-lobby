@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import dev.slne.surf.lobby.bukkit.common.util.pdc.DataTypes;
 import dev.slne.surf.lobby.bukkit.lobby.hotbar.item.HotbarItem;
 import dev.slne.surf.lobby.bukkit.lobby.hotbar.item.PlayerPushbackItem;
+import dev.slne.surf.lobby.bukkit.lobby.hotbar.item.bmbf.BmbfSwitcherItem;
 import dev.slne.surf.lobby.bukkit.lobby.hotbar.item.switcher.LobbySwitcherItem;
 import dev.slne.surf.lobby.core.permissions.Permissions;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
@@ -52,6 +53,7 @@ public final class PlayerHotbar {
     inv.clear();
 
     item(new LobbySwitcherItem());
+    item(new BmbfSwitcherItem());
 
     if(player.hasPermission(Permissions.FEATURE_USE_PLAYER_PUSHBACK_ITEM.getPermission())) {
       item(new PlayerPushbackItem());

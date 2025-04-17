@@ -1,7 +1,9 @@
+import dev.slne.surf.surfapi.gradle.util.slnePrivate
+
 buildscript {
     repositories {
         gradlePluginPortal()
-        maven("https://repo.slne.dev/repository/maven-unsafe/") { name = "maven-unsafe" }
+        maven("https://repo.slne.dev/repository/maven-public/") { name = "maven-public" }
     }
     dependencies {
         classpath("dev.slne.surf:surf-api-gradle-plugin:1.21.4+")
@@ -9,7 +11,10 @@ buildscript {
 }
 
 allprojects {
-group = "dev.slne.surf"
+    group = "dev.slne.surf"
+    version = "1.21.4-1.2.0-SNAPSHOT"
 
-version = "1.21.4-1.2.0-SNAPSHOT"
+    repositories {
+        slnePrivate()
+    }
 }
