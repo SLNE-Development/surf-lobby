@@ -5,6 +5,7 @@ import static net.kyori.adventure.text.Component.text;
 
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import com.nexomc.nexo.api.NexoItems;
 import dev.slne.surf.lobby.api.LobbyApi;
 import dev.slne.surf.lobby.bukkit.common.settings.SettingManager;
 import dev.slne.surf.lobby.bukkit.lobby.BukkitMain;
@@ -14,10 +15,8 @@ import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.LobbyServe
 import dev.slne.surf.lobby.core.spring.redis.events.server.lobby.data.SurvivalServerData;
 import dev.slne.surf.lobby.core.util.ListUtil;
 import dev.slne.surf.proxy.api.ProxyApi;
-import dev.slne.surf.proxy.api.user.ProxyUser;
 import dev.slne.surf.proxy.api.user.playtime.Playtime;
 import dev.slne.surf.surfapi.core.api.messages.Colors;
-import io.th0rgal.oraxen.api.OraxenItems;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -152,7 +151,7 @@ public final class LobbySwitcherGui extends ChestGui {
   }
 
   private ItemStack createInvisibleItem() {
-    return OraxenItems.getItemById(INVISIBLE_ITEM_ID).build().clone();
+    return NexoItems.itemFromId(INVISIBLE_ITEM_ID).build().clone();
   }
 
   @SuppressWarnings("SameParameterValue")
@@ -283,7 +282,9 @@ public final class LobbySwitcherGui extends ChestGui {
                       true);
             } else {
               Messages.SURVIVAL_2_NOT_SYNCED_YET.send(whoClicked);
-              whoClicked.playSound(Sound.sound().type(org.bukkit.Sound.BLOCK_NOTE_BLOCK_BASS).build(), Emitter.self());
+              whoClicked.playSound(
+                  Sound.sound().type(org.bukkit.Sound.BLOCK_NOTE_BLOCK_BASS).build(),
+                  Emitter.self());
               whoClicked.getScheduler().run(BukkitMain.getInstance(), (scheduledTask) -> {
                 whoClicked.closeInventory();
               }, null);
