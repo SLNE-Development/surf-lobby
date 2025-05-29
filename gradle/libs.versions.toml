@@ -4,7 +4,8 @@ dev-slne-data-api-version = "1.21.4+"
 dev-slne-api-version = "1.21-+"
 dev-slne-surf-proxy-api-version = "1.21.4+"
 net-luckperms-api-version = "5.4"
-io-th0rgal-oraxen-version = "1.175.0"
+com-github-stefvanschie-inventoryframework-version = "0.10.18"
+nexo = "1.1.0"
 org-apache-commons-commons-collections4-version = "4.5.0-M1"
 
 [libraries]
@@ -13,5 +14,6 @@ dev-slne-data-api = { module = "dev.slne:surf-data-api", version.ref = "dev-slne
 dev-slne-surf-api-bukkit-api = { module = "dev.slne.surf:surf-api-bukkit-api", version.ref = "dev-slne-api-version" }
 dev-slne-surf-proxy-api = { module = "dev.slne:surf-proxy-api", version.ref = "dev-slne-surf-proxy-api-version" }
 net-luckperms-api = { module = "net.luckperms:api", version.ref = "net-luckperms-api-version" }
-io-th0rgal-oraxen = { module = "io.th0rgal:oraxen", version.ref = "io-th0rgal-oraxen-version" }
+com-github-stefvanschie-inventoryframework = { module = "com.github.stefvanschie.inventoryframework:IF", version.ref = "com-github-stefvanschie-inventoryframework-version" }
+nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
 org-apache-commons-commons-collections4 = { module = "org.apache.commons:commons-collections4", version.ref = "org-apache-commons-commons-collections4-version" }
