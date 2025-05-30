@@ -14,17 +14,16 @@ import org.bukkit.inventory.ItemFlag;
 public final class BmbfSwitcherItem extends HotbarItem {
 
   public BmbfSwitcherItem() {
-    super("bmbf-switcher", 5, false);
+    super("bmbf-switcher", 8, false);
   }
 
   @Override
   protected ItemStackBuilder buildItem() {
-    return ItemStackBuilder.create(Material.DIAMOND)
-        .withDisplayName(Component.text("Zukunftsenergie‑Event", Colors.PRIMARY))
+    return ItemStackBuilder.create(Material.COMPARATOR)
+        .withDisplayName(Component.text("Crafting-Challenge", Colors.PRIMARY))
         .withLore(
             Component.empty(),
-            Component.empty(),
-            Component.text("Baue die Energieversorgung", Colors.SECONDARY),
+            Component.text("Gestalte die Energieversorgung", Colors.SECONDARY),
             Component.text("der Zukunft in Minecraft!", Colors.SECONDARY),
             Component.empty(),
             Component.text("Teilnahme: ", Colors.VARIABLE_KEY)
@@ -36,9 +35,8 @@ public final class BmbfSwitcherItem extends HotbarItem {
             Component.empty(),
             Component.text("» Klicke, um beizutreten «", Colors.SUCCESS),
             Component.empty(),
-            Component.text("01.05.–15.09.2025", Colors.INFO),
-            Component.text("Veranstalter: BMBF", Colors.SECONDARY),
-            Component.empty(),
+            Component.text("30.05.–15.09.2025", Colors.INFO),
+            Component.text("Veranstalter: BMFTR", Colors.SECONDARY),
             Component.empty()
         )
         .withGlint()

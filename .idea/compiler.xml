@@ -5,6 +5,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Workspace.surf-lobby.surf-lobby-velocity.main" options="-parameters" />
       <module name="dev.slne.surf.surf-lobby.surf-lobby-api.main" options="-parameters" />
       <module name="dev.slne.surf.surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-common.main" options="-parameters" />
       <module name="dev.slne.surf.surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-lobby.main" options="-parameters" />

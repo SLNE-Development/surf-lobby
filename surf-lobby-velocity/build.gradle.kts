@@ -7,7 +7,6 @@ velocityPluginFile {
 
     pluginDependencies {
         register("luckperms")
-        register("surf-api-velocity")
         register("surf-data-velocity")
     }
 }

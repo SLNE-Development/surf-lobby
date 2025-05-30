@@ -84,10 +84,10 @@ public interface Messages {
   ErrorMessage SURVIVAL_2_NOT_SYNCED_YET = args -> text()
       .append(text("Deine Daten wurden noch nicht synchronisiert. Bitte betrete zuerst Survival01, um die automatische Synchronisation durchzuführen. Anschließend kannst du Survival02 betreten."));
 
-  SimpleErrorMessage BMBF_EVENT_NOT_STARTED_YET = () -> "Das BMBF-Event hat noch nicht begonnen!";
+  SimpleErrorMessage BMBF_EVENT_NOT_STARTED_YET = () -> "Das Event hat noch nicht begonnen!";
 
   SuccessMessage BMBF_EVENT_STARTED = args -> text()
-      .append(text("Der BMBF-Server ist jetzt "))
+      .append(text("Der BMFTR-Server ist jetzt "))
       .append(args[0])
       .append(text("!"));
 }
