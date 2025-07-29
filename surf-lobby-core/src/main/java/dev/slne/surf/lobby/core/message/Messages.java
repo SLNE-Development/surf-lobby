@@ -3,7 +3,6 @@ package dev.slne.surf.lobby.core.message;
 import static net.kyori.adventure.text.Component.text;
 
 import dev.slne.surf.lobby.core.message.MessageTypes.ErrorMessage;
-import dev.slne.surf.lobby.core.message.MessageTypes.InfoMessage;
 import dev.slne.surf.lobby.core.message.MessageTypes.SimpleErrorMessage;
 import dev.slne.surf.lobby.core.message.MessageTypes.SuccessMessage;
 
@@ -41,20 +40,10 @@ public interface Messages {
       .append(args[0])
       .append(text("!"));
 
-  InfoMessage JOINED_QUEUE = args -> text()
-      .append(text("Du bist nun in der Warteschlange für den Server "))
-      .append(args[0])
-      .append(text("!"));
-
   ErrorMessage COULD_NOT_ESTABLISH_CONNECTION_WITH_SERVER = args -> text()
       .append(text("Es konnte keine Verbindung zum Server "))
       .append(args[0])
       .append(text(" hergestellt werden!"));
-
-  ErrorMessage ALREADY_IN_QUEUE = args -> text()
-      .append(text("Du bist bereits in der Warteschlange für den Server "))
-      .append(args[0])
-      .append(text("!"));
 
   ErrorMessage LOBBY_SERVER_FULL = args -> text()
       .append(text("Der Lobby-Server "))
@@ -82,5 +71,6 @@ public interface Messages {
       .append(args[0])
       .append(text("!"));
   ErrorMessage SURVIVAL_2_NOT_SYNCED_YET = args -> text()
-      .append(text("Deine Daten wurden noch nicht synchronisiert. Bitte betrete zuerst Survival01, um die automatische Synchronisation durchzuführen. Anschließend kannst du Survival02 betreten."));
+      .append(text(
+          "Deine Daten wurden noch nicht synchronisiert. Bitte betrete zuerst Survival01, um die automatische Synchronisation durchzuführen. Anschließend kannst du Survival02 betreten."));
 }

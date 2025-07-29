@@ -3,7 +3,6 @@ package dev.slne.surf.lobby.core.permissions;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public enum Permissions {
-  BYPASS_QUEUE_PERMISSION("surf.lobby.queue.bypass"),
   BYPASS_PLAYER_LIMIT_PERMISSION("surf.lobby.player-limit.bypass"),
   BYPASS_HUB_ATTACK_PERMISSION("surf.lobby.hub.bypass.attack"),
   COMMAND_HUB_SELF("surf.lobby.command.hub.self"),

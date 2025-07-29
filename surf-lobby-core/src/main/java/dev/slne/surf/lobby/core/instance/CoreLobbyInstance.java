@@ -2,7 +2,6 @@ package dev.slne.surf.lobby.core.instance;
 
 import dev.slne.surf.lobby.api.instance.LobbyInstance;
 import dev.slne.surf.lobby.api.player.LobbyPlayerManager;
-import dev.slne.surf.lobby.api.queue.ServerQueueRegistry;
 import dev.slne.surf.lobby.core.player.CoreLobbyPlayerManager;
 import dev.slne.surf.lobby.core.spring.SurfLobbySpringApplication;
 import java.nio.file.Path;
@@ -14,13 +13,10 @@ public abstract class CoreLobbyInstance implements LobbyInstance {
 
   protected static final ComponentLogger LOGGER = ComponentLogger.logger("lobbyInstance");
   private final CoreLobbyPlayerManager playerManager;
-  private final ServerQueueRegistry queueRegistry;
-
   private ConfigurableApplicationContext context;
 
-  public CoreLobbyInstance(CoreLobbyPlayerManager playerManager, ServerQueueRegistry queueRegistry) {
+  public CoreLobbyInstance(CoreLobbyPlayerManager playerManager) {
     this.playerManager = playerManager;
-    this.queueRegistry = queueRegistry;
   }
 
   @OverridingMethodsMustInvokeSuper
@@ -45,11 +41,6 @@ public abstract class CoreLobbyInstance implements LobbyInstance {
   @Override
   public LobbyPlayerManager getPlayerManager() {
     return this.playerManager;
-  }
-
-  @Override
-  public ServerQueueRegistry getQueueRegistry() {
-    return this.queueRegistry;
   }
 
   protected abstract ClassLoader getClassLoader();

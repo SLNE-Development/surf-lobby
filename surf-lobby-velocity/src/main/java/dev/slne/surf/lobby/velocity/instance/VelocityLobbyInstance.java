@@ -8,11 +8,8 @@ import dev.slne.surf.lobby.velocity.config.VelocityConfig;
 import dev.slne.surf.lobby.velocity.config.VelocityPersistentData;
 import dev.slne.surf.lobby.velocity.listener.ListenerManager;
 import dev.slne.surf.lobby.velocity.player.VelocityLobbyPlayerManager;
-import dev.slne.surf.lobby.velocity.queue.ServerQueueRegistryImpl;
-import dev.slne.surf.lobby.velocity.queue.display.QueueDisplay;
 import dev.slne.surf.lobby.velocity.spring.redis.listener.lobby.SettingsSyncTask;
 import dev.slne.surf.surfapi.core.api.config.SurfConfigApiKt;
-import dev.slne.surf.surfapi.velocity.api.SurfVelocityApi;
 import java.nio.file.Path;
 import java.time.Duration;
 import org.spongepowered.configurate.ConfigurateException;
@@ -20,7 +17,7 @@ import org.spongepowered.configurate.ConfigurateException;
 public final class VelocityLobbyInstance extends CoreLobbyInstance {
 
   public VelocityLobbyInstance() {
-    super(new VelocityLobbyPlayerManager(), new ServerQueueRegistryImpl());
+    super(new VelocityLobbyPlayerManager());
   }
 
 
@@ -28,7 +25,8 @@ public final class VelocityLobbyInstance extends CoreLobbyInstance {
   public void onLoad() {
     super.onLoad();
 
-    SurfConfigApiKt.getSurfConfigApi().createDazzlConfig(VelocityConfig.class, getDataFolder(), "config.yml");
+    SurfConfigApiKt.getSurfConfigApi()
+        .createDazzlConfig(VelocityConfig.class, getDataFolder(), "config.yml");
     try {
       VelocityPersistentData.load();
     } catch (ConfigurateException e) {
@@ -45,17 +43,15 @@ public final class VelocityLobbyInstance extends CoreLobbyInstance {
 
     ListenerManager.INSTANCE.registerListeners();
     CommandManager.INSTANCE.registerCommands();
-    QueueDisplay.INSTANCE.setup(plugin.getServer(), plugin);
 
     new RequestReadyStateSync(null).call();
-    plugin.getServer().getScheduler().buildTask(plugin, new SettingsSyncTask()).repeat(Duration.ofSeconds(1)).schedule();
+    plugin.getServer().getScheduler().buildTask(plugin, new SettingsSyncTask())
+        .repeat(Duration.ofSeconds(1)).schedule();
   }
 
   @Override
   public void onDisable() {
     super.onDisable();
-
-    QueueDisplay.INSTANCE.destroy();
 
     try {
       VelocityPersistentData.save();
