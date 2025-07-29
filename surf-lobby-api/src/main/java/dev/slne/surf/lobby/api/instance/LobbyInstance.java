@@ -1,7 +1,6 @@
 package dev.slne.surf.lobby.api.instance;
 
 import dev.slne.surf.lobby.api.player.LobbyPlayerManager;
-import dev.slne.surf.lobby.api.queue.ServerQueueRegistry;
 import org.jetbrains.annotations.ApiStatus.NonExtendable;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -12,5 +11,4 @@ public interface LobbyInstance {
 
   LobbyPlayerManager getPlayerManager();
 
-  ServerQueueRegistry getQueueRegistry();
 }

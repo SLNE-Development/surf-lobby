@@ -1,6 +1,5 @@
 package dev.slne.surf.lobby.bukkit.common.instance;
 
-import dev.slne.surf.lobby.api.queue.ServerQueueRegistry;
 import dev.slne.surf.lobby.bukkit.CommonBukkitMain;
 import dev.slne.surf.lobby.bukkit.common.listener.CommonListenerManager;
 import dev.slne.surf.lobby.bukkit.common.player.BukkitLobbyPlayerManager;
@@ -19,7 +18,7 @@ public abstract class BukkitCommonLobbyInstance extends
     CoreLobbyInstance {
 
   public BukkitCommonLobbyInstance() {
-    super(new BukkitLobbyPlayerManager(), ServerQueueRegistry.createNoOp());
+    super(new BukkitLobbyPlayerManager());
   }
 
   @OverridingMethodsMustInvokeSuper
@@ -47,7 +46,8 @@ public abstract class BukkitCommonLobbyInstance extends
     CommonListenerManager.INSTANCE.registerListeners();
 
     new SyncTask().start();
-    Bukkit.getGlobalRegionScheduler().runDelayed(getInstance(), (scheduledTask -> this.afterEnable()), 1);
+    Bukkit.getGlobalRegionScheduler()
+        .runDelayed(getInstance(), (scheduledTask -> this.afterEnable()), 1);
   }
 
   @OverridingMethodsMustInvokeSuper
