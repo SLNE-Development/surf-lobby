@@ -2,14 +2,17 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-velocity/Workspace.surf-lobby.surf-lobby-velocity.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-velocity/Workspace.surf-lobby.surf-lobby-velocity.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-api/Workspace.surf-lobby.surf-lobby-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-api/Workspace.surf-lobby.surf-lobby-api.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-api/Workspace.surf-lobby.surf-lobby-api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-api/Workspace.surf-lobby.surf-lobby-api.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-core/Workspace.surf-lobby.surf-lobby-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-core/Workspace.surf-lobby.surf-lobby-core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-core/Workspace.surf-lobby.surf-lobby-core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-core/Workspace.surf-lobby.surf-lobby-core.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-velocity/Workspace.surf-lobby.surf-lobby-velocity.test.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-velocity/Workspace.surf-lobby.surf-lobby-velocity.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-api/dev.slne.surf.surf-lobby.surf-lobby-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-api/dev.slne.surf.surf-lobby.surf-lobby-api.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-bukkit/surf-lobby-bukkit-common/dev.slne.surf.surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-bukkit/surf-lobby-bukkit-common/dev.slne.surf.surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-common.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-bukkit/surf-lobby-bukkit-lobby/dev.slne.surf.surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-lobby.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-bukkit/surf-lobby-bukkit-lobby/dev.slne.surf.surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-lobby.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-bukkit/surf-lobby-bukkit-server/dev.slne.surf.surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-bukkit/surf-lobby-bukkit-server/dev.slne.surf.surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-server.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-core/dev.slne.surf.surf-lobby.surf-lobby-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-core/dev.slne.surf.surf-lobby.surf-lobby-core.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-velocity/dev.slne.surf.surf-lobby.surf-lobby-velocity.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-velocity/dev.slne.surf.surf-lobby.surf-lobby-velocity.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-api/surf-lobby.surf-lobby-api.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-api/surf-lobby.surf-lobby-api.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-api/surf-lobby.surf-lobby-api.test.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-api/surf-lobby.surf-lobby-api.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-bukkit/surf-lobby-bukkit-common/surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-bukkit/surf-lobby-bukkit-common/surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-common.main.iml" />
@@ -21,7 +24,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-core/surf-lobby.surf-lobby-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-core/surf-lobby.surf-lobby-core.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-core/surf-lobby.surf-lobby-core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-core/surf-lobby.surf-lobby-core.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-velocity/surf-lobby.surf-lobby-velocity.main.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-velocity/surf-lobby.surf-lobby-velocity.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/surf-lobby-velocity/surf-lobby.surf-lobby-velocity.test.iml" filepath="$PROJECT_DIR$/.idea/modules/surf-lobby-velocity/surf-lobby.surf-lobby-velocity.test.iml" />
     </modules>
   </component>
 </project>
