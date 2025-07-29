@@ -2,7 +2,6 @@ package dev.slne.surf.lobby.bukkit.lobby.instance;
 
 import dev.slne.surf.lobby.bukkit.common.instance.BukkitCommonLobbyInstance;
 import dev.slne.surf.lobby.bukkit.lobby.BukkitMain;
-import dev.slne.surf.lobby.bukkit.lobby.jnr.JnrManager;
 import dev.slne.surf.lobby.bukkit.lobby.listener.ListenerManager;
 import dev.slne.surf.lobby.bukkit.lobby.scheduler.LobbyScheduler;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +25,6 @@ public final class BukkitLobbyInstance extends BukkitCommonLobbyInstance {
     super.onEnable();
 
     ListenerManager.INSTANCE.registerListeners();
-    JnrManager.INSTANCE.generateJnr();
 
     scheduler.start();
   }
