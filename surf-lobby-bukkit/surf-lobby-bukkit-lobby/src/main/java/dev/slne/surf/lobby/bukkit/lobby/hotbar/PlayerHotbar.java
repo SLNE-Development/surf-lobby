@@ -5,7 +5,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import dev.slne.surf.lobby.bukkit.common.util.pdc.DataTypes;
 import dev.slne.surf.lobby.bukkit.lobby.hotbar.item.HotbarItem;
 import dev.slne.surf.lobby.bukkit.lobby.hotbar.item.PlayerPushbackItem;
-import dev.slne.surf.lobby.bukkit.lobby.hotbar.item.bmbf.BmbfSwitcherItem;
 import dev.slne.surf.lobby.bukkit.lobby.hotbar.item.switcher.LobbySwitcherItem;
 import dev.slne.surf.lobby.core.permissions.Permissions;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
@@ -53,9 +52,8 @@ public final class PlayerHotbar {
     inv.clear();
 
     item(new LobbySwitcherItem());
-    item(new BmbfSwitcherItem());
 
-    if(player.hasPermission(Permissions.FEATURE_USE_PLAYER_PUSHBACK_ITEM.getPermission())) {
+    if (player.hasPermission(Permissions.FEATURE_USE_PLAYER_PUSHBACK_ITEM.getPermission())) {
       item(new PlayerPushbackItem());
     }
   }
@@ -88,7 +86,7 @@ public final class PlayerHotbar {
 
       item.onClick(player);
 
-      if(item.isUpdatable()) {
+      if (item.isUpdatable()) {
         player.getInventory().setItem(item.getX(), item.buildWithKey().build());
       }
 
@@ -133,7 +131,8 @@ public final class PlayerHotbar {
       return Optional.empty();
     }
 
-    return Optional.ofNullable(meta.getPersistentDataContainer().get(HotbarItem.HOTBAR_ITEM_KEY, DataTypes.KEY));
+    return Optional.ofNullable(
+        meta.getPersistentDataContainer().get(HotbarItem.HOTBAR_ITEM_KEY, DataTypes.KEY));
   }
 
   /**

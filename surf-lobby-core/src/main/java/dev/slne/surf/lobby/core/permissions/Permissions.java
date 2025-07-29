@@ -8,7 +8,6 @@ public enum Permissions {
   COMMAND_HUB_SELF("surf.lobby.command.hub.self"),
   COMMAND_HUB_OTHERS("surf.lobby.command.hub.others"),
   COMMAND_SWITCH_EVENT_SERVER_STATE("surf.lobby.command.switch-event-server-state"),
-  COMMAND_SWITCH_BMBF_SERVER_STATE("surf.lobby.command.switch-bmbf-server-state"),
 
   FEATURE_USE_PLAYER_PUSHBACK_ATTACK("surf.lobby.feature.use.player-pushback-attack"),
   FEATURE_USE_PLAYER_PUSHBACK_ITEM("surf.lobby.feature.use.player-pushback-item"),

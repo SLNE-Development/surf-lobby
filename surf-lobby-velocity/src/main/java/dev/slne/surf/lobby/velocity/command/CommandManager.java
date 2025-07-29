@@ -2,7 +2,6 @@ package dev.slne.surf.lobby.velocity.command;
 
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.slne.surf.lobby.velocity.command.bmbf.SwitchBmbfServerState;
 import dev.slne.surf.lobby.velocity.command.event.SwitchEventServerState;
 import dev.slne.surf.lobby.velocity.command.test.TestCommand;
 import java.util.List;
@@ -16,8 +15,7 @@ public final class CommandManager {
   public CommandManager() {
     this.commands = List.of(
         new TestCommand("test-lobby-server-selector"),
-        new SwitchEventServerState("switch-event-server-state"),
-        new SwitchBmbfServerState("switch-bmbf-server-state")
+        new SwitchEventServerState("switch-event-server-state")
     );
   }
 
