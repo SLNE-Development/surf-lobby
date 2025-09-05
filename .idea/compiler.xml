@@ -21,6 +21,15 @@
       <module name="surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-server.test" options="-parameters" />
       <module name="surf-lobby.surf-lobby-core" options="-parameters" />
       <module name="surf-lobby.surf-lobby-core.test" options="-parameters" />
+      <module name="surf-lobby.surf-lobby-paper.surf-lobby-paper-common" options="-parameters" />
+      <module name="surf-lobby.surf-lobby-paper.surf-lobby-paper-common.main" options="-parameters" />
+      <module name="surf-lobby.surf-lobby-paper.surf-lobby-paper-common.test" options="-parameters" />
+      <module name="surf-lobby.surf-lobby-paper.surf-lobby-paper-lobby" options="-parameters" />
+      <module name="surf-lobby.surf-lobby-paper.surf-lobby-paper-lobby.main" options="-parameters" />
+      <module name="surf-lobby.surf-lobby-paper.surf-lobby-paper-lobby.test" options="-parameters" />
+      <module name="surf-lobby.surf-lobby-paper.surf-lobby-paper-server" options="-parameters" />
+      <module name="surf-lobby.surf-lobby-paper.surf-lobby-paper-server.main" options="-parameters" />
+      <module name="surf-lobby.surf-lobby-paper.surf-lobby-paper-server.test" options="-parameters" />
       <module name="surf-lobby.surf-lobby-velocity" options="-parameters" />
       <module name="surf-lobby.surf-lobby-velocity.test" options="-parameters" />
     </option>
