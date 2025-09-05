@@ -10,5 +10,6 @@ surfPaperPluginApi {
     mainClass("dev.slne.surf.lobby.paper.lobby.PaperMain")
     bootstrapper("dev.slne.surf.lobby.paper.lobby.PaperBootstrap")
     foliaSupported(true)
+    generateLibraryLoader(false)
     withCloudClientPaper()
 }
