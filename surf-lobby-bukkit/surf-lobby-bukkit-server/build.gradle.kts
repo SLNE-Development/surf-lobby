@@ -1,4 +1,4 @@
-import dev.slne.surf.surfapi.gradle.util.registerRequired
+import dev.slne.surf.surfapi.gradle.util.withSurfApiBukkit
 
 plugins {
     id("dev.slne.surf.surfapi.gradle.paper-plugin")
@@ -6,15 +6,15 @@ plugins {
 
 dependencies {
     api(project(":surf-lobby-bukkit:surf-lobby-bukkit-common"))
-    paperLibrary(libs.org.apache.commons.commons.collections4)
 }
 
 surfPaperPluginApi {
-    mainClass("dev.slne.surf.lobby.bukkit.server.BukkitMain")
+    mainClass("dev.slne.surf.lobby.bukkit.server.PaperMain")
+    bootstrapper("dev.slne.surf.lobby.bukkit.server.PaperBootstrap")
     foliaSupported(true)
+    withCloudClientPaper()
 
-    serverDependencies {
-        registerRequired("surf-data-bukkit")
-        registerRequired("LuckPerms")
+    runServer {
+        withSurfApiBukkit()
     }
 }

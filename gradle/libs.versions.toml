@@ -1,13 +1,5 @@
 [versions]
-dev-slne-data-api-version = "1.21+"
-dev-slne-surf-proxy-api-version = "1.21+"
-net-luckperms-api-version = "5.4"
-nexo = "1.9.0"
-org-apache-commons-commons-collections4-version = "4.5.0"
+nexo = "1.10.0"
 
 [libraries]
-dev-slne-data-api = { module = "dev.slne:surf-data-api", version.ref = "dev-slne-data-api-version" }
-dev-slne-surf-proxy-api = { module = "dev.slne.surf.proxy:surf-proxy-api", version.ref = "dev-slne-surf-proxy-api-version" }
-net-luckperms-api = { module = "net.luckperms:api", version.ref = "net-luckperms-api-version" }
 nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
-org-apache-commons-commons-collections4 = { module = "org.apache.commons:commons-collections4", version.ref = "org-apache-commons-commons-collections4-version" }

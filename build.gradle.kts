@@ -1,5 +1,3 @@
-import dev.slne.surf.surfapi.gradle.util.slnePrivate
-
 buildscript {
     repositories {
         gradlePluginPortal()
@@ -12,9 +10,5 @@ buildscript {
 
 allprojects {
     group = "dev.slne.surf"
-    version = "1.21.7-1.4.0-SNAPSHOT"
-
-    repositories {
-        slnePrivate()
-    }
+    version = findProperty("version") as String
 }
