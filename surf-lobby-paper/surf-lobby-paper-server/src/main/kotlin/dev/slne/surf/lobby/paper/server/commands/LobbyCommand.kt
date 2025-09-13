@@ -4,8 +4,8 @@ import com.github.shynixn.mccoroutine.folia.launch
 import dev.jorel.commandapi.kotlindsl.commandAPICommand
 import dev.jorel.commandapi.kotlindsl.playerExecutor
 import dev.slne.surf.cloud.api.common.player.toCloudPlayer
+import dev.slne.surf.lobby.paper.common.plugin
 import dev.slne.surf.lobby.paper.common.utils.PermissionRegistry
-import dev.slne.surf.lobby.paper.server.plugin
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 
 fun lobbyCommand() = commandAPICommand("lobby") {
@@ -21,10 +21,7 @@ fun lobbyCommand() = commandAPICommand("lobby") {
             if (!result.isSuccess) {
                 player.sendText {
                     appendPrefix()
-
-                    error("Du konntest nicht auf den Lobby-Server verbunden werden. Bitte versuche es später erneut. Grund: ")
                     append(result.message)
-                    error(".")
                 }
             }
         }
