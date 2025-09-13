@@ -10,6 +10,9 @@
       <module name="dev.slne.surf.surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-lobby.main" options="-parameters" />
       <module name="dev.slne.surf.surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-server.main" options="-parameters" />
       <module name="dev.slne.surf.surf-lobby.surf-lobby-core.main" options="-parameters" />
+      <module name="dev.slne.surf.surf-lobby.surf-lobby-paper.surf-lobby-paper-common.main" options="-parameters" />
+      <module name="dev.slne.surf.surf-lobby.surf-lobby-paper.surf-lobby-paper-lobby.main" options="-parameters" />
+      <module name="dev.slne.surf.surf-lobby.surf-lobby-paper.surf-lobby-paper-server.main" options="-parameters" />
       <module name="dev.slne.surf.surf-lobby.surf-lobby-velocity.main" options="-parameters" />
       <module name="surf-lobby.surf-lobby-api" options="-parameters" />
       <module name="surf-lobby.surf-lobby-api.test" options="-parameters" />

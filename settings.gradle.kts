@@ -4,3 +4,5 @@ rootProject.name = "surf-lobby"
 include(":surf-lobby-paper:surf-lobby-paper-common")
 include(":surf-lobby-paper:surf-lobby-paper-server")
 include(":surf-lobby-paper:surf-lobby-paper-lobby")
+
+include("surf-lobby-core")

@@ -5,3 +5,7 @@ plugins {
 surfRawPaperApi {
     withCloudClientPaper()
 }
+
+dependencies {
+    api(project(":surf-lobby-core"))
+}

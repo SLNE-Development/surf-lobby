@@ -1,29 +1,21 @@
+@file:Suppress("UnstableApiUsage")
+
 package dev.slne.surf.lobby.paper.lobby.features.pushback
 
-import dev.slne.surf.lobby.paper.common.ContextHolder
+import dev.slne.surf.lobby.paper.lobby.inventory.item.items.InventoryItemMeta
 import dev.slne.surf.lobby.paper.lobby.inventory.item.items.state.Statable
-import dev.slne.surf.lobby.paper.lobby.inventory.item.items.state.StateHolder
+import dev.slne.surf.lobby.paper.lobby.inventory.item.items.state.StateClass
 import dev.slne.surf.lobby.paper.lobby.inventory.item.items.state.StateInventoryItem
-import dev.slne.surf.surfapi.core.api.messages.adventure.buildText
-import dev.slne.surf.surfapi.core.api.util.toObjectList
+import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
+import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
-import org.springframework.beans.factory.getBean
+import org.bukkit.inventory.ItemType
 
-class PushbackItem(
-    slot: Int,
-    itemStack: ItemStack,
-    initialState: PushbackItemState = PushbackItemState.OFF,
-) : StateInventoryItem<PushbackItem.PushbackItemStateHolder, PushbackItem.PushbackItemState>(
-    slot,
-    itemStack,
-    PushbackItemStateHolder(
-        initialState
-    )
-) {
-    private val pushbackManager by lazy {
-        ContextHolder.context.getBean<PushbackManager>()
-    }
+@InventoryItemMeta(slot = 3)
+class PushbackItem(private val pushbackManager: PushbackManager) :
+    StateInventoryItem<PushbackItem.PushbackItemState.Companion, PushbackItem.PushbackItemState>(
+        PushbackItemState
+    ) {
 
     override fun onStateChange(
         player: Player,
@@ -31,46 +23,41 @@ class PushbackItem(
         newState: PushbackItemState
     ) {
         when (newState) {
-            PushbackItemState.ON -> pushbackManager.pushback.add(player.uniqueId)
-            PushbackItemState.OFF -> pushbackManager.pushback.remove(player.uniqueId)
+            PushbackItemState.ON -> pushbackManager.add(player.uniqueId)
+            PushbackItemState.OFF -> pushbackManager.remove(player.uniqueId)
         }
     }
 
-    class PushbackItemStateHolder(
-        override val initialState: PushbackItemState
-    ) : StateHolder<PushbackItemState> {
-        override var state: PushbackItemState = initialState
-
-        override fun getNextState(): PushbackItemState {
-            return when (state) {
-                PushbackItemState.ON -> PushbackItemState.OFF
-                PushbackItemState.OFF -> PushbackItemState.ON
-            }
+    override fun supplyItemStack(player: Player) = ItemType.ENDER_EYE.createItemStack().apply {
+        displayName {
+            variableValue("Pushback")
         }
 
-        override fun getPreviousState(): PushbackItemState {
-            return when (state) {
-                PushbackItemState.ON -> PushbackItemState.OFF
-                PushbackItemState.OFF -> PushbackItemState.ON
+        buildLore {
+            emptyLine()
+            line {
+                info("Stößt andere zurück, wenn sie zu Nahe kommen.")
+            }
+            emptyLine()
+            line {
+                append(stateClass.buildStateText(player.uniqueId))
             }
         }
-
-        override fun getAllStates() = PushbackItemState.entries.toObjectList()
     }
+
 
     enum class PushbackItemState : Statable {
         ON {
-            override fun asComponent() = buildText {
-                primary("Pushback: ")
-                success("An")
-            }
+            override val displayName = "An"
         },
         OFF {
-            override fun asComponent() = buildText {
-                primary("Pushback: ")
-                error("Aus")
-            }
+            override val displayName = "Aus"
         };
-    }
 
+        companion object : StateClass<PushbackItemState>() {
+            override val allStates = entries
+            override val statePrefix = "Pushback"
+            override val initialState = OFF
+        }
+    }
 }

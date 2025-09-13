@@ -1,29 +1,21 @@
 package dev.slne.surf.lobby.paper.lobby.inventory
 
-import dev.slne.surf.cloud.api.common.util.freeze
-import dev.slne.surf.cloud.api.common.util.mutableObjectSetOf
 import dev.slne.surf.lobby.paper.lobby.inventory.item.InventoryItem
 import dev.slne.surf.lobby.paper.lobby.inventory.item.InventoryItemAction
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.stereotype.Component
 
 @Component
-class InventoryProvider {
-
-    private val _items = mutableObjectSetOf<InventoryItem>()
-    val items get() = _items.freeze()
-
-    fun registerItem(item: InventoryItem) {
-        _items += item
-    }
+class InventoryProvider(private val items: ObjectProvider<InventoryItem>) {
 
     fun provide(player: Player) {
         clear(player)
 
         items.forEach {
-            player.inventory.setItem(it.slot, it.itemStack.clone())
+            player.inventory.setItem(it.meta.slot, it.buildItemStack(player))
         }
     }
 

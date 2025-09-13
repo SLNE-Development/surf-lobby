@@ -14,9 +14,10 @@ import org.springframework.stereotype.Component
 class DoubleJumpListener : Listener {
     @EventHandler
     fun onPlayerMove(event: PlayerMoveEvent) {
+        if (!event.hasExplicitlyChangedBlock()) return
         val player = event.getPlayer()
 
-        if (player.gameMode != GameMode.CREATIVE && player.location.block.getRelative(BlockFace.DOWN).type != Material.AIR && !player.isFlying) {
+        if (player.gameMode != GameMode.CREATIVE && player.location.block.getRelative(BlockFace.DOWN).isEmpty && !player.isFlying) {
             player.allowFlight = true
         }
     }

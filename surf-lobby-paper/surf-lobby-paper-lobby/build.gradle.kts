@@ -7,8 +7,8 @@ dependencies {
 }
 
 surfPaperPluginApi {
-    mainClass("dev.slne.surf.lobby.paper.lobby.PaperMain")
-    bootstrapper("dev.slne.surf.lobby.paper.lobby.PaperBootstrap")
+    mainClass("dev.slne.surf.lobby.paper.common.PaperMain")
+    bootstrapper("dev.slne.surf.lobby.paper.common.PaperBootstrap")
     foliaSupported(true)
     generateLibraryLoader(false)
     withCloudClientPaper()
