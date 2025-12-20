@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.paper.common.utils
+package dev.slne.surf.lobby.utils
 
 import dev.slne.surf.surfapi.bukkit.api.permission.PermissionRegistry
 
@@ -11,5 +11,4 @@ object PermissionRegistry : PermissionRegistry() {
 
     val PUSHBACK_ATTACK = create("$PREFIX.pushback.attack")
     val PUSHBACK_ITEM = create("$PREFIX.pushback.item")
-
 }

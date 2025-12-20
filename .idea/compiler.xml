@@ -14,6 +14,8 @@
       <module name="dev.slne.surf.surf-lobby.surf-lobby-paper.surf-lobby-paper-lobby.main" options="-parameters" />
       <module name="dev.slne.surf.surf-lobby.surf-lobby-paper.surf-lobby-paper-server.main" options="-parameters" />
       <module name="dev.slne.surf.surf-lobby.surf-lobby-velocity.main" options="-parameters" />
+      <module name="surf-lobby" options="-parameters" />
+      <module name="surf-lobby.main" options="-parameters" />
       <module name="surf-lobby.surf-lobby-api" options="-parameters" />
       <module name="surf-lobby.surf-lobby-api.test" options="-parameters" />
       <module name="surf-lobby.surf-lobby-bukkit.surf-lobby-bukkit-common" options="-parameters" />
@@ -35,6 +37,7 @@
       <module name="surf-lobby.surf-lobby-paper.surf-lobby-paper-server.test" options="-parameters" />
       <module name="surf-lobby.surf-lobby-velocity" options="-parameters" />
       <module name="surf-lobby.surf-lobby-velocity.test" options="-parameters" />
+      <module name="surf-lobby.test" options="-parameters" />
     </option>
   </component>
 </project>

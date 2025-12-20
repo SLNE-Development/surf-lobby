@@ -1,14 +1,11 @@
-buildscript {
-    repositories {
-        gradlePluginPortal()
-        maven("https://repo.slne.dev/repository/maven-public/") { name = "maven-public" }
-    }
-    dependencies {
-        classpath("dev.slne.surf:surf-api-gradle-plugin:1.21.8+")
-    }
+plugins {
+    id("dev.slne.surf.surfapi.gradle.paper-plugin")
 }
 
-allprojects {
-    group = "dev.slne.surf"
-    version = findProperty("version") as String
+surfPaperPluginApi {
+    mainClass("dev.slne.surf.lobby.PaperMain")
+    generateLibraryLoader(false)
+    foliaSupported(true)
+
+    authors.add("red")
 }

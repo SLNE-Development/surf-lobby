@@ -1,16 +1,13 @@
-package dev.slne.surf.lobby.paper.lobby.features
+package dev.slne.surf.lobby.doublejump
 
 import org.bukkit.GameMode
-import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.block.BlockFace
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerToggleFlightEvent
-import org.springframework.stereotype.Component
 
-@Component
 class DoubleJumpListener : Listener {
     @EventHandler
     fun onPlayerMove(event: PlayerMoveEvent) {

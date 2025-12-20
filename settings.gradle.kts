@@ -1,8 +1,11 @@
 rootProject.name = "surf-lobby"
 
-// Bukkit
-include(":surf-lobby-paper:surf-lobby-paper-common")
-include(":surf-lobby-paper:surf-lobby-paper-server")
-include(":surf-lobby-paper:surf-lobby-paper-lobby")
-
-include("surf-lobby-core")
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        maven("https://repo.slne.dev/repository/maven-public/") { name = "maven-public" }
+    }
+    dependencies {
+        classpath("dev.slne.surf:surf-api-gradle-plugin:1.21.11+")
+    }
+}
