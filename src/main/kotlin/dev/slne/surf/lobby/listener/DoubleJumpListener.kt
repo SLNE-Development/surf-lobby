@@ -3,7 +3,6 @@ package dev.slne.surf.lobby.listener
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
 import org.bukkit.GameMode
 import org.bukkit.Particle
-import org.bukkit.block.BlockFace
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
@@ -15,7 +14,11 @@ object DoubleJumpListener : Listener {
         if (!event.hasExplicitlyChangedBlock()) return
         val player = event.getPlayer()
 
-        if (player.gameMode != GameMode.CREATIVE && player.location.block.getRelative(BlockFace.DOWN).isEmpty && !player.isFlying) {
+
+        if (player.gameMode != GameMode.CREATIVE &&
+            player.isOnGround &&
+            !player.isFlying
+        ) {
             player.allowFlight = true
         }
     }
@@ -25,6 +28,10 @@ object DoubleJumpListener : Listener {
         val player = event.getPlayer()
 
         if (player.gameMode == GameMode.CREATIVE) {
+            return
+        }
+
+        if (!player.allowFlight) {
             return
         }
 
