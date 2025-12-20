@@ -1,5 +1,6 @@
 package dev.slne.surf.lobby.listener
 
+import dev.slne.surf.surfapi.bukkit.api.event.cancel
 import org.bukkit.GameMode
 import org.bukkit.Particle
 import org.bukkit.block.BlockFace
@@ -36,6 +37,6 @@ object DoubleJumpListener : Listener {
         player.allowFlight = false
         player.isFlying = false
 
-        event.isCancelled = true
+        event.cancel()
     }
 }

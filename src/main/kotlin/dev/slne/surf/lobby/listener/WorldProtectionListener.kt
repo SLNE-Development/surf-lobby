@@ -1,6 +1,7 @@
 package dev.slne.surf.lobby.listener
 
 import dev.slne.surf.lobby.utils.PermissionRegistry
+import dev.slne.surf.surfapi.bukkit.api.event.cancel
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
@@ -14,7 +15,7 @@ object WorldProtectionListener : Listener {
             return
         }
 
-        event.isCancelled = true
+        event.cancel()
     }
 
     @EventHandler
@@ -23,7 +24,7 @@ object WorldProtectionListener : Listener {
             return
         }
 
-        event.isCancelled = true
+        event.cancel()
     }
 
     @EventHandler
@@ -32,6 +33,6 @@ object WorldProtectionListener : Listener {
             return
         }
 
-        event.isCancelled = true
+        event.cancel()
     }
 }
