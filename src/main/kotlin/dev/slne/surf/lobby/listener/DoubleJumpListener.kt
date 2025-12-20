@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.doublejump
+package dev.slne.surf.lobby.listener
 
 import org.bukkit.GameMode
 import org.bukkit.Particle
@@ -8,7 +8,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerToggleFlightEvent
 
-class DoubleJumpListener : Listener {
+object DoubleJumpListener : Listener {
     @EventHandler
     fun onPlayerMove(event: PlayerMoveEvent) {
         if (!event.hasExplicitlyChangedBlock()) return

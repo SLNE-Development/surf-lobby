@@ -11,4 +11,5 @@ object PermissionRegistry : PermissionRegistry() {
 
     val PUSHBACK_ATTACK = create("$PREFIX.pushback.attack")
     val PUSHBACK_ITEM = create("$PREFIX.pushback.item")
+    val PROTECTION_BYPASS = create("$PREFIX.bypass")
 }
