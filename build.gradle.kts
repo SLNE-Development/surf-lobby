@@ -9,10 +9,13 @@ dependencies {
     compileOnly("dev.slne.surf.npc:surf-npc-api:1.21.10-1.5.0-20251009.154819-1")
 }
 
+version = findProperty("version") as String
+group = "dev.slne.surf.lobby"
+
 surfPaperPluginApi {
     mainClass("dev.slne.surf.lobby.PaperMain")
     generateLibraryLoader(false)
-    foliaSupported(true)
+    foliaSupported(false)
 
     authors.add("red")
 
