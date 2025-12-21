@@ -1,7 +1,7 @@
 package dev.slne.surf.lobby.listener
 
-import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
+import org.bukkit.GameMode
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent
 object WorldProtectionListener : Listener {
     @EventHandler
     fun onPlace(event: BlockPlaceEvent) {
-        if (event.player.hasPermission(PermissionRegistry.PROTECTION_BYPASS)) {
+        if (event.player.gameMode == GameMode.CREATIVE) {
             return
         }
 
@@ -20,7 +20,7 @@ object WorldProtectionListener : Listener {
 
     @EventHandler
     fun onBreak(event: BlockBreakEvent) {
-        if (event.player.hasPermission(PermissionRegistry.PROTECTION_BYPASS)) {
+        if (event.player.gameMode == GameMode.CREATIVE) {
             return
         }
 
@@ -29,7 +29,7 @@ object WorldProtectionListener : Listener {
 
     @EventHandler
     fun onInteract(event: PlayerInteractEvent) {
-        if (event.player.hasPermission(PermissionRegistry.PROTECTION_BYPASS)) {
+        if (event.player.gameMode == GameMode.CREATIVE) {
             return
         }
 
