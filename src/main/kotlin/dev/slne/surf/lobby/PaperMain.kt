@@ -5,6 +5,7 @@ import dev.slne.surf.lobby.command.lobbyCommand
 import dev.slne.surf.lobby.config.LobbyConfigHolder
 import dev.slne.surf.lobby.hologram.SurfHologramHook
 import dev.slne.surf.lobby.listener.*
+import dev.slne.surf.lobby.manager.PushbackManager
 import dev.slne.surf.lobby.npc.SurfNpcHook
 import dev.slne.surf.surfapi.bukkit.api.event.register
 import org.bukkit.Bukkit
@@ -24,9 +25,12 @@ class PaperMain : SuspendingJavaPlugin() {
 
         DoubleJumpListener.register()
         SpawnLocationListener.register()
-        GameModeListener.register()
+        PlayerConnectionListener.register()
         WorldProtectionListener.register()
         DamageListener.register()
+        ItemInteractListener.register()
+
+        PushbackManager.startTask()
 
         lobbyCommand()
     }
