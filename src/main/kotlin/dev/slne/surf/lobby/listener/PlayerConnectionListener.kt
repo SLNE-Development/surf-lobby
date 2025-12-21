@@ -14,7 +14,6 @@ object PlayerConnectionListener : Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         event.player.gameMode = GameMode.ADVENTURE
-        event.player.inventory.clear()
 
         InventoryItem.items.filter { item ->
             item.permission?.let { event.player.hasPermission(it) } ?: true

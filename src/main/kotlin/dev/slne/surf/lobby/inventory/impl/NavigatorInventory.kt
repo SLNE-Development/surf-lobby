@@ -1,12 +1,12 @@
 package dev.slne.surf.lobby.inventory.impl
 
 import com.github.stefvanschie.inventoryframework.pane.util.Slot
+import dev.slne.surf.lobby.plugin
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
 import dev.slne.surf.surfapi.bukkit.api.inventory.dsl.menu
 import dev.slne.surf.surfapi.bukkit.api.inventory.dsl.staticPane
 import dev.slne.surf.surfapi.core.api.messages.adventure.text
-import org.bukkit.inventory.ItemType
 
 fun navigatorInventory() = menu(text("<shift:-46><glyph:server_selector>"), 6) {
     setOnGlobalDrag { it.cancel() }
@@ -32,31 +32,31 @@ fun navigatorInventory() = menu(text("<shift:-46><glyph:server_selector>"), 6) {
     }
 }
 
-private val survivalServerItem = ItemType.PAPER.createItemStack().apply {
+private val survivalServerItem = plugin.getInvisibleItem().apply {
     displayName {
         primary("Survival Server")
     }
 }
 
-private val eventServerItem = ItemType.PAPER.createItemStack().apply {
+private val eventServerItem = plugin.getInvisibleItem().apply {
     displayName {
         primary("Event Server")
     }
 }
 
-private val lobbyOneServerItem = ItemType.PAPER.createItemStack().apply {
+private val lobbyOneServerItem = plugin.getInvisibleItem().apply {
     displayName {
         primary("Lobby 1")
     }
 }
 
-private val lobbyTwoServerItem = ItemType.PAPER.createItemStack().apply {
+private val lobbyTwoServerItem = plugin.getInvisibleItem().apply {
     displayName {
         primary("Lobby 2")
     }
 }
 
-private val lobbyThreeServerItem = ItemType.PAPER.createItemStack().apply {
+private val lobbyThreeServerItem = plugin.getInvisibleItem().apply {
     displayName {
         primary("Lobby 3")
     }

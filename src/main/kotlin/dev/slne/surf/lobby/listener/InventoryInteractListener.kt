@@ -14,12 +14,20 @@ object InventoryInteractListener : Listener {
             return
         }
 
+        if (event.inventory != event.whoClicked.inventory) {
+            return
+        }
+
         event.cancel()
     }
 
     @EventHandler
     fun onInventoryDrag(event: InventoryClickEvent) {
         if (event.whoClicked.gameMode == GameMode.CREATIVE) {
+            return
+        }
+
+        if (event.inventory != event.whoClicked.inventory) {
             return
         }
 
