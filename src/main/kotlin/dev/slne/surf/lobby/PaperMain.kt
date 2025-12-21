@@ -29,6 +29,8 @@ class PaperMain : SuspendingJavaPlugin() {
         WorldProtectionListener.register()
         DamageListener.register()
         ItemInteractListener.register()
+        InventoryInteractListener.register()
+        PushbackListener.register()
 
         PushbackManager.startTask()
 

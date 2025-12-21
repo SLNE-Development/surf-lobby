@@ -22,7 +22,7 @@ object SurfNpcHook {
                 appendNewline()
                 spacer("(Survival - 1.21.11)")
             }
-            uniqueName = "lobby_npc_survival"
+            uniqueName = "survival"
             skin = SurfNpcSkins.SURVIVAL.getSkin()
 
             location {
@@ -43,7 +43,7 @@ object SurfNpcHook {
                 appendNewline()
                 spacer("(Adventure - 1.21.11)")
             }
-            uniqueName = "lobby_npc_event"
+            uniqueName = "event"
             skin = SurfNpcSkins.EVENT.getSkin()
 
             location {
