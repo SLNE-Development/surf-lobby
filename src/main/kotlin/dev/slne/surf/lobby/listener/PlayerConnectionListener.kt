@@ -17,7 +17,7 @@ object PlayerConnectionListener : Listener {
         event.player.inventory.clear()
 
         InventoryItem.items.filter { item ->
-            item.permission?.let { event.player.hasPermission(it) } ?: false
+            item.permission?.let { event.player.hasPermission(it) } ?: true
         }.forEach {
             event.player.inventory.setItem(it.slot, it.item)
         }
