@@ -46,6 +46,10 @@ object SurfNpcHook {
                 z = lobbyConfig.survivalNpc.z
             }
 
+            fixedRotation = surfNpcApi.createRotation(
+                lobbyConfig.survivalNpc.yaw,
+                lobbyConfig.survivalNpc.pitch
+            )
             rotationType = NpcRotationType.FIXED
         }.getOrNull() ?: error("Failed to create survival NPC")
     }
@@ -67,6 +71,8 @@ object SurfNpcHook {
                 z = lobbyConfig.eventNpc.z
             }
 
+            fixedRotation =
+                surfNpcApi.createRotation(lobbyConfig.eventNpc.yaw, lobbyConfig.eventNpc.pitch)
             rotationType = NpcRotationType.FIXED
         }.getOrNull() ?: error("Failed to create survival NPC")
     }
