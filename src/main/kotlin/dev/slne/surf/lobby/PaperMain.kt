@@ -6,9 +6,11 @@ import dev.slne.surf.lobby.config.LobbyConfigHolder
 import dev.slne.surf.lobby.hologram.SurfHologramHook
 import dev.slne.surf.lobby.listener.*
 import dev.slne.surf.lobby.manager.PushbackManager
+import dev.slne.surf.lobby.nexo.NexoHook
 import dev.slne.surf.lobby.npc.SurfNpcHook
 import dev.slne.surf.surfapi.bukkit.api.event.register
 import org.bukkit.Bukkit
+import org.bukkit.inventory.ItemType
 import org.bukkit.plugin.java.JavaPlugin
 
 val plugin get() = JavaPlugin.getPlugin(PaperMain::class.java)
@@ -36,9 +38,13 @@ class PaperMain : SuspendingJavaPlugin() {
 
         lobbyCommand()
     }
+
+    fun getInvisibleItem() =
+        if (nexoHook) NexoHook.getInvisibleItem() else ItemType.PAPER.createItemStack()
 }
 
 val lobbyConfigHolder = LobbyConfigHolder()
 val lobbyConfig get() = lobbyConfigHolder.lobbyConfig
 val surfNpcHook get() = Bukkit.getPluginManager().isPluginEnabled("surf-npc-bukkit")
 val surfHologramHook get() = Bukkit.getPluginManager().isPluginEnabled("surf-hologram-paper")
+val nexoHook get() = Bukkit.getPluginManager().isPluginEnabled("Nexo")

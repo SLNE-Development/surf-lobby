@@ -27,6 +27,10 @@ object InventoryInteractListener : Listener {
             return
         }
 
+        if (event.inventory != event.whoClicked.inventory) {
+            return
+        }
+
         event.cancel()
     }
 
