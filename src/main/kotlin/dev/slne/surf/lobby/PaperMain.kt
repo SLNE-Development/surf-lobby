@@ -4,10 +4,7 @@ import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
 import dev.slne.surf.lobby.command.lobbyCommand
 import dev.slne.surf.lobby.config.LobbyConfigHolder
 import dev.slne.surf.lobby.hologram.SurfHologramHook
-import dev.slne.surf.lobby.listener.DoubleJumpListener
-import dev.slne.surf.lobby.listener.GameModeListener
-import dev.slne.surf.lobby.listener.SpawnLocationListener
-import dev.slne.surf.lobby.listener.WorldProtectionListener
+import dev.slne.surf.lobby.listener.*
 import dev.slne.surf.lobby.npc.SurfNpcHook
 import dev.slne.surf.surfapi.bukkit.api.event.register
 import org.bukkit.Bukkit
@@ -29,6 +26,7 @@ class PaperMain : SuspendingJavaPlugin() {
         SpawnLocationListener.register()
         GameModeListener.register()
         WorldProtectionListener.register()
+        DamageListener.register()
 
         lobbyCommand()
     }
