@@ -2,6 +2,7 @@ package dev.slne.surf.lobby.inventory.item.impl
 
 import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.lobby.manager.PushbackManager
+import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import org.bukkit.entity.Player
@@ -9,6 +10,7 @@ import org.bukkit.inventory.ItemType
 
 object PushbackEnableInventoryItem : InventoryItem {
     override val slot = 3
+    override val permission: String = PermissionRegistry.PUSHBACK_ITEM
     override val item = ItemType.ENDER_EYE.createItemStack().apply {
         displayName {
             variableValue("Pushback")

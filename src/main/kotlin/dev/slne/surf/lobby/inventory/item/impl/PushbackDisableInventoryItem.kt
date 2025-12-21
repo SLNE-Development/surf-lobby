@@ -2,6 +2,7 @@ package dev.slne.surf.lobby.inventory.item.impl
 
 import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.lobby.manager.PushbackManager
+import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import org.bukkit.entity.Player
@@ -25,6 +26,7 @@ object PushbackDisableInventoryItem : InventoryItem {
             }
         }
     }
+    override val permission: String = PermissionRegistry.PUSHBACK_ITEM
 
     override fun onInteract(player: Player) {
         PushbackManager.remove(player.uniqueId)
