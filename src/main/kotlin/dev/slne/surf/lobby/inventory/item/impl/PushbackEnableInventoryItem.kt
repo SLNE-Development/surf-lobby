@@ -5,6 +5,7 @@ import dev.slne.surf.lobby.manager.PushbackManager
 import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
+import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
@@ -31,5 +32,11 @@ object PushbackEnableInventoryItem : InventoryItem {
     override fun onInteract(player: Player) {
         PushbackManager.add(player.uniqueId)
         player.inventory.setItem(slot, PushbackDisableInventoryItem.item)
+
+        player.sendText {
+            appendPrefix()
+            info("Du hast den Pushback ")
+            success("aktiviert.")
+        }
     }
 }
