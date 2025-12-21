@@ -7,7 +7,6 @@ import dev.slne.surf.surfapi.core.api.util.mutableObjectSetOf
 import org.bukkit.Bukkit
 import org.bukkit.Effect
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 object PushbackManager {
     private val pushbacks = mutableObjectSetOf<UUID>()
@@ -16,7 +15,7 @@ object PushbackManager {
     private const val Y_FORCE = 0.5
 
     fun startTask() {
-        Bukkit.getAsyncScheduler().runAtFixedRate(plugin, {
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, {
             pushbacks.toPlayers().forEach { player ->
                 val nearbyPlayers = player.location.getNearbyPlayers(RANGE) { other ->
                     other != player && !other.hasPermission(PermissionRegistry.PUSHBACK_ITEM)
@@ -31,7 +30,7 @@ object PushbackManager {
 
                 player.world.playEffect(player.location, Effect.ENDER_SIGNAL, null)
             }
-        }, 0, 1, TimeUnit.SECONDS)
+        }, 0, 20)
     }
 
     fun add(uuid: UUID) {

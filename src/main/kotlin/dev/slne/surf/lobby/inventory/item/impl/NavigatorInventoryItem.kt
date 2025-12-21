@@ -7,7 +7,7 @@ import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
-class NavigatorInventoryItem : InventoryItem {
+object NavigatorInventoryItem : InventoryItem {
     override val slot = 4
     override val item = ItemType.COMPASS.createItemStack().apply {
         displayName {
