@@ -2,6 +2,7 @@ package dev.slne.surf.lobby
 
 import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
 import dev.slne.surf.lobby.command.lobbyCommand
+import dev.slne.surf.lobby.command.spawnCommand
 import dev.slne.surf.lobby.config.LobbyConfigHolder
 import dev.slne.surf.lobby.hologram.SurfHologramHook
 import dev.slne.surf.lobby.listener.*
@@ -37,6 +38,7 @@ class PaperMain : SuspendingJavaPlugin() {
         PushbackManager.startTask()
 
         lobbyCommand()
+        spawnCommand()
     }
 
     fun getInvisibleItem() =

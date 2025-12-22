@@ -7,6 +7,7 @@ object PermissionRegistry : PermissionRegistry() {
     private const val PREFIX = "surf.lobby"
     private const val COMMAND_PREFIX = "$PREFIX.command"
 
+    val COMMAND_SPAWN = create("$COMMAND_PREFIX.spawn")
     val COMMAND_LOBBY = create("$COMMAND_PREFIX.lobby")
     val COMMAND_LOBBY_RELOAD = create("$COMMAND_PREFIX.lobby.reload")
 

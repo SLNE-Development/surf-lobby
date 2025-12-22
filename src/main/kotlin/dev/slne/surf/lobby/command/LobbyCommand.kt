@@ -9,7 +9,7 @@ import dev.slne.surf.lobby.surfNpcHook
 import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 
-fun lobbyCommand() = commandTree("lobby") {
+fun lobbyCommand() = commandTree("surflobby") {
     withPermission(PermissionRegistry.COMMAND_LOBBY)
 
     literalArgument("reload") {
