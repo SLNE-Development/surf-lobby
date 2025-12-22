@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.entity.FoodLevelChangeEvent
 
 object DamageListener : Listener {
     @EventHandler
@@ -20,6 +21,13 @@ object DamageListener : Listener {
     @EventHandler
     fun onDamageByEntity(event: EntityDamageByEntityEvent) {
         if (event.damager is Player) {
+            event.cancel()
+        }
+    }
+
+    @EventHandler
+    fun onFoodLose(event: FoodLevelChangeEvent) {
+        if (event.entity is Player) {
             event.cancel()
         }
     }
