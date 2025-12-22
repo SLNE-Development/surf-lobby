@@ -5,5 +5,5 @@ import org.bukkit.inventory.ItemType
 
 object NexoHook {
     fun getInvisibleItem() =
-        NexoItems.itemFromId("invisible_item")?.finalItemStack ?: ItemType.PAPER.createItemStack()
+        NexoItems.itemFromId("invisible_item")?.build() ?: ItemType.PAPER.createItemStack()
 }
