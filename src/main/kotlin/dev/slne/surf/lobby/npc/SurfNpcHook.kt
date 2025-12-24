@@ -32,9 +32,7 @@ object SurfNpcHook {
     private fun createSurvivalNpc() {
         survivalNpc = npc(plugin) {
             displayName = {
-                primary("survival".toSmallCaps(), TextDecoration.BOLD)
-                appendNewline()
-                spacer("(Survival - 1.21.11)")
+                primary("Nepomuk".toSmallCaps(), TextDecoration.BOLD)
             }
             uniqueName = "survival"
             skin = SurfNpcSkins.SURVIVAL.getSkin()

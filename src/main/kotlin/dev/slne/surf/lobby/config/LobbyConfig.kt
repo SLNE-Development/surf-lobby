@@ -8,6 +8,8 @@ data class LobbyConfig(
     val spawnPoint: LocationConfig = LocationConfig.default(),
     val survivalNpc: LocationConfig = LocationConfig.default(),
     val eventNpc: LocationConfig = LocationConfig.default(),
+    val survivalNpcTeleport: LocationConfig = LocationConfig.default(),
+    val survivalInfoHologram: LocationConfig = LocationConfig.default()
 ) {
     @ConfigSerializable
     data class LocationConfig(

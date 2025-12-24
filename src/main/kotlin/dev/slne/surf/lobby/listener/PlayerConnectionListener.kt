@@ -13,14 +13,14 @@ object PlayerConnectionListener : Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         event.player.gameMode = GameMode.ADVENTURE
+        event.player.inventory.heldItemSlot = 4
 
         InventoryItem.items.filter { item ->
             item.permission?.let { event.player.hasPermission(it) } ?: true
         }.forEach {
             event.player.inventory.setItem(it.slot, it.item)
         }
-        
-        // Update player visibility for all players
+
         PlayerVisibilityManager.onPlayerJoin(event.player)
     }
 
