@@ -1,5 +1,6 @@
 package dev.slne.surf.lobby.manager
 
+import dev.slne.surf.lobby.plugin
 import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.core.api.util.mutableObjectMapOf
 import org.bukkit.Bukkit
@@ -48,7 +49,7 @@ object PlayerVisibilityManager {
             VisibilityState.SHOW_ALL -> {
                 // Show all players
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
-                    player.showPlayer(otherPlayer)
+                    player.showPlayer(plugin, otherPlayer)
                 }
             }
             VisibilityState.SHOW_TEAM -> {
@@ -56,9 +57,9 @@ object PlayerVisibilityManager {
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
                         if (otherPlayer.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
-                            player.showPlayer(otherPlayer)
+                            player.showPlayer(plugin, otherPlayer)
                         } else {
-                            player.hidePlayer(otherPlayer)
+                            player.hidePlayer(plugin, otherPlayer)
                         }
                     }
                 }
@@ -67,7 +68,7 @@ object PlayerVisibilityManager {
                 // Hide all players
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
-                        player.hidePlayer(otherPlayer)
+                        player.hidePlayer(plugin, otherPlayer)
                     }
                 }
             }
