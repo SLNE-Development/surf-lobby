@@ -31,6 +31,15 @@ object PlayerVisibilityManager {
         visibilityStates.remove(uuid)
     }
 
+    /**
+     * Forces a player to show another player with entity refresh.
+     * Hides the target first to ensure the client properly respawns the entity.
+     */
+    private fun forceShowPlayer(observer: Player, target: Player) {
+        observer.hidePlayer(plugin, target)
+        observer.showPlayer(plugin, target)
+    }
+
     fun onPlayerJoin(player: Player) {
         updatePlayerVisibility(player.uniqueId)
         Bukkit.getOnlinePlayers().forEach { otherPlayer ->
@@ -38,9 +47,7 @@ object PlayerVisibilityManager {
                 val otherState = getState(otherPlayer.uniqueId)
                 when (otherState) {
                     VisibilityState.SHOW_ALL -> {
-                        // Force refresh by hiding first, then showing
-                        otherPlayer.hidePlayer(plugin, player)
-                        otherPlayer.showPlayer(plugin, player)
+                        forceShowPlayer(otherPlayer, player)
 
                         plugin.redisApi.publishEvent(
                             TabShowRedisEvent(
@@ -51,9 +58,7 @@ object PlayerVisibilityManager {
 
                     VisibilityState.SHOW_TEAM -> {
                         if (player.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
-                            // Force refresh by hiding first, then showing
-                            otherPlayer.hidePlayer(plugin, player)
-                            otherPlayer.showPlayer(plugin, player)
+                            forceShowPlayer(otherPlayer, player)
 
                             plugin.redisApi.publishEvent(
                                 TabShowRedisEvent(
@@ -93,9 +98,7 @@ object PlayerVisibilityManager {
             VisibilityState.SHOW_ALL -> {
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
-                        // Force refresh by hiding first, then showing
-                        player.hidePlayer(plugin, otherPlayer)
-                        player.showPlayer(plugin, otherPlayer)
+                        forceShowPlayer(player, otherPlayer)
 
                         plugin.redisApi.publishEvent(
                             TabShowRedisEvent(
@@ -110,9 +113,7 @@ object PlayerVisibilityManager {
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
                         if (otherPlayer.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
-                            // Force refresh by hiding first, then showing
-                            player.hidePlayer(plugin, otherPlayer)
-                            player.showPlayer(plugin, otherPlayer)
+                            forceShowPlayer(player, otherPlayer)
 
                             plugin.redisApi.publishEvent(
                                 TabShowRedisEvent(
