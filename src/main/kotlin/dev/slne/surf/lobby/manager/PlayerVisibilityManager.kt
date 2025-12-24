@@ -38,6 +38,8 @@ object PlayerVisibilityManager {
                 val otherState = getState(otherPlayer.uniqueId)
                 when (otherState) {
                     VisibilityState.SHOW_ALL -> {
+                        // Force refresh by hiding first, then showing
+                        otherPlayer.hidePlayer(plugin, player)
                         otherPlayer.showPlayer(plugin, player)
 
                         plugin.redisApi.publishEvent(
@@ -49,6 +51,8 @@ object PlayerVisibilityManager {
 
                     VisibilityState.SHOW_TEAM -> {
                         if (player.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
+                            // Force refresh by hiding first, then showing
+                            otherPlayer.hidePlayer(plugin, player)
                             otherPlayer.showPlayer(plugin, player)
 
                             plugin.redisApi.publishEvent(
@@ -89,6 +93,8 @@ object PlayerVisibilityManager {
             VisibilityState.SHOW_ALL -> {
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
+                        // Force refresh by hiding first, then showing
+                        player.hidePlayer(plugin, otherPlayer)
                         player.showPlayer(plugin, otherPlayer)
 
                         plugin.redisApi.publishEvent(
@@ -104,6 +110,8 @@ object PlayerVisibilityManager {
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
                         if (otherPlayer.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
+                            // Force refresh by hiding first, then showing
+                            player.hidePlayer(plugin, otherPlayer)
                             player.showPlayer(plugin, otherPlayer)
 
                             plugin.redisApi.publishEvent(
