@@ -12,7 +12,9 @@ fun Location.toHologramLocation() = hologramConversationUtil.createLocation(
     ),
     x,
     y,
-    z
+    z,
+    yaw,
+    pitch
 )
 
 fun SurfComponentBuilder.note(message: Any) =

@@ -26,9 +26,7 @@ object SurfHologramHook {
             displayedText {
                 primary("Survival Server".toSmallCaps(), TextDecoration.BOLD)
                 appendNewline(2)
-                note("Erkunde die Welt, baue deine Träume und".toSmallCaps())
-                appendNewline()
-                note("eröffne dein eigenes Business!".toSmallCaps())
+                note("Erkunde die Welt, baue deine Träume und eröffne dein eigenes Business!".toSmallCaps())
             }
 
             options {

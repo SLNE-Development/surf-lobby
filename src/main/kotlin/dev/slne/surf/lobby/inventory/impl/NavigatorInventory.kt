@@ -72,13 +72,6 @@ fun navigatorInventory() = menu(text("<shift:-46><glyph:server_selector>"), 6) {
                     pitch(2.0f)
                 }
             }
-
-            player.sendText {
-                appendPrefix()
-                error("Die ")
-                variableValue("1.21 Season vom Survival Server")
-                error(" ist beendet. Es steht nicht fest, wann eine neue Season startet. Bitte habe Geduld.")
-            }
             player.closeInventory()
         }
     }

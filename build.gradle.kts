@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("surf-hologram:surf-hologram-api:1.21.10-1.0.1-20251011.094119-1")
+    compileOnly("surf-hologram:surf-hologram-api:1.21.11-1.0.2-SNAPSHOT")
     compileOnly("dev.slne.surf.npc:surf-npc-api:1.21.10-1.5.0-20251009.154819-1")
     compileOnly("com.nexomc:nexo:1.16.1")
     implementation("dev.slne.surf:surf-redis:1.0.0-SNAPSHOT")
