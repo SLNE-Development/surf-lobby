@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
 object PushbackDisableInventoryItem : InventoryItem {
-    override val slot = 3
+    override val slot = 0
     override val item = ItemType.ENDER_EYE.createItemStack().apply {
         displayName {
             variableValue("Pushback")
