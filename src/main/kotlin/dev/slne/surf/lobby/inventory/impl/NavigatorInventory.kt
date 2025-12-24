@@ -1,7 +1,10 @@
 package dev.slne.surf.lobby.inventory.impl
 
 import com.github.stefvanschie.inventoryframework.pane.util.Slot
+import dev.slne.surf.lobby.event.eventServerBridge
+import dev.slne.surf.lobby.event.state.LocalEventServerState
 import dev.slne.surf.lobby.plugin
+import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
 import dev.slne.surf.surfapi.bukkit.api.inventory.dsl.menu
@@ -19,9 +22,31 @@ fun navigatorInventory() = menu(text("<shift:-46><glyph:server_selector>"), 6) {
         fillWith(eventServerItem)
 
         setOnClick {
-            it.whoClicked.sendText {
-                appendPrefix()
-                error("Aktuell findet kein Event statt!")
+            val player = it.whoClicked as? Player ?: return@setOnClick
+
+            when (eventServerBridge.state) {
+                LocalEventServerState.OPEN -> {
+                    surfBukkitApi.sendPlayerToServer(player, "event")
+                    return@setOnClick
+                }
+
+                LocalEventServerState.CLOSED -> {
+                    if (player.hasPermission(PermissionRegistry.EVENT_BYPASS)) {
+                        surfBukkitApi.sendPlayerToServer(player, "event")
+                        return@setOnClick
+                    }
+                    player.sendText {
+                        appendPrefix()
+                        error("Der Event Server ist aktuell geschlossen!")
+                    }
+                }
+
+                LocalEventServerState.UNKNOWN -> {
+                    player.sendText {
+                        appendPrefix()
+                        error("Aktuell findet kein Event statt!")
+                    }
+                }
             }
             it.whoClicked.closeInventory()
         }

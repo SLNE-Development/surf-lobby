@@ -11,6 +11,8 @@ object PermissionRegistry : PermissionRegistry() {
     val COMMAND_LOBBY = create("$COMMAND_PREFIX.lobby")
     val COMMAND_LOBBY_RELOAD = create("$COMMAND_PREFIX.lobby.reload")
 
+    val EVENT_BYPASS = create("$PREFIX.event.bypass")
+
     val PUSHBACK_ATTACK = create("$PREFIX.pushback.attack")
     val PUSHBACK_ITEM = create("$PREFIX.pushback.item")
     val PROTECTION_BYPASS = create("$PREFIX.bypass")
