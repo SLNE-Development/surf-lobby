@@ -40,8 +40,4 @@ object PushbackManager {
     fun remove(uuid: UUID) {
         pushbacks.remove(uuid)
     }
-    
-    fun isEnabled(uuid: UUID): Boolean {
-        return pushbacks.contains(uuid)
-    }
 }
