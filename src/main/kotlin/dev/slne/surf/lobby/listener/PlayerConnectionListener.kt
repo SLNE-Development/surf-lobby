@@ -1,6 +1,7 @@
 package dev.slne.surf.lobby.listener
 
 import dev.slne.surf.lobby.inventory.item.InventoryItem
+import dev.slne.surf.lobby.inventory.item.StatableInventoryItem
 import dev.slne.surf.lobby.manager.PlayerVisibilityManager
 import dev.slne.surf.lobby.manager.PushbackManager
 import org.bukkit.GameMode
@@ -16,8 +17,12 @@ object PlayerConnectionListener : Listener {
 
         InventoryItem.items.filter { item ->
             item.permission?.let { event.player.hasPermission(it) } ?: true
-        }.forEach {
-            event.player.inventory.setItem(it.slot, it.item)
+        }.forEach { item ->
+            if (item is StatableInventoryItem<*>) {
+                item.updatePlayerItem(event.player)
+            } else {
+                event.player.inventory.setItem(item.slot, item.item)
+            }
         }
         
         // Update player visibility for all players
