@@ -2,7 +2,6 @@ package dev.slne.surf.lobby.inventory.item
 
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 /**
  * An inventory item that can have multiple states.
@@ -34,7 +33,9 @@ interface StatableInventoryItem<T : Enum<T>> : InventoryItem {
     }
     
     override val item: ItemStack
-        get() = throw UnsupportedOperationException("Use getItemForState() instead")
+        get() = throw UnsupportedOperationException(
+            "StatableInventoryItem does not support a single item property. Use getItemForState(state) to get the item for a specific state."
+        )
     
     override fun onInteract(player: Player) {
         val currentState = getState(player)
