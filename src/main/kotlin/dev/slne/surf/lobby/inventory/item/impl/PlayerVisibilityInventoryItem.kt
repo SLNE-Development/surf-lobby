@@ -6,19 +6,17 @@ import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
-import dev.slne.surf.surfapi.core.api.messages.builder.SurfComponentBuilder
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ItemType
 
-object PlayerVisibilityInventoryItem :
-    StatableInventoryItem<PlayerVisibilityManager.VisibilityState> {
+object PlayerVisibilityInventoryItem : StatableInventoryItem<PlayerVisibilityManager.VisibilityState> {
     override val slot = 2
     override val permission: String = PermissionRegistry.PLAYER_VISIBILITY_ITEM
-
+    
     private fun createVisibilityItem(
         itemType: ItemType,
-        statusLine: (SurfComponentBuilder.() -> Unit)
+        statusLine: (org.bukkit.inventory.meta.ItemMeta.() -> Unit)
     ): ItemStack {
         return itemType.createItemStack().apply {
             displayName {
@@ -31,29 +29,33 @@ object PlayerVisibilityInventoryItem :
                     info("Steuert welche Spieler du sehen kannst.")
                 }
                 emptyLine()
-                line {
-                    append(statusLine)
-                }
+                statusLine()
             }
         }
     }
-
+    
     private val showAllItem = createVisibilityItem(ItemType.LIME_DYE) {
-        success("Alle Spieler werden angezeigt")
+        line {
+            success("Alle Spieler werden angezeigt")
+        }
     }
-
+    
     private val showTeamItem = createVisibilityItem(ItemType.ORANGE_DYE) {
-        variableValue("Nur Teammitglieder werden angezeigt")
+        line {
+            variableValue("Nur Teammitglieder werden angezeigt")
+        }
     }
-
+    
     private val showNoneItem = createVisibilityItem(ItemType.GRAY_DYE) {
-        error("Keine Spieler werden angezeigt")
+        line {
+            error("Keine Spieler werden angezeigt")
+        }
     }
-
+    
     override fun getState(player: Player): PlayerVisibilityManager.VisibilityState {
         return PlayerVisibilityManager.getState(player.uniqueId)
     }
-
+    
     override fun getItemForState(state: PlayerVisibilityManager.VisibilityState): ItemStack {
         return when (state) {
             PlayerVisibilityManager.VisibilityState.SHOW_ALL -> showAllItem
@@ -61,7 +63,7 @@ object PlayerVisibilityInventoryItem :
             PlayerVisibilityManager.VisibilityState.SHOW_NONE -> showNoneItem
         }
     }
-
+    
     override fun onInteractWithState(
         player: Player,
         currentState: PlayerVisibilityManager.VisibilityState
@@ -75,7 +77,6 @@ object PlayerVisibilityInventoryItem :
                 }
                 PlayerVisibilityManager.VisibilityState.SHOW_TEAM
             }
-
             PlayerVisibilityManager.VisibilityState.SHOW_TEAM -> {
                 player.sendText {
                     appendPrefix()
@@ -84,7 +85,6 @@ object PlayerVisibilityInventoryItem :
                 }
                 PlayerVisibilityManager.VisibilityState.SHOW_NONE
             }
-
             PlayerVisibilityManager.VisibilityState.SHOW_NONE -> {
                 player.sendText {
                     appendPrefix()
@@ -94,7 +94,7 @@ object PlayerVisibilityInventoryItem :
                 PlayerVisibilityManager.VisibilityState.SHOW_ALL
             }
         }
-
+        
         PlayerVisibilityManager.setState(player.uniqueId, newState)
         return newState
     }
