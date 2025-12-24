@@ -30,13 +30,28 @@ object PlayerVisibilityManager {
     }
 
     fun onPlayerJoin(player: Player) {
-        // Apply this player's visibility settings
+        // Apply this player's visibility settings to see other players
         updatePlayerVisibility(player.uniqueId)
         
-        // Update all other players' visibility to account for the new player
+        // Update all other players' visibility to see this new player based on their individual settings
         Bukkit.getOnlinePlayers().forEach { otherPlayer ->
             if (otherPlayer != player) {
-                updatePlayerVisibility(otherPlayer.uniqueId)
+                val otherState = getState(otherPlayer.uniqueId)
+                when (otherState) {
+                    VisibilityState.SHOW_ALL -> {
+                        otherPlayer.showPlayer(plugin, player)
+                    }
+                    VisibilityState.SHOW_TEAM -> {
+                        if (player.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
+                            otherPlayer.showPlayer(plugin, player)
+                        } else {
+                            otherPlayer.hidePlayer(plugin, player)
+                        }
+                    }
+                    VisibilityState.SHOW_NONE -> {
+                        otherPlayer.hidePlayer(plugin, player)
+                    }
+                }
             }
         }
     }
@@ -49,7 +64,9 @@ object PlayerVisibilityManager {
             VisibilityState.SHOW_ALL -> {
                 // Show all players
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
-                    player.showPlayer(plugin, otherPlayer)
+                    if (otherPlayer != player) {
+                        player.showPlayer(plugin, otherPlayer)
+                    }
                 }
             }
             VisibilityState.SHOW_TEAM -> {
