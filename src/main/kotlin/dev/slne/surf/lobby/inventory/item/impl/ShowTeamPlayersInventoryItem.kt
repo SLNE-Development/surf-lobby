@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
 object ShowTeamPlayersInventoryItem : InventoryItem {
-    override val slot = 7
+    override val slot = 2
     override val permission: String = PermissionRegistry.PLAYER_VISIBILITY_ITEM
     override val item = ItemType.ORANGE_DYE.createItemStack().apply {
         displayName {
@@ -30,7 +30,10 @@ object ShowTeamPlayersInventoryItem : InventoryItem {
     }
 
     override fun onInteract(player: Player) {
-        PlayerVisibilityManager.setState(player.uniqueId, PlayerVisibilityManager.VisibilityState.SHOW_NONE)
+        PlayerVisibilityManager.setState(
+            player.uniqueId,
+            PlayerVisibilityManager.VisibilityState.SHOW_NONE
+        )
         player.inventory.setItem(slot, ShowNonePlayersInventoryItem.item)
 
         player.sendText {

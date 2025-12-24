@@ -2,13 +2,15 @@ package dev.slne.surf.lobby.manager
 
 import dev.slne.surf.lobby.plugin
 import dev.slne.surf.lobby.utils.PermissionRegistry
-import dev.slne.surf.surfapi.core.api.util.mutableObjectMapOf
+import dev.slne.surf.surfapi.core.api.util.mutableObject2ObjectMapOf
+import dev.slne.surf.tab.api.redis.TabHideRedisEvent
+import dev.slne.surf.tab.api.redis.TabShowRedisEvent
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
 object PlayerVisibilityManager {
-    private val visibilityStates = mutableObjectMapOf<UUID, VisibilityState>()
+    private val visibilityStates = mutableObject2ObjectMapOf<UUID, VisibilityState>()
 
     enum class VisibilityState {
         SHOW_ALL,
@@ -30,26 +32,49 @@ object PlayerVisibilityManager {
     }
 
     fun onPlayerJoin(player: Player) {
-        // Apply this player's visibility settings to see other players
         updatePlayerVisibility(player.uniqueId)
-        
-        // Update all other players' visibility to see this new player based on their individual settings
         Bukkit.getOnlinePlayers().forEach { otherPlayer ->
             if (otherPlayer != player) {
                 val otherState = getState(otherPlayer.uniqueId)
                 when (otherState) {
                     VisibilityState.SHOW_ALL -> {
                         otherPlayer.showPlayer(plugin, player)
+
+                        plugin.redisApi.publishEvent(
+                            TabShowRedisEvent(
+                                otherPlayer.uniqueId, player.uniqueId
+                            )
+                        )
                     }
+
                     VisibilityState.SHOW_TEAM -> {
                         if (player.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
                             otherPlayer.showPlayer(plugin, player)
+
+                            plugin.redisApi.publishEvent(
+                                TabShowRedisEvent(
+                                    otherPlayer.uniqueId, player.uniqueId
+                                )
+                            )
                         } else {
                             otherPlayer.hidePlayer(plugin, player)
+
+                            plugin.redisApi.publishEvent(
+                                TabHideRedisEvent(
+                                    otherPlayer.uniqueId, player.uniqueId
+                                )
+                            )
                         }
                     }
+
                     VisibilityState.SHOW_NONE -> {
                         otherPlayer.hidePlayer(plugin, player)
+
+                        plugin.redisApi.publishEvent(
+                            TabHideRedisEvent(
+                                otherPlayer.uniqueId, player.uniqueId
+                            )
+                        )
                     }
                 }
             }
@@ -62,30 +87,53 @@ object PlayerVisibilityManager {
 
         when (state) {
             VisibilityState.SHOW_ALL -> {
-                // Show all players
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
                         player.showPlayer(plugin, otherPlayer)
+
+                        plugin.redisApi.publishEvent(
+                            TabShowRedisEvent(
+                                player.uniqueId, otherPlayer.uniqueId
+                            )
+                        )
                     }
                 }
             }
+
             VisibilityState.SHOW_TEAM -> {
-                // Hide all players, then show only team members
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
                         if (otherPlayer.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
                             player.showPlayer(plugin, otherPlayer)
+
+                            plugin.redisApi.publishEvent(
+                                TabShowRedisEvent(
+                                    player.uniqueId, otherPlayer.uniqueId
+                                )
+                            )
                         } else {
                             player.hidePlayer(plugin, otherPlayer)
+
+                            plugin.redisApi.publishEvent(
+                                TabHideRedisEvent(
+                                    player.uniqueId, otherPlayer.uniqueId
+                                )
+                            )
                         }
                     }
                 }
             }
+
             VisibilityState.SHOW_NONE -> {
-                // Hide all players
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
                         player.hidePlayer(plugin, otherPlayer)
+
+                        plugin.redisApi.publishEvent(
+                            TabHideRedisEvent(
+                                player.uniqueId, otherPlayer.uniqueId
+                            )
+                        )
                     }
                 }
             }
