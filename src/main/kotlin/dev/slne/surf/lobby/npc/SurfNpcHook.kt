@@ -2,13 +2,18 @@ package dev.slne.surf.lobby.npc
 
 import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.plugin
+import dev.slne.surf.lobby.utils.note
 import dev.slne.surf.npc.api.dsl.npc
+import dev.slne.surf.npc.api.event.NpcInteractEvent
 import dev.slne.surf.npc.api.npc.Npc
 import dev.slne.surf.npc.api.npc.rotation.NpcRotationType
 import dev.slne.surf.npc.api.result.NpcCreationResult
 import dev.slne.surf.npc.api.surfNpcApi
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps
+import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
+import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import net.kyori.adventure.text.format.TextDecoration
+import org.bukkit.Sound
 
 object SurfNpcHook {
     lateinit var survivalNpc: Npc
@@ -32,7 +37,7 @@ object SurfNpcHook {
     private fun createSurvivalNpc() {
         survivalNpc = npc(plugin) {
             displayName = {
-                primary("Nepomuk".toSmallCaps(), TextDecoration.BOLD)
+                note("Nepomuk".toSmallCaps()).decorate(TextDecoration.BOLD)
             }
             uniqueName = "survival"
             skin = SurfNpcSkins.SURVIVAL.getSkin()
@@ -49,6 +54,19 @@ object SurfNpcHook {
                 lobbyConfig.survivalNpc.pitch
             )
             rotationType = NpcRotationType.FIXED
+
+            withEventHandler<NpcInteractEvent> {
+                it.player.sendText {
+                    spacer("[")
+                    note("Nepomuk")
+                    spacer("]")
+                    appendSpace()
+                    error("Das Schiff zum Survival Server wurde noch nicht repariert... Bitte habe noch ein wenig Geduld!")
+                }
+                it.player.playSound(true) {
+                    type(Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT)
+                }
+            }
         }.getOrNull() ?: error("Failed to create survival NPC")
     }
 
