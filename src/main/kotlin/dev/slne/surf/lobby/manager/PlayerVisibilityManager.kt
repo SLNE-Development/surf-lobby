@@ -1,0 +1,76 @@
+package dev.slne.surf.lobby.manager
+
+import dev.slne.surf.lobby.utils.PermissionRegistry
+import dev.slne.surf.surfapi.core.api.util.mutableObjectMapOf
+import org.bukkit.Bukkit
+import org.bukkit.entity.Player
+import java.util.*
+
+object PlayerVisibilityManager {
+    private val visibilityStates = mutableObjectMapOf<UUID, VisibilityState>()
+
+    enum class VisibilityState {
+        SHOW_ALL,
+        SHOW_TEAM,
+        SHOW_NONE
+    }
+
+    fun getState(uuid: UUID): VisibilityState {
+        return visibilityStates.getOrDefault(uuid, VisibilityState.SHOW_ALL)
+    }
+
+    fun setState(uuid: UUID, state: VisibilityState) {
+        visibilityStates[uuid] = state
+        updatePlayerVisibility(uuid)
+    }
+
+    fun remove(uuid: UUID) {
+        visibilityStates.remove(uuid)
+    }
+
+    fun onPlayerJoin(player: Player) {
+        // Apply this player's visibility settings
+        updatePlayerVisibility(player.uniqueId)
+        
+        // Update all other players' visibility to account for the new player
+        Bukkit.getOnlinePlayers().forEach { otherPlayer ->
+            if (otherPlayer != player) {
+                updatePlayerVisibility(otherPlayer.uniqueId)
+            }
+        }
+    }
+
+    private fun updatePlayerVisibility(uuid: UUID) {
+        val player = Bukkit.getPlayer(uuid) ?: return
+        val state = getState(uuid)
+
+        when (state) {
+            VisibilityState.SHOW_ALL -> {
+                // Show all players
+                Bukkit.getOnlinePlayers().forEach { otherPlayer ->
+                    player.showPlayer(otherPlayer)
+                }
+            }
+            VisibilityState.SHOW_TEAM -> {
+                // Hide all players, then show only team members
+                Bukkit.getOnlinePlayers().forEach { otherPlayer ->
+                    if (otherPlayer != player) {
+                        if (otherPlayer.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
+                            player.showPlayer(otherPlayer)
+                        } else {
+                            player.hidePlayer(otherPlayer)
+                        }
+                    }
+                }
+            }
+            VisibilityState.SHOW_NONE -> {
+                // Hide all players
+                Bukkit.getOnlinePlayers().forEach { otherPlayer ->
+                    if (otherPlayer != player) {
+                        player.hidePlayer(otherPlayer)
+                    }
+                }
+            }
+        }
+    }
+}

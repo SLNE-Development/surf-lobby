@@ -3,6 +3,9 @@ package dev.slne.surf.lobby.inventory.item
 import dev.slne.surf.lobby.inventory.item.impl.NavigatorInventoryItem
 import dev.slne.surf.lobby.inventory.item.impl.PushbackDisableInventoryItem
 import dev.slne.surf.lobby.inventory.item.impl.PushbackEnableInventoryItem
+import dev.slne.surf.lobby.inventory.item.impl.ShowAllPlayersInventoryItem
+import dev.slne.surf.lobby.inventory.item.impl.ShowNonePlayersInventoryItem
+import dev.slne.surf.lobby.inventory.item.impl.ShowTeamPlayersInventoryItem
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
@@ -20,6 +23,9 @@ interface InventoryItem {
             items.add(PushbackDisableInventoryItem)
             items.add(PushbackEnableInventoryItem)
             items.add(NavigatorInventoryItem)
+            items.add(ShowNonePlayersInventoryItem)
+            items.add(ShowTeamPlayersInventoryItem)
+            items.add(ShowAllPlayersInventoryItem)
         }
     }
 }
