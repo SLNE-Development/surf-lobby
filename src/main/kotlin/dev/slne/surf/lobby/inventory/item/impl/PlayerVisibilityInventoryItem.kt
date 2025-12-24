@@ -14,41 +14,54 @@ object PlayerVisibilityInventoryItem : StatableInventoryItem<PlayerVisibilityMan
     override val slot = 2
     override val permission: String = PermissionRegistry.PLAYER_VISIBILITY_ITEM
     
-    private fun createVisibilityItem(
-        itemType: ItemType,
-        statusLine: (org.bukkit.inventory.meta.ItemMeta.() -> Unit)
-    ): ItemStack {
-        return itemType.createItemStack().apply {
-            displayName {
-                variableValue("Spieler-Sichtbarkeit")
-            }
+    private val showAllItem = ItemType.LIME_DYE.createItemStack().apply {
+        displayName {
+            variableValue("Spieler-Sichtbarkeit")
+        }
 
-            buildLore {
-                emptyLine()
-                line {
-                    info("Steuert welche Spieler du sehen kannst.")
-                }
-                emptyLine()
-                statusLine()
+        buildLore {
+            emptyLine()
+            line {
+                info("Steuert welche Spieler du sehen kannst.")
+            }
+            emptyLine()
+            line {
+                success("Alle Spieler werden angezeigt")
             }
         }
     }
     
-    private val showAllItem = createVisibilityItem(ItemType.LIME_DYE) {
-        line {
-            success("Alle Spieler werden angezeigt")
+    private val showTeamItem = ItemType.ORANGE_DYE.createItemStack().apply {
+        displayName {
+            variableValue("Spieler-Sichtbarkeit")
+        }
+
+        buildLore {
+            emptyLine()
+            line {
+                info("Steuert welche Spieler du sehen kannst.")
+            }
+            emptyLine()
+            line {
+                variableValue("Nur Teammitglieder werden angezeigt")
+            }
         }
     }
     
-    private val showTeamItem = createVisibilityItem(ItemType.ORANGE_DYE) {
-        line {
-            variableValue("Nur Teammitglieder werden angezeigt")
+    private val showNoneItem = ItemType.GRAY_DYE.createItemStack().apply {
+        displayName {
+            variableValue("Spieler-Sichtbarkeit")
         }
-    }
-    
-    private val showNoneItem = createVisibilityItem(ItemType.GRAY_DYE) {
-        line {
-            error("Keine Spieler werden angezeigt")
+
+        buildLore {
+            emptyLine()
+            line {
+                info("Steuert welche Spieler du sehen kannst.")
+            }
+            emptyLine()
+            line {
+                error("Keine Spieler werden angezeigt")
+            }
         }
     }
     

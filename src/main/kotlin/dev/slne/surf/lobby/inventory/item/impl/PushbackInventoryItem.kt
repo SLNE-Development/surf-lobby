@@ -19,32 +19,37 @@ object PushbackInventoryItem : StatableInventoryItem<PushbackInventoryItem.Pushb
         DISABLED
     }
     
-    private fun createPushbackItem(statusLine: (org.bukkit.inventory.meta.ItemMeta.() -> Unit)): ItemStack {
-        return ItemType.ENDER_EYE.createItemStack().apply {
-            displayName {
-                variableValue("Pushback")
-            }
+    private val enabledItem = ItemType.ENDER_EYE.createItemStack().apply {
+        displayName {
+            variableValue("Pushback")
+        }
 
-            buildLore {
-                emptyLine()
-                line {
-                    info("Stößt andere zurück, wenn sie zu Nahe kommen.")
-                }
-                emptyLine()
-                statusLine()
+        buildLore {
+            emptyLine()
+            line {
+                info("Stößt andere zurück, wenn sie zu Nahe kommen.")
+            }
+            emptyLine()
+            line {
+                success("Aktiviert")
             }
         }
     }
     
-    private val enabledItem = createPushbackItem {
-        line {
-            success("Aktiviert")
+    private val disabledItem = ItemType.ENDER_EYE.createItemStack().apply {
+        displayName {
+            variableValue("Pushback")
         }
-    }
-    
-    private val disabledItem = createPushbackItem {
-        line {
-            error("Deaktiviert")
+
+        buildLore {
+            emptyLine()
+            line {
+                info("Stößt andere zurück, wenn sie zu Nahe kommen.")
+            }
+            emptyLine()
+            line {
+                error("Deaktiviert")
+            }
         }
     }
     
