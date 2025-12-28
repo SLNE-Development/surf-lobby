@@ -93,7 +93,6 @@ object PlayerVisibilityManager {
             VisibilityState.SHOW_ALL -> {
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
-                        // Force refresh by hiding first, then showing
                         player.hidePlayer(plugin, otherPlayer)
                         player.showPlayer(plugin, otherPlayer)
 
@@ -110,7 +109,6 @@ object PlayerVisibilityManager {
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
                         if (otherPlayer.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
-                            // Force refresh by hiding first, then showing
                             player.hidePlayer(plugin, otherPlayer)
                             player.showPlayer(plugin, otherPlayer)
 

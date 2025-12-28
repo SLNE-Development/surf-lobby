@@ -1,12 +1,10 @@
 package dev.slne.surf.lobby
 
 import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
-import com.github.shynixn.mccoroutine.folia.launch
 import dev.slne.surf.lobby.command.lobbyCommand
 import dev.slne.surf.lobby.command.spawnCommand
 import dev.slne.surf.lobby.config.LobbyConfigHolder
 import dev.slne.surf.lobby.event.eventServerBridge
-import dev.slne.surf.lobby.event.listener.EventServerStateChangeListener
 import dev.slne.surf.lobby.hologram.SurfHologramHook
 import dev.slne.surf.lobby.listener.*
 import dev.slne.surf.lobby.manager.PushbackManager
@@ -46,12 +44,8 @@ class PaperMain : SuspendingJavaPlugin() {
         spawnCommand()
 
         redisApi = RedisApi.create(plugin.dataPath)
-        redisApi.subscribeToEvents(EventServerStateChangeListener)
+        eventServerBridge.init()
         redisApi.freezeAndConnect()
-
-        launch {
-            eventServerBridge.requestState()
-        }
     }
 
     override fun onDisable() {
