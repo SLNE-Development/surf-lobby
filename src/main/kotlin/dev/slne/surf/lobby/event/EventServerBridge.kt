@@ -18,5 +18,6 @@ class EventServerBridge {
         plugin.logger.info("Received event server state: $state")
     }.onFailure {
         state = LocalEventServerState.UNKNOWN
+        plugin.logger.info("Failed to request event server state. Setting state to UNKNOWN...")
     }
 }

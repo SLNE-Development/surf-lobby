@@ -46,7 +46,7 @@ class PaperMain : SuspendingJavaPlugin() {
         spawnCommand()
 
         redisApi = RedisApi.create(plugin.dataPath)
-        redisApi.registerRequestHandler(EventServerStateChangeListener)
+        redisApi.subscribeToEvents(EventServerStateChangeListener)
         redisApi.freezeAndConnect()
 
         launch {
