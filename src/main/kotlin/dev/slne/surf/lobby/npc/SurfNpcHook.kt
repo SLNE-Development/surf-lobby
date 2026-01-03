@@ -1,14 +1,17 @@
 package dev.slne.surf.lobby.npc
 
+import dev.slne.surf.event.base.api.common.state.EventServerState
+import dev.slne.surf.lobby.event.eventServerBridge
 import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.plugin
-import dev.slne.surf.lobby.utils.note
+import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.npc.api.dsl.npc
 import dev.slne.surf.npc.api.event.NpcInteractEvent
 import dev.slne.surf.npc.api.npc.Npc
 import dev.slne.surf.npc.api.npc.rotation.NpcRotationType
 import dev.slne.surf.npc.api.result.NpcCreationResult
 import dev.slne.surf.npc.api.surfNpcApi
+import dev.slne.surf.surfapi.bukkit.api.surfBukkitApi
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps
 import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
@@ -61,7 +64,7 @@ object SurfNpcHook {
                     note("Nepomuk")
                     spacer("]")
                     appendSpace()
-                    error("Das Schiff zum Survival Server wurde noch nicht repariert... Bitte habe noch ein wenig Geduld!")
+                    error("Ich konnte noch keine Verbindung zum Planeten \"Survival\" herstellen...")
                 }
                 it.player.playSound(true) {
                     type(Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT)
@@ -85,6 +88,35 @@ object SurfNpcHook {
                 x = lobbyConfig.eventNpc.x
                 y = lobbyConfig.eventNpc.y
                 z = lobbyConfig.eventNpc.z
+            }
+
+            withEventHandler<NpcInteractEvent> {
+                val player = it.player
+
+                when (eventServerBridge.state.get()) {
+                    EventServerState.OPEN -> {
+                        surfBukkitApi.sendPlayerToServer(player, "event")
+                        return@withEventHandler
+                    }
+
+                    EventServerState.CLOSED -> {
+                        if (player.hasPermission(PermissionRegistry.EVENT_BYPASS)) {
+                            surfBukkitApi.sendPlayerToServer(player, "event")
+                            return@withEventHandler
+                        }
+                        player.sendText {
+                            appendPrefix()
+                            error("Der Event Server ist aktuell geschlossen!")
+                        }
+                    }
+
+                    EventServerState.UNKNOWN -> {
+                        player.sendText {
+                            appendPrefix()
+                            error("Aktuell findet kein Event statt!")
+                        }
+                    }
+                }
             }
 
             fixedRotation =

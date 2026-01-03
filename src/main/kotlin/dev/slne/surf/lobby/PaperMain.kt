@@ -37,13 +37,14 @@ class PaperMain : SuspendingJavaPlugin() {
         ItemInteractListener.register()
         InventoryInteractListener.register()
         PushbackListener.register()
+        MinHeightListener.register()
 
         PushbackManager.startTask()
 
         lobbyCommand()
         spawnCommand()
 
-        redisApi = RedisApi.create(plugin.dataPath)
+        redisApi = RedisApi.create()
         eventServerBridge.init()
         redisApi.freezeAndConnect()
     }
