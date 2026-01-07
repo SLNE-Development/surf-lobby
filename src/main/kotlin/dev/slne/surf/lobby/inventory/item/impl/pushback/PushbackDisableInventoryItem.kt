@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.inventory.item.impl
+package dev.slne.surf.lobby.inventory.item.impl.pushback
 
 import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.lobby.manager.PushbackManager
@@ -9,9 +9,8 @@ import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
-object PushbackEnableInventoryItem : InventoryItem {
+object PushbackDisableInventoryItem : InventoryItem {
     override val slot = 0
-    override val permission: String = PermissionRegistry.PUSHBACK_ITEM
     override val item = ItemType.ENDER_EYE.createItemStack().apply {
         displayName {
             variableValue("Pushback")
@@ -24,19 +23,20 @@ object PushbackEnableInventoryItem : InventoryItem {
             }
             emptyLine()
             line {
-                error("Deaktiviert")
+                success("Aktiviert")
             }
         }
     }
+    override val permission: String = PermissionRegistry.PUSHBACK_ITEM
 
     override fun onInteract(player: Player) {
-        PushbackManager.add(player.uniqueId)
-        player.inventory.setItem(slot, PushbackDisableInventoryItem.item)
+        PushbackManager.remove(player.uniqueId)
+        player.inventory.setItem(slot, PushbackEnableInventoryItem.item)
 
         player.sendText {
             appendPrefix()
             info("Du hast den Pushback ")
-            success("aktiviert.")
+            error("deaktiviert.")
         }
     }
 }

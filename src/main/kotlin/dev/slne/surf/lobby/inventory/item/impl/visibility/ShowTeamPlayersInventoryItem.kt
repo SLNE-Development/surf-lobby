@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.inventory.item.impl
+package dev.slne.surf.lobby.inventory.item.impl.visibility
 
 import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.lobby.manager.PlayerVisibilityManager
@@ -9,10 +9,10 @@ import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
-object ShowAllPlayersInventoryItem : InventoryItem {
+object ShowTeamPlayersInventoryItem : InventoryItem {
     override val slot = 2
     override val permission: String = PermissionRegistry.PLAYER_VISIBILITY_ITEM
-    override val item = ItemType.LIME_DYE.createItemStack().apply {
+    override val item = ItemType.ORANGE_DYE.createItemStack().apply {
         displayName {
             variableValue("Spieler-Sichtbarkeit")
         }
@@ -24,7 +24,7 @@ object ShowAllPlayersInventoryItem : InventoryItem {
             }
             emptyLine()
             line {
-                success("Alle Spieler werden angezeigt")
+                variableValue("Nur Teammitglieder werden angezeigt")
             }
         }
     }
@@ -32,14 +32,14 @@ object ShowAllPlayersInventoryItem : InventoryItem {
     override fun onInteract(player: Player) {
         PlayerVisibilityManager.setState(
             player.uniqueId,
-            PlayerVisibilityManager.VisibilityState.SHOW_TEAM
+            PlayerVisibilityManager.VisibilityState.SHOW_NONE
         )
-        player.inventory.setItem(slot, ShowTeamPlayersInventoryItem.item)
+        player.inventory.setItem(slot, ShowNonePlayersInventoryItem.item)
 
         player.sendText {
             appendPrefix()
-            info("Du siehst jetzt nur noch ")
-            success("Teammitglieder.")
+            info("Du siehst jetzt ")
+            error("keine Spieler.")
         }
     }
 }

@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.inventory.item.impl
+package dev.slne.surf.lobby.inventory.item.impl.navigator
 
 import dev.slne.surf.lobby.inventory.impl.navigatorInventory
 import dev.slne.surf.lobby.inventory.item.InventoryItem
