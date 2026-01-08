@@ -1,5 +1,6 @@
-package dev.slne.surf.lobby.inventory.item.impl.rewards
+package dev.slne.surf.lobby.inventory.item.impl.navigator
 
+import dev.slne.surf.lobby.inventory.impl.navigatorInventory
 import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
@@ -10,9 +11,9 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
-object RewardsItem : InventoryItem(2, ItemType.GOLD_NUGGET.createItemStack().apply {
+object NavigatorItem : InventoryItem(4, ItemType.COMPASS.createItemStack().apply {
     displayName {
-        localColored("Erfolge")
+        localColored("Navigator")
     }
 
     buildLore {
@@ -23,24 +24,26 @@ object RewardsItem : InventoryItem(2, ItemType.GOLD_NUGGET.createItemStack().app
         line {
             spacer("-")
             appendSpace()
-            localColored("Siehe deine Erfolge an")
+            localColored("Teleport zum Event-Schiff")
         }
 
         line {
             spacer("-")
             appendSpace()
-            localColored("Erkunde alle Trophäen")
+            localColored("Teleport zum Survival-Schiff")
         }
         emptyLine()
 
         line {
-            spacer("» Klicke, um deine Erfolge zu öffnen")
+            spacer("» Klicke, um den Navigator zu öffnen")
         }
     }
 }) {
     override val permission = null
-    override fun onInteract(player: Player) {}
+    override fun onInteract(player: Player) {
+        navigatorInventory().show(player)
+    }
 }
 
 private fun SurfComponentBuilder.localColored(text: Any, vararg decoration: TextDecoration) =
-    text(text.toString(), TextColor.fromHexString("#ffe700"), *decoration)
+    text(text.toString(), TextColor.fromHexString("#f58442"), *decoration)

@@ -5,28 +5,61 @@ import dev.slne.surf.lobby.manager.PushbackManager
 import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
+import dev.slne.surf.surfapi.core.api.font.toSmallCaps
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
+import dev.slne.surf.surfapi.core.api.messages.builder.SurfComponentBuilder
+import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
-object PushbackDisableInventoryItem : InventoryItem {
-    override val slot = 0
-    override val item = ItemType.ENDER_EYE.createItemStack().apply {
-        displayName {
-            variableValue("Pushback")
+object PushbackDisableInventoryItem : InventoryItem(0, ItemType.ENDER_EYE.createItemStack().apply {
+    displayName {
+        variableValue("Pushback")
+    }
+    buildLore {
+        emptyLine()
+        line {
+            variableValue("Beschreibung:".toSmallCaps())
+        }
+        line {
+            spacer("-")
+            appendSpace()
+            localColored("Pushback steuern")
         }
 
-        buildLore {
-            emptyLine()
-            line {
-                info("Stößt andere zurück, wenn sie zu Nahe kommen.")
-            }
-            emptyLine()
-            line {
-                success("Aktiviert")
-            }
+        line {
+            spacer("-")
+            appendSpace()
+            localColored("Pushback aktivieren oder deaktivieren")
+        }
+
+        emptyLine()
+
+        line {
+            variableValue("Status".toSmallCaps())
+        }
+
+        line {
+            appendSpace()
+            spacer("-")
+            appendSpace()
+            success("Aktiviert", TextDecoration.BOLD)
+        }
+
+        line {
+            spacer("-")
+            appendSpace()
+            error("Deaktiviert")
+        }
+
+        emptyLine()
+
+        line {
+            spacer("» Klicke, um zu wechseln")
         }
     }
+}) {
     override val permission: String = PermissionRegistry.PUSHBACK_ITEM
 
     override fun onInteract(player: Player) {
@@ -40,3 +73,6 @@ object PushbackDisableInventoryItem : InventoryItem {
         }
     }
 }
+
+private fun SurfComponentBuilder.localColored(text: Any, vararg decoration: TextDecoration) =
+    text(text.toString(), TextColor.fromHexString("#f5426c"), *decoration)
