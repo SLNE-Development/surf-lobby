@@ -1,6 +1,9 @@
 package dev.slne.surf.lobby.inventory.item.impl.parkour
 
+import com.github.shynixn.mccoroutine.folia.launch
 import dev.slne.surf.lobby.inventory.item.InventoryItem
+import dev.slne.surf.lobby.parkour.ParkourHook
+import dev.slne.surf.lobby.plugin
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps
@@ -18,18 +21,44 @@ object ParkourItem : InventoryItem(6, ItemType.BARRIER.createItemStack().apply {
     }
 
     displayName {
-        localColored("Error")
+        localColored("Parkour")
     }
 
     buildLore {
         emptyLine()
         line {
-            variableValue("Du solltest dieses Item nicht sehen. Wenn du dieses Item siehst, melde dies bitte einem Teammitglied.".toSmallCaps())
+            variableValue("Beschreibung:".toSmallCaps())
+        }
+        line {
+            spacer("-")
+            appendSpace()
+            localColored("Starte den Lobby Parkour")
+        }
+
+        line {
+            spacer("-")
+            appendSpace()
+            localColored("Siehe Statistiken an")
+        }
+
+        line {
+            spacer("-")
+            appendSpace()
+            localColored("Stelle neue Rekorde auf")
+        }
+        emptyLine()
+
+        line {
+            spacer("» Klicke, um das Parkour Menu zu öffnen")
         }
     }
 }) {
     override val permission = null
-    override fun onInteract(player: Player) {}
+    override fun onInteract(player: Player) {
+        plugin.launch {
+            ParkourHook.openParkourGui(player)
+        }
+    }
 }
 
 

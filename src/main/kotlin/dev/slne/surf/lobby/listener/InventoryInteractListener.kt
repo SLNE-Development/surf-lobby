@@ -47,7 +47,7 @@ object InventoryInteractListener : Listener {
         event.cancel()
     }
 
-    private val itemSlots = setOf(2, 4, 6)
+    private val itemSlots = setOf(1, 2, 4, 6, 7)
 
     @EventHandler
     fun onHoldItem(event: PlayerItemHeldEvent) {
