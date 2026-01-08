@@ -12,41 +12,19 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 import org.bukkit.inventory.meta.ColorableArmorMeta
 
-object ParkourItem : InventoryItem(6, ItemType.LEATHER_BOOTS.createItemStack().apply {
+object ParkourItem : InventoryItem(6, ItemType.BARRIER.createItemStack().apply {
     editMeta(ColorableArmorMeta::class.java) {
         it.setColor(Color.fromRGB(3, 252, 198))
     }
 
     displayName {
-        localColored("Parkour")
+        localColored("Error")
     }
 
     buildLore {
         emptyLine()
         line {
-            variableValue("Beschreibung:".toSmallCaps())
-        }
-        line {
-            spacer("-")
-            appendSpace()
-            localColored("Bearbeite dein Profil")
-        }
-
-        line {
-            spacer("-")
-            appendSpace()
-            localColored("Siehe deine Freunde an")
-        }
-
-        line {
-            spacer("-")
-            appendSpace()
-            localColored("Neuste Informationen zu deinem Clan")
-        }
-        emptyLine()
-
-        line {
-            spacer("» Klicke, um dein Profil zu öffnen")
+            variableValue("Du solltest dieses Item nicht sehen. Wenn du dieses Item siehst, melde dies bitte einem Teammitglied.".toSmallCaps())
         }
     }
 }) {

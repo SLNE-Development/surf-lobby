@@ -84,4 +84,4 @@ object ShowNonePlayersInventoryItem : InventoryItem(7, ItemType.GRAY_DYE.createI
 }
 
 private fun SurfComponentBuilder.localColored(text: Any, vararg decoration: TextDecoration) =
-    text(text.toString(), TextColor.fromHexString("#7e42f5"), *decoration)
+    text(text.toString(), TextColor.fromHexString("#61adff"), *decoration)
