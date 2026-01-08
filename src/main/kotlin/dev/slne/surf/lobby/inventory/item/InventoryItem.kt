@@ -5,7 +5,7 @@ import dev.slne.surf.lobby.inventory.item.impl.parkour.ParkourItem
 import dev.slne.surf.lobby.inventory.item.impl.profile.ProfileItem
 import dev.slne.surf.lobby.inventory.item.impl.pushback.PushbackDisableInventoryItem
 import dev.slne.surf.lobby.inventory.item.impl.pushback.PushbackEnableInventoryItem
-import dev.slne.surf.lobby.inventory.item.impl.rewards.RewardsItem
+import dev.slne.surf.lobby.inventory.item.impl.rewards.TrophiesItem
 import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowAllPlayersInventoryItem
 import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowNonePlayersInventoryItem
 import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowTeamPlayersInventoryItem
@@ -32,7 +32,7 @@ abstract class InventoryItem(
 
             items.add(ProfileItem)
             items.add(ParkourItem)
-            items.add(RewardsItem)
+            items.add(TrophiesItem)
         }
     }
 }

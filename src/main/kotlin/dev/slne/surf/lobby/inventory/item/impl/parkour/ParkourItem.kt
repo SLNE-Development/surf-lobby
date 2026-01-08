@@ -15,7 +15,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 import org.bukkit.inventory.meta.ColorableArmorMeta
 
-object ParkourItem : InventoryItem(6, ItemType.BARRIER.createItemStack().apply {
+object ParkourItem : InventoryItem(6, ItemType.LEATHER_BOOTS.createItemStack().apply {
     editMeta(ColorableArmorMeta::class.java) {
         it.setColor(Color.fromRGB(3, 252, 198))
     }
