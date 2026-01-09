@@ -1,7 +1,6 @@
 package dev.slne.surf.lobby.inventory.item.impl.profile
 
 import dev.slne.surf.lobby.inventory.item.InventoryItem
-import dev.slne.surf.lobby.inventory.item.impl.profile.ProfileItem.applyDisplayAndLore
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps
@@ -18,46 +17,47 @@ object ProfileItem : InventoryItem(1, ItemType.PLAYER_HEAD.createItemStack().app
 }) {
     override val permission = null
     override fun onInteract(player: Player) {}
-    
-    override fun getItemForPlayer(player: Player): ItemStack = ItemType.PLAYER_HEAD.createItemStack().apply {
-        editMeta(SkullMeta::class.java) {
-            it.owningPlayer = player
+
+    override fun getItemForPlayer(player: Player): ItemStack =
+        ItemType.PLAYER_HEAD.createItemStack().apply {
+            editMeta(SkullMeta::class.java) {
+                it.owningPlayer = player
+            }
+            applyDisplayAndLore()
         }
-        applyDisplayAndLore()
+}
+
+private fun ItemStack.applyDisplayAndLore() {
+    displayName {
+        localColored("Dein Profil")
     }
-    
-    private fun ItemStack.applyDisplayAndLore() {
-        displayName {
-            localColored("Dein Profil")
+
+    buildLore {
+        emptyLine()
+        line {
+            variableValue("Beschreibung:".toSmallCaps())
+        }
+        line {
+            spacer("-")
+            appendSpace()
+            localColored("Bearbeite dein Profil")
         }
 
-        buildLore {
-            emptyLine()
-            line {
-                variableValue("Beschreibung:".toSmallCaps())
-            }
-            line {
-                spacer("-")
-                appendSpace()
-                localColored("Bearbeite dein Profil")
-            }
+        line {
+            spacer("-")
+            appendSpace()
+            localColored("Siehe deine Freunde an")
+        }
 
-            line {
-                spacer("-")
-                appendSpace()
-                localColored("Siehe deine Freunde an")
-            }
+        line {
+            spacer("-")
+            appendSpace()
+            localColored("Neuste Informationen zu deinem Clan")
+        }
+        emptyLine()
 
-            line {
-                spacer("-")
-                appendSpace()
-                localColored("Neuste Informationen zu deinem Clan")
-            }
-            emptyLine()
-
-            line {
-                spacer("» Klicke, um dein Profil zu öffnen")
-            }
+        line {
+            spacer("» Klicke, um dein Profil zu öffnen")
         }
     }
 }
