@@ -8,6 +8,7 @@ import dev.slne.surf.surfapi.core.api.messages.builder.SurfComponentBuilder
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ItemType
 import org.bukkit.inventory.meta.SkullMeta
 
@@ -17,7 +18,7 @@ object ProfileItem : InventoryItem(1, ItemType.PLAYER_HEAD.createItemStack().app
     override val permission = null
     override fun onInteract(player: Player) {}
     
-    override fun getItemForPlayer(player: Player) = ItemType.PLAYER_HEAD.createItemStack().apply {
+    override fun getItemForPlayer(player: Player): ItemStack = ItemType.PLAYER_HEAD.createItemStack().apply {
         editMeta(SkullMeta::class.java) {
             it.owningPlayer = player
         }
