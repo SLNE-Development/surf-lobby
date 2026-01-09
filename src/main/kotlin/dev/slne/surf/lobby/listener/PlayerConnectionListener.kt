@@ -22,7 +22,7 @@ object PlayerConnectionListener : Listener {
         InventoryItem.items.filter { item ->
             item.permission?.let { event.player.hasPermission(it) } ?: true
         }.forEach {
-            event.player.inventory.setItem(it.slot, it.item)
+            event.player.inventory.setItem(it.slot, it.getItemForPlayer(event.player))
         }
 
         PlayerVisibilityManager.onPlayerJoin(event.player)
