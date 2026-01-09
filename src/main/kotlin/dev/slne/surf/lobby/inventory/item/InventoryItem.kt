@@ -18,6 +18,12 @@ abstract class InventoryItem(
 ) {
     abstract val permission: String?
     abstract fun onInteract(player: Player)
+    
+    /**
+     * Gets the item for a specific player. Override this method to provide player-specific items.
+     * By default, returns the static item.
+     */
+    open fun getItemForPlayer(player: Player): ItemStack = item
 
     companion object {
         val items = mutableListOf<InventoryItem>()
