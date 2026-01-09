@@ -1,6 +1,7 @@
 package dev.slne.surf.lobby.inventory.item.impl.rewards
 
 import dev.slne.surf.lobby.inventory.item.InventoryItem
+import dev.slne.surf.lobby.trophy.TrophyHook
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps
@@ -39,7 +40,9 @@ object TrophiesItem : InventoryItem(2, ItemType.GOLD_INGOT.createItemStack().app
     }
 }) {
     override val permission = null
-    override fun onInteract(player: Player) {}
+    override fun onInteract(player: Player) {
+        TrophyHook.openMenu(player)
+    }
 }
 
 private fun SurfComponentBuilder.localColored(text: Any, vararg decoration: TextDecoration) =

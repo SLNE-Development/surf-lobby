@@ -1,6 +1,7 @@
 package dev.slne.surf.lobby.inventory.item.impl.profile
 
 import dev.slne.surf.lobby.inventory.item.InventoryItem
+import dev.slne.surf.lobby.inventory.item.impl.profile.ProfileItem.applyDisplayAndLore
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps

@@ -15,6 +15,7 @@ dependencies {
     implementation("dev.slne.surf.event:surf-event-base-api-common:1.21.11-1.0.0-SNAPSHOT")
     implementation("dev.slne.surf.tab:surf-tab-api:1.21.11-1.0.2-SNAPSHOT")
     compileOnly("dev.slne.surf.parkour:surf-parkour-api:1.21.11-3.1.2-SNAPSHOT")
+    compileOnly("dev.slne.surf.trophy:surf-trophy-api:1.21.11-1.0.0-SNAPSHOT")
 }
 
 version = findProperty("version") as String
@@ -34,5 +35,6 @@ surfPaperPluginApi {
         registerSoft("surf-hologram-paper")
         registerSoft("surf-parkour-paper")
         registerSoft("Nexo")
+        registerSoft("surf-trophy-paper")
     }
 }
