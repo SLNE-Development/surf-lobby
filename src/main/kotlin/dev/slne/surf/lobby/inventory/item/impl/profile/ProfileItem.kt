@@ -12,38 +12,7 @@ import org.bukkit.inventory.ItemType
 import org.bukkit.inventory.meta.SkullMeta
 
 object ProfileItem : InventoryItem(1, ItemType.PLAYER_HEAD.createItemStack().apply {
-    displayName {
-        localColored("Dein Profil")
-    }
-
-    buildLore {
-        emptyLine()
-        line {
-            variableValue("Beschreibung:".toSmallCaps())
-        }
-        line {
-            spacer("-")
-            appendSpace()
-            localColored("Bearbeite dein Profil")
-        }
-
-        line {
-            spacer("-")
-            appendSpace()
-            localColored("Siehe deine Freunde an")
-        }
-
-        line {
-            spacer("-")
-            appendSpace()
-            localColored("Neuste Informationen zu deinem Clan")
-        }
-        emptyLine()
-
-        line {
-            spacer("» Klicke, um dein Profil zu öffnen")
-        }
-    }
+    applyDisplayAndLore()
 }) {
     override val permission = null
     override fun onInteract(player: Player) {}
@@ -52,7 +21,10 @@ object ProfileItem : InventoryItem(1, ItemType.PLAYER_HEAD.createItemStack().app
         editMeta(SkullMeta::class.java) {
             it.owningPlayer = player
         }
-
+        applyDisplayAndLore()
+    }
+    
+    private fun ItemStack.applyDisplayAndLore() {
         displayName {
             localColored("Dein Profil")
         }
