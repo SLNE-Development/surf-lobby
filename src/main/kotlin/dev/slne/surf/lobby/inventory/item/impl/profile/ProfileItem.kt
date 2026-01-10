@@ -1,6 +1,7 @@
 package dev.slne.surf.lobby.inventory.item.impl.profile
 
 import dev.slne.surf.lobby.inventory.item.InventoryItem
+import dev.slne.surf.lobby.profile.ProfileHook
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps
@@ -16,7 +17,9 @@ object ProfileItem : InventoryItem(1, ItemType.PLAYER_HEAD.createItemStack().app
     applyDisplayAndLore()
 }) {
     override val permission = null
-    override fun onInteract(player: Player) {}
+    override fun onInteract(player: Player) {
+        ProfileHook.openMenu(player)
+    }
 
     override fun getItemForPlayer(player: Player): ItemStack =
         ItemType.PLAYER_HEAD.createItemStack().apply {

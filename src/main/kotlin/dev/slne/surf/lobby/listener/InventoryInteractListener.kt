@@ -1,6 +1,5 @@
 package dev.slne.surf.lobby.listener
 
-import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
 import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
 import org.bukkit.GameMode
@@ -18,7 +17,7 @@ object InventoryInteractListener : Listener {
             return
         }
 
-        if (!InventoryItem.items.any { it.item.isSimilar(event.currentItem) }) {
+        if (event.inventory.holder != event.whoClicked) {
             return
         }
 
@@ -31,7 +30,7 @@ object InventoryInteractListener : Listener {
             return
         }
 
-        if (event.inventory != event.whoClicked.inventory) {
+        if (event.inventory.holder != event.whoClicked) {
             return
         }
 
