@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerToggleFlightEvent
 object DoubleJumpListener : Listener {
     @EventHandler
     fun onPlayerMove(event: PlayerMoveEvent) {
-
         if (!event.hasExplicitlyChangedBlock()) {
             return
         }
@@ -20,6 +19,11 @@ object DoubleJumpListener : Listener {
         val player = event.getPlayer()
 
         if (ParkourHook.isInParkour(player)) {
+            if (player.gameMode == GameMode.CREATIVE) {
+                return
+            }
+
+            player.allowFlight = false
             return
         }
 
