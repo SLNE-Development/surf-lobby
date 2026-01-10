@@ -19,6 +19,10 @@ object PlayerConnectionListener : Listener {
 
         calcYearXp(event.player)
 
+        for (i in 0..8) {
+            event.player.inventory.clear(i)
+        }
+
         InventoryItem.items.filter { item ->
             item.permission?.let { event.player.hasPermission(it) } ?: true
         }.forEach {

@@ -1,5 +1,6 @@
 package dev.slne.surf.lobby.listener
 
+import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
 import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
 import org.bukkit.GameMode
@@ -50,7 +51,9 @@ object InventoryInteractListener : Listener {
 
     @EventHandler
     fun onHoldItem(event: PlayerItemHeldEvent) {
-        if (event.newSlot in itemSlots) {
+        if (InventoryItem.items.filter { item ->
+                item.permission?.let { event.player.hasPermission(it) } ?: true
+            }.any { it.slot == event.newSlot }) {
             event.player.playSound(true) {
                 type(Sound.UI_BUTTON_CLICK)
             }

@@ -13,7 +13,7 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
-object PushbackEnableInventoryItem : InventoryItem(3, ItemType.ENDER_EYE.createItemStack().apply {
+object PushbackEnableInventoryItem : InventoryItem(2, ItemType.ENDER_EYE.createItemStack().apply {
     displayName {
         variableValue("Pushback")
     }
