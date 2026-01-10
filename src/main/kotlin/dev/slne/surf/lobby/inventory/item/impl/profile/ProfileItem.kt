@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ItemType
 import org.bukkit.inventory.meta.SkullMeta
 
-object ProfileItem : InventoryItem(1, ItemType.PLAYER_HEAD.createItemStack().apply {
+object ProfileItem : InventoryItem(8, ItemType.PLAYER_HEAD.createItemStack().apply {
     applyDisplayAndLore()
 }) {
     override val permission = null

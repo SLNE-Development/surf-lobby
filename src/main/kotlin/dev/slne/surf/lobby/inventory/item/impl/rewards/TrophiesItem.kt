@@ -11,7 +11,7 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
-object TrophiesItem : InventoryItem(2, ItemType.GOLD_INGOT.createItemStack().apply {
+object TrophiesItem : InventoryItem(7, ItemType.GOLD_INGOT.createItemStack().apply {
     displayName {
         localColored("Trophäen")
     }

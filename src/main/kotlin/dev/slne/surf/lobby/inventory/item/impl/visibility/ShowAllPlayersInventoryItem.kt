@@ -13,7 +13,7 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
-object ShowAllPlayersInventoryItem : InventoryItem(7, ItemType.LIME_DYE.createItemStack().apply {
+object ShowAllPlayersInventoryItem : InventoryItem(0, ItemType.LIME_DYE.createItemStack().apply {
     displayName {
         localColored("Spieler-Sichtbarkeit")
     }
