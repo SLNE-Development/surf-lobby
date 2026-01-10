@@ -8,6 +8,7 @@ import org.bukkit.Sound
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.player.PlayerDropItemEvent
 import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
 
@@ -19,6 +20,15 @@ object InventoryInteractListener : Listener {
         }
 
         if (event.inventory.holder != event.whoClicked) {
+            return
+        }
+
+        event.cancel()
+    }
+
+    @EventHandler
+    fun onDrop(event: PlayerDropItemEvent) {
+        if (event.player.gameMode == GameMode.CREATIVE) {
             return
         }
 
