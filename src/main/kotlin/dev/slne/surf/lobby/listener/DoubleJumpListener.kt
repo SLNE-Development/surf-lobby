@@ -40,6 +40,10 @@ object DoubleJumpListener : Listener {
             return
         }
 
+        if (ParkourHook.isInParkour(player)) {
+            return
+        }
+
         if (!player.allowFlight) {
             return
         }
