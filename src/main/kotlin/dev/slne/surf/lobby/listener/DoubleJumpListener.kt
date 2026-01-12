@@ -1,5 +1,6 @@
 package dev.slne.surf.lobby.listener
 
+import dev.slne.surf.lobby.parkour.ParkourHook
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
 import org.bukkit.GameMode
 import org.bukkit.Particle
@@ -11,8 +12,20 @@ import org.bukkit.event.player.PlayerToggleFlightEvent
 object DoubleJumpListener : Listener {
     @EventHandler
     fun onPlayerMove(event: PlayerMoveEvent) {
-        if (!event.hasExplicitlyChangedBlock()) return
+        if (!event.hasExplicitlyChangedBlock()) {
+            return
+        }
+
         val player = event.getPlayer()
+
+        if (ParkourHook.isInParkour(player)) {
+            if (player.gameMode == GameMode.CREATIVE) {
+                return
+            }
+
+            player.allowFlight = false
+            return
+        }
 
 
         if (player.gameMode != GameMode.CREATIVE &&
@@ -28,6 +41,10 @@ object DoubleJumpListener : Listener {
         val player = event.getPlayer()
 
         if (player.gameMode == GameMode.CREATIVE) {
+            return
+        }
+
+        if (ParkourHook.isInParkour(player)) {
             return
         }
 

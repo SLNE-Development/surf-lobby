@@ -3,7 +3,7 @@ package dev.slne.surf.lobby.manager
 import dev.slne.surf.lobby.plugin
 import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.core.api.util.mutableObject2ObjectMapOf
-import dev.slne.surf.tab.api.redis.TabHideRedisEvent
+import dev.slne.surf.tab.api.redis.TabEntryUpdateRedisEvent
 import dev.slne.surf.tab.api.redis.TabShowRedisEvent
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -38,34 +38,30 @@ object PlayerVisibilityManager {
                 val otherState = getState(otherPlayer.uniqueId)
                 when (otherState) {
                     VisibilityState.SHOW_ALL -> {
-                        // Force refresh by hiding first, then showing
-                        otherPlayer.hidePlayer(plugin, player)
                         otherPlayer.showPlayer(plugin, player)
 
                         plugin.redisApi.publishEvent(
-                            TabShowRedisEvent(
-                                otherPlayer.uniqueId, player.uniqueId
+                            TabEntryUpdateRedisEvent(
+                                player.uniqueId
                             )
                         )
                     }
 
                     VisibilityState.SHOW_TEAM -> {
                         if (player.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
-                            // Force refresh by hiding first, then showing
-                            otherPlayer.hidePlayer(plugin, player)
                             otherPlayer.showPlayer(plugin, player)
 
                             plugin.redisApi.publishEvent(
-                                TabShowRedisEvent(
-                                    otherPlayer.uniqueId, player.uniqueId
+                                TabEntryUpdateRedisEvent(
+                                    player.uniqueId
                                 )
                             )
                         } else {
                             otherPlayer.hidePlayer(plugin, player)
 
                             plugin.redisApi.publishEvent(
-                                TabHideRedisEvent(
-                                    otherPlayer.uniqueId, player.uniqueId
+                                TabEntryUpdateRedisEvent(
+                                    player.uniqueId
                                 )
                             )
                         }
@@ -75,8 +71,8 @@ object PlayerVisibilityManager {
                         otherPlayer.hidePlayer(plugin, player)
 
                         plugin.redisApi.publishEvent(
-                            TabHideRedisEvent(
-                                otherPlayer.uniqueId, player.uniqueId
+                            TabEntryUpdateRedisEvent(
+                                player.uniqueId
                             )
                         )
                     }
@@ -93,13 +89,11 @@ object PlayerVisibilityManager {
             VisibilityState.SHOW_ALL -> {
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
-                        // Force refresh by hiding first, then showing
-                        player.hidePlayer(plugin, otherPlayer)
                         player.showPlayer(plugin, otherPlayer)
 
                         plugin.redisApi.publishEvent(
-                            TabShowRedisEvent(
-                                player.uniqueId, otherPlayer.uniqueId
+                            TabEntryUpdateRedisEvent(
+                                otherPlayer.uniqueId
                             )
                         )
                     }
@@ -110,8 +104,6 @@ object PlayerVisibilityManager {
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
                         if (otherPlayer.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
-                            // Force refresh by hiding first, then showing
-                            player.hidePlayer(plugin, otherPlayer)
                             player.showPlayer(plugin, otherPlayer)
 
                             plugin.redisApi.publishEvent(
@@ -123,8 +115,8 @@ object PlayerVisibilityManager {
                             player.hidePlayer(plugin, otherPlayer)
 
                             plugin.redisApi.publishEvent(
-                                TabHideRedisEvent(
-                                    player.uniqueId, otherPlayer.uniqueId
+                                TabEntryUpdateRedisEvent(
+                                    otherPlayer.uniqueId
                                 )
                             )
                         }
@@ -138,8 +130,8 @@ object PlayerVisibilityManager {
                         player.hidePlayer(plugin, otherPlayer)
 
                         plugin.redisApi.publishEvent(
-                            TabHideRedisEvent(
-                                player.uniqueId, otherPlayer.uniqueId
+                            TabEntryUpdateRedisEvent(
+                                otherPlayer.uniqueId
                             )
                         )
                     }

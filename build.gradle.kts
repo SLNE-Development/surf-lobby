@@ -12,9 +12,11 @@ dependencies {
     compileOnly("surf-hologram:surf-hologram-api:1.21.11-1.0.2-SNAPSHOT")
     compileOnly("dev.slne.surf.npc:surf-npc-api:1.21.10-1.5.0-20251009.154819-1")
     compileOnly("com.nexomc:nexo:1.16.1")
-    implementation("dev.slne.surf:surf-redis:1.0.0-SNAPSHOT")
-    implementation("dev.slne.surf.event:surf-event-base-api-redis:1.21.11-1.0.0-SNAPSHOT")
+    implementation("dev.slne.surf.event:surf-event-base-api-common:1.21.11-1.0.0-SNAPSHOT")
     implementation("dev.slne.surf.tab:surf-tab-api:1.21.11-1.0.2-SNAPSHOT")
+    compileOnly("dev.slne.surf.parkour:surf-parkour-api:1.21.11-3.1.2-SNAPSHOT")
+    compileOnly("dev.slne.surf.trophy:surf-trophy-api:1.21.11-1.0.0-SNAPSHOT")
+    compileOnly("dev.slne.surf.profile:surf-profile-api:1.21.11-1.0.0-SNAPSHOT")
 }
 
 version = findProperty("version") as String
@@ -25,11 +27,16 @@ surfPaperPluginApi {
     generateLibraryLoader(false)
     foliaSupported(false)
 
+    withSurfRedis()
+
     authors.add("red")
 
     serverDependencies {
         registerSoft("surf-npc-bukkit")
         registerSoft("surf-hologram-paper")
+        registerSoft("surf-parkour-paper")
         registerSoft("Nexo")
+        registerSoft("surf-trophy-paper")
+        registerSoft("surf-profile-paper")
     }
 }

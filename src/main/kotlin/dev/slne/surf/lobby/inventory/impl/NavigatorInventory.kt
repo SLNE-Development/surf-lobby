@@ -1,18 +1,18 @@
 package dev.slne.surf.lobby.inventory.impl
 
 import com.github.stefvanschie.inventoryframework.pane.util.Slot
+import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.event.eventServerBridge
-import dev.slne.surf.lobby.event.state.LocalEventServerState
 import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.plugin
-import dev.slne.surf.lobby.utils.PermissionRegistry
+import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
 import dev.slne.surf.surfapi.bukkit.api.inventory.dsl.menu
 import dev.slne.surf.surfapi.bukkit.api.inventory.dsl.staticPane
 import dev.slne.surf.surfapi.bukkit.api.surfBukkitApi
+import dev.slne.surf.surfapi.core.api.font.toSmallCaps
 import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
-import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import dev.slne.surf.surfapi.core.api.messages.adventure.text
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -27,31 +27,18 @@ fun navigatorInventory() = menu(text("<shift:-46><glyph:server_selector>"), 6) {
         setOnClick {
             val player = it.whoClicked as? Player ?: return@setOnClick
 
-            when (eventServerBridge.state) {
-                LocalEventServerState.OPEN -> {
-                    surfBukkitApi.sendPlayerToServer(player, "event")
-                    return@setOnClick
-                }
+//            if(player.isPremium()) { TODO: Premium Rang
+//                surfBukkitApi.sendPlayerToServer(player, "event")
+//                return@setOnClick
+//            }
 
-                LocalEventServerState.CLOSED -> {
-                    if (player.hasPermission(PermissionRegistry.EVENT_BYPASS)) {
-                        surfBukkitApi.sendPlayerToServer(player, "event")
-                        return@setOnClick
-                    }
-                    player.sendText {
-                        appendPrefix()
-                        error("Der Event Server ist aktuell geschlossen!")
-                    }
-                }
-
-                LocalEventServerState.UNKNOWN -> {
-                    player.sendText {
-                        appendPrefix()
-                        error("Aktuell findet kein Event statt!")
-                    }
+            player.teleportAsync(lobbyConfig.eventTeleport.toLocation()).thenRun {
+                player.playSound(true) {
+                    type(Sound.ENTITY_ENDERMAN_TELEPORT)
+                    pitch(2.0f)
                 }
             }
-            it.whoClicked.closeInventory()
+            player.closeInventory()
         }
     }
 
@@ -66,7 +53,7 @@ fun navigatorInventory() = menu(text("<shift:-46><glyph:server_selector>"), 6) {
 //                return@setOnClick
 //            }
 
-            player.teleportAsync(lobbyConfig.survivalNpcTeleport.toLocation()).thenRun {
+            player.teleportAsync(lobbyConfig.survivalTeleport.toLocation()).thenRun {
                 player.playSound(true) {
                     type(Sound.ENTITY_ENDERMAN_TELEPORT)
                     pitch(2.0f)
@@ -109,11 +96,47 @@ private val survivalServerItem = plugin.getInvisibleItem().apply {
     }
 }
 
-private val eventServerItem = plugin.getInvisibleItem().apply {
-    displayName {
-        primary("Event Server")
+private val eventServerItem
+    get() = plugin.getInvisibleItem().apply {
+        displayName {
+            primary("Event Server")
+        }
+
+        buildLore {
+            emptyLine()
+            line {
+                note("Status:".toSmallCaps())
+            }
+            line {
+                when (eventServerBridge.state.get()) {
+                    EventServerState.OPEN -> {
+                        success("Klicke, um dem Event Server beizutreten")
+                    }
+
+                    EventServerState.CLOSED -> {
+                        error("Der Event Server ist aktuell geschlossen")
+                    }
+
+                    EventServerState.UNKNOWN -> {
+                        error("Aktuell findet kein Event statt")
+                    }
+                }
+            }
+            if (eventServerBridge.state.get() != EventServerState.UNKNOWN) {
+                emptyLine()
+                line {
+                    note("Spieler:".toSmallCaps())
+                }
+
+                line {
+                    val playerCount = eventServerBridge.currentEventPlayers.get()
+                    val maxPlayers = eventServerBridge.currentEventMaxPlayers.get()
+                    info("$playerCount / $maxPlayers Spieler online")
+                }
+            }
+
+        }
     }
-}
 
 private val lobbyOneServerItem = plugin.getInvisibleItem().apply {
     displayName {

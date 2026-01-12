@@ -1,20 +1,29 @@
 package dev.slne.surf.lobby.inventory.item
 
-import dev.slne.surf.lobby.inventory.item.impl.NavigatorInventoryItem
-import dev.slne.surf.lobby.inventory.item.impl.PushbackDisableInventoryItem
-import dev.slne.surf.lobby.inventory.item.impl.PushbackEnableInventoryItem
-import dev.slne.surf.lobby.inventory.item.impl.ShowAllPlayersInventoryItem
-import dev.slne.surf.lobby.inventory.item.impl.ShowNonePlayersInventoryItem
-import dev.slne.surf.lobby.inventory.item.impl.ShowTeamPlayersInventoryItem
+import dev.slne.surf.lobby.inventory.item.impl.navigator.NavigatorItem
+import dev.slne.surf.lobby.inventory.item.impl.parkour.ParkourItem
+import dev.slne.surf.lobby.inventory.item.impl.profile.ProfileItem
+import dev.slne.surf.lobby.inventory.item.impl.pushback.PushbackDisableInventoryItem
+import dev.slne.surf.lobby.inventory.item.impl.pushback.PushbackEnableInventoryItem
+import dev.slne.surf.lobby.inventory.item.impl.rewards.TrophiesItem
+import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowAllPlayersInventoryItem
+import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowNonePlayersInventoryItem
+import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowTeamPlayersInventoryItem
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-interface InventoryItem {
-    val slot: Int
+abstract class InventoryItem(
+    val slot: Int,
     val item: ItemStack
-    val permission: String?
-
-    fun onInteract(player: Player)
+) {
+    abstract val permission: String?
+    abstract fun onInteract(player: Player)
+    
+    /**
+     * Gets the item for a specific player. Override this method to provide player-specific items.
+     * By default, returns the static item.
+     */
+    open fun getItemForPlayer(player: Player): ItemStack = item
 
     companion object {
         val items = mutableListOf<InventoryItem>()
@@ -22,10 +31,14 @@ interface InventoryItem {
         init {
             items.add(PushbackDisableInventoryItem)
             items.add(PushbackEnableInventoryItem)
-            items.add(NavigatorInventoryItem)
+            items.add(NavigatorItem)
             items.add(ShowNonePlayersInventoryItem)
             items.add(ShowTeamPlayersInventoryItem)
             items.add(ShowAllPlayersInventoryItem)
+
+            items.add(ProfileItem)
+            items.add(ParkourItem)
+            items.add(TrophiesItem)
         }
     }
 }

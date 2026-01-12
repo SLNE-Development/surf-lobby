@@ -1,22 +1,36 @@
 package dev.slne.surf.lobby.event
 
-import dev.slne.surf.event.base.api.redis.request.EventServerStateRequest
-import dev.slne.surf.event.base.api.redis.response.EventServerStateResponse
-import dev.slne.surf.lobby.event.state.LocalEventServerState
+import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.plugin
+import dev.slne.surf.redis.sync.value.SyncValue
+import dev.slne.surf.redis.sync.value.SyncValueChange
 
 val eventServerBridge = EventServerBridge()
 
 class EventServerBridge {
-    var state: LocalEventServerState = LocalEventServerState.UNKNOWN
+    lateinit var state: SyncValue<EventServerState>
+    lateinit var currentEventPlayers: SyncValue<Int>
+    lateinit var currentEventMaxPlayers: SyncValue<Int>
 
-    suspend fun requestState() = runCatching {
-        plugin.logger.info("Requesting event server state...")
-        val response =
-            plugin.redisApi.sendRequest<EventServerStateResponse>(EventServerStateRequest())
-        state = LocalEventServerState.ofState(response.state)
-        plugin.logger.info("Received event server state: $state")
-    }.onFailure {
-        state = LocalEventServerState.UNKNOWN
+    fun init() {
+        state = plugin.redisApi.createSyncValue(
+            "surf-event:event-server-state",
+            EventServerState.UNKNOWN
+        )
+        currentEventPlayers =
+            plugin.redisApi.createSyncValue("surf-event:event-server-current-players", 0)
+        currentEventMaxPlayers =
+            plugin.redisApi.createSyncValue("surf-event:event-server-max-players", 0)
+
+        state.addListener { change ->
+            when (change) {
+                is SyncValueChange.Updated<*> -> {
+                    val change = change.new as? EventServerState
+                        ?: error("Received SyncValue update with invalid event server state")
+
+                    plugin.logger.info("Event Server state changed to ${change.displayName}")
+                }
+            }
+        }
     }
 }

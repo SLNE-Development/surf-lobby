@@ -17,7 +17,7 @@ object ItemInteractListener : Listener {
         }
 
         InventoryItem.items.forEach {
-            if (item.isSimilar(it.item)) {
+            if (item.isSimilar(it.item) || item.isSimilar(it.getItemForPlayer(event.player))) {
                 it.onInteract(event.player)
                 event.cancel()
             }
