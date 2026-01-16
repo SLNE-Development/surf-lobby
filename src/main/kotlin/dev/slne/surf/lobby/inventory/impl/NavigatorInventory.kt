@@ -3,8 +3,8 @@ package dev.slne.surf.lobby.inventory.impl
 import com.github.stefvanschie.inventoryframework.pane.util.Slot
 import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.event.eventServerBridge
-import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.plugin
+import dev.slne.surf.lobby.utils.Locations
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
@@ -32,7 +32,7 @@ fun navigatorInventory() = menu(text("<shift:-46><glyph:server_selector>"), 6) {
 //                return@setOnClick
 //            }
 
-            player.teleportAsync(lobbyConfig.eventTeleport.toLocation()).thenRun {
+            player.teleportAsync(Locations.EVENT_TELEPORT.getLocation()).thenRun {
                 player.playSound(true) {
                     type(Sound.ENTITY_ENDERMAN_TELEPORT)
                     pitch(2.0f)
@@ -53,7 +53,7 @@ fun navigatorInventory() = menu(text("<shift:-46><glyph:server_selector>"), 6) {
 //                return@setOnClick
 //            }
 
-            player.teleportAsync(lobbyConfig.survivalTeleport.toLocation()).thenRun {
+            player.teleportAsync(Locations.SURVIVAL_TELEPORT.getLocation()).thenRun {
                 player.playSound(true) {
                     type(Sound.ENTITY_ENDERMAN_TELEPORT)
                     pitch(2.0f)

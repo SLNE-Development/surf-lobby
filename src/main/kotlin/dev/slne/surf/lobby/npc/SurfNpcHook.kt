@@ -2,8 +2,8 @@ package dev.slne.surf.lobby.npc
 
 import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.event.eventServerBridge
-import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.plugin
+import dev.slne.surf.lobby.utils.Locations
 import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.npc.api.dsl.NpcDslBuilder
 import dev.slne.surf.npc.api.dsl.npc
@@ -20,6 +20,7 @@ import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.Sound
 
 object SurfNpcHook {
@@ -64,19 +65,10 @@ object SurfNpcHook {
                 note("Nepomuk".toSmallCaps()).decorate(TextDecoration.BOLD)
             }
             uniqueName = "survival"
-            skin = SurfNpcSkins.SURVIVAL.getSkin()
+            skin = SurfNpcSkins.UNKNOWN.getSkin()
 
-            location {
-                world = lobbyConfig.survivalNpc.world
-                x = lobbyConfig.survivalNpc.x
-                y = lobbyConfig.survivalNpc.y
-                z = lobbyConfig.survivalNpc.z
-            }
-
-            fixedRotation = surfNpcApi.createRotation(
-                lobbyConfig.survivalNpc.yaw,
-                lobbyConfig.survivalNpc.pitch
-            )
+            location = Locations.SURVIVAL_NPC.getLocation().toNpcLocation()
+            fixedRotation = Locations.SURVIVAL_NPC.getLocation().toNpcRotation()
             rotationType = NpcRotationType.FIXED
 
             withEventHandler<NpcInteractEvent> {
@@ -102,14 +94,10 @@ object SurfNpcHook {
                 spacer("(Adventure - 1.21.11)")
             }
             uniqueName = "event"
-            skin = SurfNpcSkins.EVENT.getSkin()
+            skin = SurfNpcSkins.UNKNOWN.getSkin()
 
-            location {
-                world = lobbyConfig.eventNpc.world
-                x = lobbyConfig.eventNpc.x
-                y = lobbyConfig.eventNpc.y
-                z = lobbyConfig.eventNpc.z
-            }
+            location = Locations.EVENT_NPC.getLocation().toNpcLocation()
+            fixedRotation = Locations.EVENT_NPC.getLocation().toNpcRotation()
 
             withEventHandler<NpcInteractEvent> {
                 val player = it.player
@@ -140,8 +128,6 @@ object SurfNpcHook {
                 }
             }
 
-            fixedRotation =
-                surfNpcApi.createRotation(lobbyConfig.eventNpc.yaw, lobbyConfig.eventNpc.pitch)
             rotationType = NpcRotationType.FIXED
         }.getOrNull() ?: error("Failed to create survival NPC")
     }
@@ -164,7 +150,7 @@ object SurfNpcHook {
             withEventHandler<NpcInteractEvent> {
                 val player = it.player
 
-                player.teleportAsync(lobbyConfig.survivalTeleport.toLocation()).thenRun {
+                player.teleportAsync(Locations.SURVIVAL_TELEPORT.getLocation()).thenRun {
                     player.playSound(true) {
                         type(Sound.ENTITY_ENDERMAN_TELEPORT)
                         pitch(2.0f)
@@ -194,7 +180,7 @@ object SurfNpcHook {
             withEventHandler<NpcInteractEvent> {
                 val player = it.player
 
-                player.teleportAsync(lobbyConfig.eventTeleport.toLocation()).thenRun {
+                player.teleportAsync(Locations.EVENT_TELEPORT.getLocation()).thenRun {
                     player.playSound(true) {
                         type(Sound.ENTITY_ENDERMAN_TELEPORT)
                         pitch(2.0f)
@@ -264,4 +250,16 @@ object SurfNpcHook {
         val player = it.player
         player.velocity = player.location.direction.multiply(-1.5)
     }
+
+    private fun Location.toNpcLocation() = surfNpcApi.createLocation(
+        x,
+        y,
+        z,
+        world.name
+    )
+
+    private fun Location.toNpcRotation() = surfNpcApi.createRotation(
+        yaw,
+        pitch
+    )
 }
