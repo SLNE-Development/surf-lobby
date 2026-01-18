@@ -1,15 +1,11 @@
 package dev.slne.surf.lobby.listener
 
-import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
-import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
 import org.bukkit.GameMode
-import org.bukkit.Sound
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerDropItemEvent
-import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerSwapHandItemsEvent
 
 object InventoryInteractListener : Listener {
@@ -57,14 +53,14 @@ object InventoryInteractListener : Listener {
         event.cancel()
     }
 
-    @EventHandler
-    fun onHoldItem(event: PlayerItemHeldEvent) {
-        if (InventoryItem.items.filter { item ->
-                item.permission?.let { event.player.hasPermission(it) } ?: true
-            }.any { it.slot == event.newSlot }) {
-            event.player.playSound(true) {
-                type(Sound.UI_BUTTON_CLICK)
-            }
-        }
-    }
+//    @EventHandler
+//    fun onHoldItem(event: PlayerItemHeldEvent) {
+//        if (InventoryItem.items.filter { item ->
+//                item.permission?.let { event.player.hasPermission(it) } ?: true
+//            }.any { it.slot == event.newSlot }) {
+//            event.player.playSound(true) {
+//                type(Sound.UI_BUTTON_CLICK)
+//            }
+//        }
+//    }
 }
