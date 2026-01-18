@@ -2,6 +2,7 @@ package dev.slne.surf.lobby.npc
 
 import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.event.eventServerBridge
+import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.plugin
 import dev.slne.surf.lobby.utils.Locations
 import dev.slne.surf.lobby.utils.PermissionRegistry
@@ -104,13 +105,13 @@ object SurfNpcHook {
 
                 when (eventServerBridge.state.get()) {
                     EventServerState.OPEN -> {
-                        surfBukkitApi.sendPlayerToServer(player, "event")
+                        surfBukkitApi.sendPlayerToServer(player, lobbyConfig.eventServerName)
                         return@withEventHandler
                     }
 
                     EventServerState.CLOSED -> {
                         if (player.hasPermission(PermissionRegistry.EVENT_BYPASS)) {
-                            surfBukkitApi.sendPlayerToServer(player, "event")
+                            surfBukkitApi.sendPlayerToServer(player, lobbyConfig.eventServerName)
                             return@withEventHandler
                         }
                         player.sendText {
