@@ -2,7 +2,9 @@ package dev.slne.surf.lobby.listener
 
 import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
+import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
 import io.papermc.paper.event.player.PrePlayerAttackEntityEvent
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -25,5 +27,9 @@ object PushbackListener : Listener {
 
         event.cancel()
         attacked.velocity = player.eyeLocation.direction.multiply(PUSHBACK_FORCE)
+
+        player.playSound(true) {
+            type(Sound.ENTITY_PLAYER_ATTACK_CRIT)
+        }
     }
 }

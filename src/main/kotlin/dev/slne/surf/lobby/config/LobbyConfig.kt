@@ -6,11 +6,9 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable
 @ConfigSerializable
 data class LobbyConfig(
     val minHeight: Int = 0,
+    val eventServerName: String = "event",
+    val survivalServerName: String = "survival",
     val spawnPoint: LocationConfig = LocationConfig.default(),
-    val survivalNpc: LocationConfig = LocationConfig.default(),
-    val eventNpc: LocationConfig = LocationConfig.default(),
-    val survivalTeleport: LocationConfig = LocationConfig.default(),
-    val eventTeleport: LocationConfig = LocationConfig.default()
 ) {
     @ConfigSerializable
     data class LocationConfig(
