@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.profile
+package dev.slne.surf.lobby.hook.profile
 
 import dev.slne.surf.profile.api.surfProfileApi
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText

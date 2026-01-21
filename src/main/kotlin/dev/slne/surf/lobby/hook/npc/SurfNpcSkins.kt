@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.npc
+package dev.slne.surf.lobby.hook.npc
 
 import dev.slne.surf.npc.api.surfNpcApi
 

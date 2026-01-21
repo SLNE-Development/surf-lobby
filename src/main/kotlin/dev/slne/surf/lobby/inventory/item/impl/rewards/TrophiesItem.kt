@@ -1,7 +1,7 @@
 package dev.slne.surf.lobby.inventory.item.impl.rewards
 
+import dev.slne.surf.lobby.hook.trophy.TrophyHook
 import dev.slne.surf.lobby.inventory.item.InventoryItem
-import dev.slne.surf.lobby.trophy.TrophyHook
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps

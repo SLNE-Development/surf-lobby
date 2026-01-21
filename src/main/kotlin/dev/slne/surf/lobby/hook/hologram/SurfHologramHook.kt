@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.hologram
+package dev.slne.surf.lobby.hook.hologram
 
 import dev.slne.surf.hologram.api.hologram.Hologram
 

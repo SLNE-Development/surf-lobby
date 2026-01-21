@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.parkour
+package dev.slne.surf.lobby.hook.parkour
 
 import dev.slne.surf.parkour.api.surfParkourApi
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
