@@ -3,8 +3,8 @@ package dev.slne.surf.lobby.command
 import dev.jorel.commandapi.kotlindsl.anyExecutor
 import dev.jorel.commandapi.kotlindsl.commandTree
 import dev.jorel.commandapi.kotlindsl.literalArgument
+import dev.slne.surf.lobby.hook.npc.SurfNpcHook
 import dev.slne.surf.lobby.lobbyConfigHolder
-import dev.slne.surf.lobby.npc.SurfNpcHook
 import dev.slne.surf.lobby.surfNpcHook
 import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText

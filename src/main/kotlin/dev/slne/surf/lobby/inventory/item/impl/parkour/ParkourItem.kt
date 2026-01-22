@@ -1,8 +1,8 @@
 package dev.slne.surf.lobby.inventory.item.impl.parkour
 
 import com.github.shynixn.mccoroutine.folia.launch
+import dev.slne.surf.lobby.hook.parkour.ParkourHook
 import dev.slne.surf.lobby.inventory.item.InventoryItem
-import dev.slne.surf.lobby.parkour.ParkourHook
 import dev.slne.surf.lobby.plugin
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName

@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.npc
+package dev.slne.surf.lobby.hook.npc
 
 import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.event.eventServerBridge

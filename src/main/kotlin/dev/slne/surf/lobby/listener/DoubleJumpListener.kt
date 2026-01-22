@@ -1,6 +1,6 @@
 package dev.slne.surf.lobby.listener
 
-import dev.slne.surf.lobby.parkour.ParkourHook
+import dev.slne.surf.lobby.hook.parkour.ParkourHook
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
 import org.bukkit.GameMode
 import org.bukkit.Particle

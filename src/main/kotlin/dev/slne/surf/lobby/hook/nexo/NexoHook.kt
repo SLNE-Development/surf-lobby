@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.nexo
+package dev.slne.surf.lobby.hook.nexo
 
 import com.nexomc.nexo.api.NexoItems
 import org.bukkit.inventory.ItemType

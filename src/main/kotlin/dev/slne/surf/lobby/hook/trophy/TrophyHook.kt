@@ -1,4 +1,4 @@
-package dev.slne.surf.lobby.trophy
+package dev.slne.surf.lobby.hook.trophy
 
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import dev.slne.surf.trophy.api.surfTrophyApi

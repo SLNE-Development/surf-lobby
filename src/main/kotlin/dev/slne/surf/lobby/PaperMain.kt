@@ -5,11 +5,11 @@ import dev.slne.surf.lobby.command.lobbyCommand
 import dev.slne.surf.lobby.command.spawnCommand
 import dev.slne.surf.lobby.config.LobbyConfigHolder
 import dev.slne.surf.lobby.event.eventServerBridge
-import dev.slne.surf.lobby.hologram.SurfHologramHook
+import dev.slne.surf.lobby.hook.hologram.SurfHologramHook
+import dev.slne.surf.lobby.hook.nexo.NexoHook
+import dev.slne.surf.lobby.hook.npc.SurfNpcHook
 import dev.slne.surf.lobby.listener.*
 import dev.slne.surf.lobby.manager.PushbackManager
-import dev.slne.surf.lobby.nexo.NexoHook
-import dev.slne.surf.lobby.npc.SurfNpcHook
 import dev.slne.surf.redis.RedisApi
 import dev.slne.surf.surfapi.bukkit.api.event.register
 import org.bukkit.Bukkit
