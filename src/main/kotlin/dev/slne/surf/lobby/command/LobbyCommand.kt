@@ -22,7 +22,7 @@ fun lobbyCommand() = commandTree("surflobby") {
             }
 
             executor.sendText {
-                appendPrefix()
+                appendSuccessPrefix()
                 success("Lobby configuration reloaded successfully.")
             }
         }

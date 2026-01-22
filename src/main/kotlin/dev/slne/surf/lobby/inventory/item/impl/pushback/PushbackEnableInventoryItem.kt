@@ -67,7 +67,7 @@ object PushbackEnableInventoryItem : InventoryItem(2, ItemType.ENDER_EYE.createI
         player.inventory.setItem(slot, PushbackDisableInventoryItem.item)
 
         player.sendText {
-            appendPrefix()
+            appendInfoPrefix()
             info("Du hast den Pushback ")
             success("aktiviert.")
         }

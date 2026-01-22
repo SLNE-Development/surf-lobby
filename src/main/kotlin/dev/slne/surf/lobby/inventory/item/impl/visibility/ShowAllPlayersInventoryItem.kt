@@ -76,7 +76,7 @@ object ShowAllPlayersInventoryItem : InventoryItem(0, ItemType.LIME_DYE.createIt
         player.inventory.setItem(slot, ShowTeamPlayersInventoryItem.item)
 
         player.sendText {
-            appendPrefix()
+            appendInfoPrefix()
             info("Du siehst jetzt nur noch ")
             success("Teammitglieder.")
         }
