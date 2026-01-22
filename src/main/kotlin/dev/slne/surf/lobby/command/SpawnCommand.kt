@@ -11,7 +11,7 @@ fun spawnCommand() = commandTree("spawn") {
     playerExecutor { player, _ ->
         player.teleportAsync(lobbyConfig.spawnPoint.toLocation()).thenRun {
             player.sendText {
-                appendPrefix()
+                appendSuccessPrefix()
                 success("Du wurdest zum Spawn teleportiert.")
             }
         }

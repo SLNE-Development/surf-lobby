@@ -13,7 +13,7 @@ object ProfileHook {
             surfProfileApi.openOwnProfileMenu(player.uniqueId)
         } else {
             player.sendText {
-                appendPrefix()
+                appendErrorPrefix()
                 error("Lobby: Internal Server error while handling profile hook. Is everything loaded correctly?")
             }
         }

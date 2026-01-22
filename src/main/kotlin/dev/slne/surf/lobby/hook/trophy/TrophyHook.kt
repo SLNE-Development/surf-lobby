@@ -13,7 +13,7 @@ object TrophyHook {
             surfTrophyApi.showTrophyMenu(player, player)
         } else {
             player.sendText {
-                appendPrefix()
+                appendErrorPrefix()
                 error("Lobby: Internal Server error while handling trophy hook. Is everything loaded correctly?")
             }
         }

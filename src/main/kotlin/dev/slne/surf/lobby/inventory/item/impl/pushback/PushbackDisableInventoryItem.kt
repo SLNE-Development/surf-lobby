@@ -67,7 +67,7 @@ object PushbackDisableInventoryItem : InventoryItem(2, ItemType.ENDER_EYE.create
         player.inventory.setItem(slot, PushbackEnableInventoryItem.item)
 
         player.sendText {
-            appendPrefix()
+            appendInfoPrefix()
             info("Du hast den Pushback ")
             error("deaktiviert.")
         }

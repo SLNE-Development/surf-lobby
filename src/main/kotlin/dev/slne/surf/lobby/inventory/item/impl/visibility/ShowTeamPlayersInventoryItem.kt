@@ -75,7 +75,7 @@ object ShowTeamPlayersInventoryItem : InventoryItem(0, ItemType.ORANGE_DYE.creat
         player.inventory.setItem(slot, ShowNonePlayersInventoryItem.item)
 
         player.sendText {
-            appendPrefix()
+            appendInfoPrefix()
             info("Du siehst jetzt ")
             error("keine Spieler.")
         }

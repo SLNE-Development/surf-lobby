@@ -14,7 +14,7 @@ object ParkourHook {
             surfParkourApi.showGui(player)
         } else {
             player.sendText {
-                appendPrefix()
+                appendErrorPrefix()
                 error("Lobby: Internal Server error while handling parkour hook. Is everything loaded correctly?")
             }
         }

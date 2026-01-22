@@ -76,7 +76,7 @@ object ShowNonePlayersInventoryItem : InventoryItem(0, ItemType.GRAY_DYE.createI
         player.inventory.setItem(slot, ShowAllPlayersInventoryItem.item)
 
         player.sendText {
-            appendPrefix()
+            appendInfoPrefix()
             info("Du siehst jetzt ")
             success("alle Spieler.")
         }

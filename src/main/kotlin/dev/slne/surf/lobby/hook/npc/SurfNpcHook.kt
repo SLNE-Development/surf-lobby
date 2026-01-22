@@ -115,14 +115,14 @@ object SurfNpcHook {
                             return@withEventHandler
                         }
                         player.sendText {
-                            appendPrefix()
+                            appendErrorPrefix()
                             error("Der Event Server ist aktuell geschlossen!")
                         }
                     }
 
                     EventServerState.UNKNOWN -> {
                         player.sendText {
-                            appendPrefix()
+                            appendErrorPrefix()
                             error("Aktuell findet kein Event statt!")
                         }
                     }
@@ -230,7 +230,7 @@ object SurfNpcHook {
             withKickback()
             withEventHandler<NpcInteractEvent> {
                 it.player.sendText {
-                    appendPrefix()
+                    appendInfoPrefix()
                     primary("Das Regelwerk findest du hier: ")
                     variableValue("server.castcrafter.de/rules")
                     clickOpensUrl("https://server.castcrafter.de/rules")
