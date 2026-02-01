@@ -78,7 +78,8 @@ object ShowAllPlayersInventoryItem : InventoryItem(0, ItemType.LIME_DYE.createIt
         player.sendText {
             appendInfoPrefix()
             info("Du siehst jetzt nur noch ")
-            success("Teammitglieder.")
+            success("Teammitglieder")
+            info(".")
         }
     }
 }

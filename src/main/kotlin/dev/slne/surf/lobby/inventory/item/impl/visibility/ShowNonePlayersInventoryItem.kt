@@ -78,7 +78,8 @@ object ShowNonePlayersInventoryItem : InventoryItem(0, ItemType.GRAY_DYE.createI
         player.sendText {
             appendInfoPrefix()
             info("Du siehst jetzt ")
-            success("alle Spieler.")
+            success("alle Spieler")
+            info(".")
         }
     }
 }
