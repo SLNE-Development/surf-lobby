@@ -12,12 +12,15 @@ import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Color
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemType
 import org.bukkit.inventory.meta.ColorableArmorMeta
 
 object ParkourItem : InventoryItem(1, ItemType.LEATHER_BOOTS.createItemStack().apply {
     editMeta(ColorableArmorMeta::class.java) {
         it.setColor(Color.fromRGB(3, 252, 198))
+        it.addItemFlags(ItemFlag.HIDE_DYE)
+        it.addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
     }
 
     displayName {
