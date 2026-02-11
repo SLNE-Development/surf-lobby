@@ -77,7 +77,8 @@ object ShowTeamPlayersInventoryItem : InventoryItem(0, ItemType.ORANGE_DYE.creat
         player.sendText {
             appendInfoPrefix()
             info("Du siehst jetzt ")
-            error("keine Spieler.")
+            error("keine Spieler")
+            info(".")
         }
     }
 }
