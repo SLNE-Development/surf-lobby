@@ -21,6 +21,7 @@ import dev.slne.surf.surfapi.bukkit.api.inventory.dsl.menu
 import dev.slne.surf.surfapi.bukkit.api.inventory.dsl.staticPane
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps
 import dev.slne.surf.surfapi.core.api.messages.adventure.*
+import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
@@ -121,7 +122,7 @@ fun lobbySelectorInventory() = menu(buildText { spacer("Lobby Auswahl") }, 3) {
         fillWith(ItemType.GRAY_STAINED_GLASS_PANE.createItemStack())
     })
     addPane(PaginatedPane(1, 1, 7, 1, Pane.Priority.HIGHEST).apply {
-        populateWithGuiItems(surfCoreApi.getServerByCategory("lobby").map {
+        populateWithGuiItems(surfCoreApi.getServerByCategory(lobbyConfig.lobbyCategory).map {
             GuiItem(buildItem(ItemType.RECOVERY_COMPASS) {
                 displayName { variableValue(it.name) }
 
@@ -166,6 +167,12 @@ fun lobbySelectorInventory() = menu(buildText { spacer("Lobby Auswahl") }, 3) {
 
                 updatedServer.pullPlayers(player.surfPlayer)
             }
+        }.ifEmpty {
+            listOf(GuiItem(buildItem(Material.BARRIER) {
+                displayName {
+                    error("Keine Lobby Server verfügbar")
+                }
+            }))
         })
     })
     setOnGlobalClick { it.cancel() }
