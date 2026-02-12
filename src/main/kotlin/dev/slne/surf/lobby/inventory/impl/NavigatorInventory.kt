@@ -1,11 +1,18 @@
 package dev.slne.surf.lobby.inventory.impl
 
+import com.github.stefvanschie.inventoryframework.gui.GuiItem
+import com.github.stefvanschie.inventoryframework.pane.PaginatedPane
+import com.github.stefvanschie.inventoryframework.pane.StaticPane
 import com.github.stefvanschie.inventoryframework.pane.util.Slot
+import dev.slne.surf.core.api.common.server.state.SurfServerState
+import dev.slne.surf.core.api.common.surfCoreApi
+import dev.slne.surf.core.api.paper.util.surfPlayer
 import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.event.eventServerBridge
 import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.plugin
 import dev.slne.surf.lobby.utils.Locations
+import dev.slne.surf.surfapi.bukkit.api.builder.buildItem
 import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
@@ -15,8 +22,9 @@ import dev.slne.surf.surfapi.core.api.font.toSmallCaps
 import dev.slne.surf.surfapi.core.api.messages.adventure.*
 import org.bukkit.Sound
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemType
 
-fun navigatorInventory() = menu(text("<shift:-46><glyph:server_selector>"), 6) {
+fun navigatorInventory() = menu(text("<shift:-48><glyph:server_selector>"), 6) {
     setOnGlobalDrag { it.cancel() }
     setOnGlobalClick { it.cancel() }
 
@@ -105,8 +113,60 @@ fun navigatorInventory() = menu(text("<shift:-46><glyph:server_selector>"), 6) {
     }
 }
 
-fun lobbySelectorInventory() = menu(buildText { spacer("Lobby Auswahl") }, 4) {
+@Suppress("UnstableApiUsage")
+fun lobbySelectorInventory() = menu(buildText { spacer("Lobby Auswahl") }, 3) {
     setOnGlobalDrag { it.cancel() }
+    addPane(StaticPane(0, 0, 9, 3).apply {
+        fillWith(ItemType.GRAY_STAINED_GLASS_PANE.createItemStack())
+    })
+    addPane(PaginatedPane(1, 1, 7, 1).apply {
+        populateWithGuiItems(surfCoreApi.getServerByCategory("lobby").map {
+            GuiItem(buildItem(ItemType.RECOVERY_COMPASS) {
+                displayName { variableValue(it.name) }
+
+                buildLore {
+                    emptyLine()
+                    line {
+                        spacer("-")
+                        appendSpace()
+                        note("Status: ")
+                        variableValue(
+                            if (it.state == SurfServerState.RUNNING) {
+                                "Online"
+                            } else {
+                                "Offline"
+                            }
+                        )
+                    }
+                    line {
+                        spacer("-")
+                        appendSpace()
+                        note("Spieler: ")
+                        variableValue("${it.getPlayerCount()} / ${it.maxPlayers}")
+                    }
+                    if (it.state == SurfServerState.RUNNING) {
+                        emptyLine()
+                        line {
+                            spacer("» Klicke, um diesem Lobby Server beizutreten")
+                        }
+                    }
+                }
+            }) { event ->
+                val player = event.whoClicked as? Player ?: return@GuiItem
+                val updatedServer = surfCoreApi.getServerByName(it.name) ?: return@GuiItem
+
+                if (updatedServer.state != SurfServerState.RUNNING) {
+                    player.sendText {
+                        appendInfoPrefix()
+                        error("Dieser Server ist derzeit nicht erreichbar!")
+                    }
+                    return@GuiItem
+                }
+
+                updatedServer.pullPlayers(player.surfPlayer)
+            }
+        })
+    })
     setOnGlobalClick { it.cancel() }
 }
 
