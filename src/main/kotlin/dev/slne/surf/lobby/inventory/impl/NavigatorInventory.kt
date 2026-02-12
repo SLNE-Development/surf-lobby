@@ -2,6 +2,7 @@ package dev.slne.surf.lobby.inventory.impl
 
 import com.github.stefvanschie.inventoryframework.gui.GuiItem
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane
+import com.github.stefvanschie.inventoryframework.pane.Pane
 import com.github.stefvanschie.inventoryframework.pane.StaticPane
 import com.github.stefvanschie.inventoryframework.pane.util.Slot
 import dev.slne.surf.core.api.common.server.state.SurfServerState
@@ -119,7 +120,7 @@ fun lobbySelectorInventory() = menu(buildText { spacer("Lobby Auswahl") }, 3) {
     addPane(StaticPane(0, 0, 9, 3).apply {
         fillWith(ItemType.GRAY_STAINED_GLASS_PANE.createItemStack())
     })
-    addPane(PaginatedPane(1, 1, 7, 1).apply {
+    addPane(PaginatedPane(1, 1, 7, 1, Pane.Priority.HIGHEST).apply {
         populateWithGuiItems(surfCoreApi.getServerByCategory("lobby").map {
             GuiItem(buildItem(ItemType.RECOVERY_COMPASS) {
                 displayName { variableValue(it.name) }
