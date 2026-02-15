@@ -66,7 +66,7 @@ object SurfNpcHook {
                 note("Nepomuk".toSmallCaps()).decorate(TextDecoration.BOLD)
             }
             uniqueName = "survival"
-            skin = SurfNpcSkins.UNKNOWN.getSkin()
+            skin = SurfNpcSkins.SURVIVAL.getSkin()
 
             location = Locations.SURVIVAL_NPC.getLocation().toNpcLocation()
             fixedRotation = Locations.SURVIVAL_NPC.getLocation().toNpcRotation()
@@ -95,7 +95,7 @@ object SurfNpcHook {
                 spacer("(Adventure - 1.21.11)")
             }
             uniqueName = "event"
-            skin = SurfNpcSkins.UNKNOWN.getSkin()
+            skin = SurfNpcSkins.EVENT.getSkin()
 
             location = Locations.EVENT_NPC.getLocation().toNpcLocation()
             fixedRotation = Locations.EVENT_NPC.getLocation().toNpcRotation()
@@ -139,7 +139,7 @@ object SurfNpcHook {
                 note("Survival".toSmallCaps(), TextDecoration.BOLD)
             }
             uniqueName = "spawn_survival"
-            skin = SurfNpcSkins.UNKNOWN.getSkin()
+            skin = SurfNpcSkins.SURVIVAL.getSkin()
 
             location {
                 world = Bukkit.getWorlds().first().name
@@ -169,7 +169,7 @@ object SurfNpcHook {
                 note("Event".toSmallCaps(), TextDecoration.BOLD)
             }
             uniqueName = "spawn_event"
-            skin = SurfNpcSkins.UNKNOWN.getSkin()
+            skin = SurfNpcSkins.EVENT.getSkin()
 
             location {
                 world = Bukkit.getWorlds().first().name
@@ -219,7 +219,7 @@ object SurfNpcHook {
                 note("Regelwerk".toSmallCaps(), TextDecoration.BOLD)
             }
             uniqueName = "spawn_rules"
-            skin = SurfNpcSkins.UNKNOWN.getSkin()
+            skin = SurfNpcSkins.RULES.getSkin()
 
             location {
                 world = Bukkit.getWorlds().first().name
