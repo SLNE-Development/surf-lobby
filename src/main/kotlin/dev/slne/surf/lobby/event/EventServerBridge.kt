@@ -9,18 +9,11 @@ val eventServerBridge = EventServerBridge()
 
 class EventServerBridge {
     lateinit var state: SyncValue<EventServerState>
-    lateinit var currentEventPlayers: SyncValue<Int>
-    lateinit var currentEventMaxPlayers: SyncValue<Int>
-
     fun init() {
         state = plugin.redisApi.createSyncValue(
             "surf-event:event-server-state",
-            EventServerState.UNKNOWN
+            EventServerState.CLOSED
         )
-        currentEventPlayers =
-            plugin.redisApi.createSyncValue("surf-event:event-server-current-players", 0)
-        currentEventMaxPlayers =
-            plugin.redisApi.createSyncValue("surf-event:event-server-max-players", 0)
 
         state.addListener { change ->
             when (change) {
