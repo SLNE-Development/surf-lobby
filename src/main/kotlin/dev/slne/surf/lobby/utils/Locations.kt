@@ -32,18 +32,18 @@ enum class Locations(
 
     SURVIVAL_TELEPORT(
         world = Bukkit.getWorlds().first(),
-        x = 128.0,
+        x = 128.5,
         y = 148.0,
-        z = 415.0,
+        z = 415.5,
         yaw = 0.0f,
         pitch = 0.0f
     ),
 
     EVENT_TELEPORT(
         world = Bukkit.getWorlds().first(),
-        x = 110.0,
+        x = 110.5,
         y = 146.0,
-        z = 214.0,
+        z = 214.5,
         yaw = -180.0f,
         pitch = 0.0f
     );
