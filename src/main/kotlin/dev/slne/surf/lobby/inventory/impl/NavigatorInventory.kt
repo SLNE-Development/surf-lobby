@@ -241,8 +241,11 @@ private val eventServerItem
                 }
 
                 line {
-                    val playerCount = eventServerBridge.currentEventPlayers.get()
-                    val maxPlayers = eventServerBridge.currentEventMaxPlayers.get()
+                    val playerCount =
+                        surfCoreApi.getServerByName(lobbyConfig.eventServerName)?.getPlayerCount()
+                            ?: -1
+                    val maxPlayers =
+                        surfCoreApi.getServerByName(lobbyConfig.eventServerName)?.maxPlayers ?: -1
                     info("$playerCount / $maxPlayers Spieler online")
                 }
             }
