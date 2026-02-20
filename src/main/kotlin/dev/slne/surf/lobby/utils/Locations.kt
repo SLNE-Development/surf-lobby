@@ -34,7 +34,7 @@ enum class Locations(
         world = Bukkit.getWorlds().first(),
         x = 128.5,
         y = 148.0,
-        z = 415.5,
+        z = 423.5,
         yaw = 0.0f,
         pitch = 0.0f
     ),
