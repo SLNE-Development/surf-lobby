@@ -2,6 +2,7 @@ package dev.slne.surf.lobby.hook.npc
 
 import com.github.shynixn.mccoroutine.folia.launch
 import dev.slne.surf.core.api.common.surfCoreApi
+import dev.slne.surf.core.api.paper.util.surfPlayer
 import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.event.eventServerBridge
 import dev.slne.surf.lobby.lobbyConfig
@@ -271,6 +272,28 @@ object SurfNpcHook {
         surfCoreApi.getServerByName(lobbyConfig.eventServerName)
             ?.let { server ->
                 plugin.launch {
+                    if (player.hasPermission(PermissionRegistry.QUEUE_BYPASS)) {
+                        player.sendText {
+                            appendInfoPrefix()
+                            info("Du hast die Warteschlange umgangen und wurdest direkt zum Event Server teleportiert.")
+                        }
+                        val status = surfCoreApi.sendPlayerAwaiting(player.surfPlayer, server)
+
+                        if (status.isSuccessful()) {
+                            player.sendText {
+                                appendSuccessPrefix()
+                                success("Du wurdest erfolgreich zum Event Server teleportiert.")
+                            }
+                        } else {
+                            player.sendText {
+                                appendErrorPrefix()
+                                error("Es gab ein Problem beim Teleportieren zum Event Server: ${status.status}")
+                            }
+                        }
+
+                        return@launch
+                    }
+
                     val success = server.queue().enqueue(player.uniqueId)
 
                     if (success) {
