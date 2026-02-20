@@ -1,3 +1,4 @@
+import dev.slne.surf.surfapi.gradle.util.registerRequired
 import dev.slne.surf.surfapi.gradle.util.registerSoft
 
 plugins {
@@ -18,6 +19,7 @@ dependencies {
     compileOnly("dev.slne.surf.trophy:surf-trophy-api:1.21.11-1.0.0-SNAPSHOT")
     compileOnly("dev.slne.surf.profile:surf-profile-api:1.21.11-1.0.0-SNAPSHOT")
     compileOnly("dev.slne.surf.settings:surf-settings-api:1.21.11-2.0.0-SNAPSHOT")
+    compileOnly("dev.slne.surf:surf-queue-api:1.0.0-SNAPSHOT")
 }
 
 version = findProperty("version") as String
@@ -41,5 +43,6 @@ surfPaperPluginApi {
         registerSoft("surf-trophy-paper")
         registerSoft("surf-profile-paper")
         registerSoft("surf-settings-paper")
+        registerRequired("surf-queue-paper")
     }
 }
