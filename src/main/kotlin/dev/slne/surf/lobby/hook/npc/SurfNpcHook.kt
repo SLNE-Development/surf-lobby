@@ -280,6 +280,10 @@ object SurfNpcHook {
             ?.let { server ->
                 plugin.launch {
                     if (player.hasPermission(PermissionRegistry.QUEUE_BYPASS)) {
+                        player.sendText {
+                            appendInfoPrefix()
+                            info("Du hast die Warteschlange umgangen und wirst nun mit dem Event Server verbunden...")
+                        }
                         val status = surfCoreApi.sendPlayerAwaiting(player.surfPlayer, server)
 
                         if (status.isSuccessful()) {
