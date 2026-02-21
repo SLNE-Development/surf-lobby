@@ -12,11 +12,12 @@ object PermissionRegistry : PermissionRegistry() {
     val COMMAND_LOBBY_RELOAD = create("$COMMAND_PREFIX.lobby.reload")
 
     val EVENT_BYPASS = create("$PREFIX.event.bypass")
+    val QUEUE_BYPASS = create("$PREFIX.queue.bypass")
 
     val PUSHBACK_ATTACK = create("$PREFIX.pushback.attack")
     val PUSHBACK_ITEM = create("$PREFIX.pushback.item")
     val PROTECTION_BYPASS = create("$PREFIX.bypass")
-    
+
     val PLAYER_VISIBILITY_ITEM = create("$PREFIX.playervisibility.item")
     val PLAYER_VISIBILITY_TEAM = create("$PREFIX.playervisibility.team")
 }

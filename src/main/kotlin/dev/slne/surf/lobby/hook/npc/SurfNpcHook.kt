@@ -1,5 +1,8 @@
 package dev.slne.surf.lobby.hook.npc
 
+import com.github.shynixn.mccoroutine.folia.launch
+import dev.slne.surf.core.api.common.surfCoreApi
+import dev.slne.surf.core.api.paper.util.surfPlayer
 import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.event.eventServerBridge
 import dev.slne.surf.lobby.lobbyConfig
@@ -14,7 +17,7 @@ import dev.slne.surf.npc.api.npc.Npc
 import dev.slne.surf.npc.api.npc.rotation.NpcRotationType
 import dev.slne.surf.npc.api.result.NpcCreationResult
 import dev.slne.surf.npc.api.surfNpcApi
-import dev.slne.surf.surfapi.bukkit.api.surfBukkitApi
+import dev.slne.surf.queue.api.queue
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps
 import dev.slne.surf.surfapi.core.api.messages.adventure.clickOpensUrl
 import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
@@ -23,6 +26,7 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Sound
+import org.bukkit.entity.Player
 
 object SurfNpcHook {
     lateinit var survivalNpc: Npc
@@ -87,12 +91,19 @@ object SurfNpcHook {
         }.getOrNull() ?: error("Failed to create survival NPC")
     }
 
+    private val eventServerDisplayName by lazy {
+        val server = surfCoreApi.getServerByName(lobbyConfig.eventServerName)
+            ?: error("Event server with name ${lobbyConfig.eventServerName} not found")
+
+        server.displayName
+    }
+
     private fun createEventNpc() {
         eventNpc = npc(plugin) {
             displayName = {
-                primary("event".toSmallCaps(), TextDecoration.BOLD)
+                primary(eventServerDisplayName.toSmallCaps(), TextDecoration.BOLD)
                 appendNewline()
-                spacer("(Adventure - 1.21.11)")
+                spacer("(Event - 1.21.11)")
             }
             uniqueName = "event"
             skin = SurfNpcSkins.EVENT.getSkin()
@@ -105,13 +116,13 @@ object SurfNpcHook {
 
                 when (eventServerBridge.state.get()) {
                     EventServerState.OPEN -> {
-                        surfBukkitApi.sendPlayerToServer(player, lobbyConfig.eventServerName)
+                        queueToEventServer(player)
                         return@withEventHandler
                     }
 
                     EventServerState.CLOSED -> {
                         if (player.hasPermission(PermissionRegistry.EVENT_BYPASS)) {
-                            surfBukkitApi.sendPlayerToServer(player, lobbyConfig.eventServerName)
+                            queueToEventServer(player)
                             return@withEventHandler
                         }
                         player.sendText {
@@ -263,4 +274,47 @@ object SurfNpcHook {
         yaw,
         pitch
     )
+
+    private fun queueToEventServer(player: Player) {
+        surfCoreApi.getServerByName(lobbyConfig.eventServerName)
+            ?.let { server ->
+                plugin.launch {
+                    if (player.hasPermission(PermissionRegistry.QUEUE_BYPASS)) {
+                        player.sendText {
+                            appendInfoPrefix()
+                            info("Du hast die Warteschlange umgangen und wirst nun mit dem Event Server verbunden...")
+                        }
+                        val status = surfCoreApi.sendPlayerAwaiting(player.surfPlayer, server)
+
+                        if (status.isSuccessful()) {
+                            player.sendText {
+                                appendSuccessPrefix()
+                                success("Du wurdest erfolgreich zum Event Server teleportiert.")
+                            }
+                        } else {
+                            player.sendText {
+                                appendErrorPrefix()
+                                error("Es gab ein Problem beim Teleportieren zum Event Server: ${status.status}")
+                            }
+                        }
+
+                        return@launch
+                    }
+
+                    val success = server.queue().enqueue(player.uniqueId)
+
+                    if (success) {
+                        player.sendText {
+                            appendSuccessPrefix()
+                            success("Du wurdest in die Warteschlange für den Event Server eingereiht.")
+                        }
+                    } else {
+                        player.sendText {
+                            appendErrorPrefix()
+                            error("Du bist bereits in einer Warteschlange!")
+                        }
+                    }
+                }
+            } ?: error("Event server with name ${lobbyConfig.eventServerName} not found")
+    }
 }
