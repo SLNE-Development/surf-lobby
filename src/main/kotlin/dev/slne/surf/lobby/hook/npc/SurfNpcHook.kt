@@ -91,12 +91,19 @@ object SurfNpcHook {
         }.getOrNull() ?: error("Failed to create survival NPC")
     }
 
+    private val eventServerDisplayName by lazy {
+        val server = surfCoreApi.getServerByName(lobbyConfig.eventServerName)
+            ?: error("Event server with name ${lobbyConfig.eventServerName} not found")
+
+        server.displayName
+    }
+
     private fun createEventNpc() {
         eventNpc = npc(plugin) {
             displayName = {
-                primary("event".toSmallCaps(), TextDecoration.BOLD)
+                primary(eventServerDisplayName.toSmallCaps(), TextDecoration.BOLD)
                 appendNewline()
-                spacer("(Adventure - 1.21.11)")
+                spacer("(Event - 1.21.11)")
             }
             uniqueName = "event"
             skin = SurfNpcSkins.EVENT.getSkin()
