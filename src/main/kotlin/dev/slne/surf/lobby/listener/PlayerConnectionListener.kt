@@ -1,6 +1,7 @@
 package dev.slne.surf.lobby.listener
 
 import dev.slne.surf.lobby.inventory.item.InventoryItem
+import dev.slne.surf.lobby.manager.ElytraBoostManager
 import dev.slne.surf.lobby.manager.PlayerVisibilityManager
 import dev.slne.surf.lobby.manager.PushbackManager
 import org.bukkit.GameMode
@@ -23,6 +24,8 @@ object PlayerConnectionListener : Listener {
             event.player.inventory.clear(i)
         }
 
+        event.player.inventory.chestplate = null
+
         InventoryItem.items.filter { item ->
             item.permission?.let { event.player.hasPermission(it) } ?: true
         }.forEach {
@@ -36,6 +39,7 @@ object PlayerConnectionListener : Listener {
     fun onDisconnect(event: PlayerQuitEvent) {
         PushbackManager.remove(event.player.uniqueId)
         PlayerVisibilityManager.remove(event.player.uniqueId)
+        ElytraBoostManager.clearBoost(event.player)
     }
 
     private fun calcYearXp(player: Player) {
