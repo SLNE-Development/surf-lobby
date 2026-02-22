@@ -24,7 +24,7 @@ object ElytraBoostManager {
 
         player.location.world.spawnParticle(Particle.CLOUD, player.location, 25, 0.5, 0.0, 0.5, 0.1)
         player.playSound(true) {
-            type(Sound.ITEM_ARMOR_EQUIP_ELYTRA)
+            type(Sound.ENTITY_EGG_THROW)
         }
 
         plugin.launch(plugin.entityDispatcher(player)) {
