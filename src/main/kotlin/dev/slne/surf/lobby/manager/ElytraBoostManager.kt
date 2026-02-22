@@ -2,6 +2,7 @@ package dev.slne.surf.lobby.manager
 
 import com.github.shynixn.mccoroutine.folia.entityDispatcher
 import com.github.shynixn.mccoroutine.folia.launch
+import dev.slne.surf.lobby.hook.parkour.ParkourHook
 import dev.slne.surf.lobby.plugin
 import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.surfapi.bukkit.api.builder.displayName
@@ -13,7 +14,6 @@ import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
-import org.bukkit.util.Vector
 import java.util.*
 
 @Suppress("UnstableApiUsage")
@@ -21,10 +21,14 @@ object ElytraBoostManager {
     val boostingPlayers = mutableObjectSetOf<UUID>()
     val lastBoosted = mutableObject2ObjectMapOf<UUID, Long>()
 
-    private const val BOOST_COOLDOWN = 3000L
+    private const val BOOST_COOLDOWN = 2000L
 
     fun checkAndBoost(player: Player) {
         if (!player.hasPermission(PermissionRegistry.ELYTRA_BOOST)) {
+            return
+        }
+
+        if (ParkourHook.isInParkour(player)) {
             return
         }
 
@@ -51,9 +55,7 @@ object ElytraBoostManager {
             player.isGliding = true
 
             val direction = player.location.direction.normalize()
-            val boostedDirection = direction.add(Vector(0.0, 0.7, 0.0)).normalize()
-
-            player.velocity = boostedDirection.multiply(2)
+            player.velocity = direction.multiply(2)
         }
     }
 
@@ -74,9 +76,7 @@ object ElytraBoostManager {
         }
 
         val direction = player.location.direction.normalize()
-        val boostedDirection = direction.add(Vector(0.0, 0.5, 0.0)).normalize()
-
-        player.velocity = boostedDirection.multiply(2.5)
+        player.velocity = direction.multiply(2.5)
 
         lastBoosted[player.uniqueId] = System.currentTimeMillis()
     }
