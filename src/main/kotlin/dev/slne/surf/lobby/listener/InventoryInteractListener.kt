@@ -2,6 +2,7 @@ package dev.slne.surf.lobby.listener
 
 import dev.slne.surf.lobby.hook.settings.SettingsHook
 import dev.slne.surf.lobby.inventory.item.InventoryItem
+import dev.slne.surf.lobby.manager.ElytraBoostManager
 import dev.slne.surf.surfapi.bukkit.api.event.cancel
 import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
 import org.bukkit.GameMode
@@ -54,6 +55,8 @@ object InventoryInteractListener : Listener {
         if (event.player.gameMode == GameMode.CREATIVE) {
             return
         }
+
+        ElytraBoostManager.checkAndBoost(event.player)
 
         event.cancel()
     }

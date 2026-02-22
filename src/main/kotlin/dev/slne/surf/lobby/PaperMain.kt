@@ -37,7 +37,7 @@ class PaperMain : SuspendingJavaPlugin() {
         ItemInteractListener.register()
         InventoryInteractListener.register()
         PushbackListener.register()
-        MinHeightListener.register()
+        PlayerMoveListener.register()
 
         PushbackManager.startTask()
 
