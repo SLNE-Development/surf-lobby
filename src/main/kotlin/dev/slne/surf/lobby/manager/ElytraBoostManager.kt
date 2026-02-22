@@ -20,6 +20,10 @@ object ElytraBoostManager {
             return
         }
 
+        if (player.isGliding) {
+            return
+        }
+
         boostingPlayers.add(player.uniqueId)
 
         player.location.world.spawnParticle(Particle.CLOUD, player.location, 25, 0.5, 0.0, 0.5, 0.1)
@@ -32,7 +36,9 @@ object ElytraBoostManager {
             player.isGliding = true
 
             val direction = player.location.direction.normalize()
-            player.velocity = direction.multiply(2.5)
+            val boostedDirection = direction.add(org.bukkit.util.Vector(0.0, 0.4, 0.0)).normalize()
+
+            player.velocity = boostedDirection.multiply(1.4)
         }
     }
 
