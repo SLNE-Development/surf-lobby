@@ -59,6 +59,6 @@ class PaperMain : SuspendingJavaPlugin() {
 
 val lobbyConfigHolder = LobbyConfigHolder()
 val lobbyConfig get() = lobbyConfigHolder.lobbyConfig
-val surfNpcHook get() = Bukkit.getPluginManager().isPluginEnabled("surf-npc-bukkit")
+val surfNpcHook get() = Bukkit.getPluginManager().isPluginEnabled("surf-npc-paper")
 val surfHologramHook get() = Bukkit.getPluginManager().isPluginEnabled("surf-hologram-paper")
 val nexoHook get() = Bukkit.getPluginManager().isPluginEnabled("Nexo")

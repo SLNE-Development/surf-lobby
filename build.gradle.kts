@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     compileOnly("surf-hologram:surf-hologram-api:1.21.11-1.0.2-SNAPSHOT")
-    compileOnly("dev.slne.surf.npc:surf-npc-api:1.21.10-1.5.0-20251009.154819-1")
+    compileOnly("dev.slne.surf.npc:surf-npc-api:1.21.11-1.6.0-SNAPSHOT")
     compileOnly("com.nexomc:nexo:1.16.1")
     implementation("dev.slne.surf.event:surf-event-base-api-common:1.21.11-1.0.0-SNAPSHOT")
     implementation("dev.slne.surf.tab:surf-tab-api:1.21.11-1.0.2-SNAPSHOT")
