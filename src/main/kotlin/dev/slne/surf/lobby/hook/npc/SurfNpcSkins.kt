@@ -1,6 +1,7 @@
 package dev.slne.surf.lobby.hook.npc
 
-import dev.slne.surf.npc.api.surfNpcApi
+import dev.slne.surf.npc.api.npc.skin.NpcSkin
+import dev.slne.surf.surfapi.core.api.util.objectSetOf
 
 enum class SurfNpcSkins(val skinValue: String, val skinSignature: String) {
     UNKNOWN(
@@ -21,5 +22,5 @@ enum class SurfNpcSkins(val skinValue: String, val skinSignature: String) {
     )
     ;
 
-    fun getSkin() = surfNpcApi.createSkinData(name, skinValue, skinSignature)
+    fun getSkin() = NpcSkin(name, skinValue, skinSignature, objectSetOf())
 }

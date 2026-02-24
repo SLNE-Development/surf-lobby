@@ -20,4 +20,5 @@ object PermissionRegistry : PermissionRegistry() {
 
     val PLAYER_VISIBILITY_ITEM = create("$PREFIX.playervisibility.item")
     val PLAYER_VISIBILITY_TEAM = create("$PREFIX.playervisibility.team")
+    val ELYTRA_BOOST = create("$PREFIX.elytraboost")
 }

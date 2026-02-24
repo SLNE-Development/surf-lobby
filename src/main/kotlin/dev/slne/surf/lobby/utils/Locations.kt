@@ -30,6 +30,39 @@ enum class Locations(
         pitch = 0.0f
     ),
 
+    SPAWN_SURVIVAL(
+        world = Bukkit.getWorlds().first(),
+        x = 95.5,
+        y = 149.0,
+        z = 319.5,
+        yaw = -120.0f,
+        pitch = 0.0f
+    ),
+    SPAWN_EVENT(
+        world = Bukkit.getWorlds().first(),
+        x = 95.5,
+        y = 149.0,
+        z = 311.5,
+        yaw = -60.0f,
+        pitch = 0.0f
+    ),
+    SPAWN_RULES(
+        world = Bukkit.getWorlds().first(),
+        x = 97.5,
+        y = 149.0,
+        z = 323.5,
+        yaw = -143.0f,
+        pitch = 0.0f
+    ),
+    SPAWN_SHOP(
+        world = Bukkit.getWorlds().first(),
+        x = 97.5,
+        y = 149.0,
+        z = 307.5,
+        yaw = -37.0f,
+        pitch = 0.0f
+    ),
+
     SURVIVAL_TELEPORT(
         world = Bukkit.getWorlds().first(),
         x = 122.5,
