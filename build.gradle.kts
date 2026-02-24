@@ -36,7 +36,7 @@ surfPaperPluginApi {
     authors.add("red")
 
     serverDependencies {
-        registerSoft("surf-npc-bukkit")
+        registerSoft("surf-npc-paper")
         registerSoft("surf-hologram-paper")
         registerSoft("surf-parkour-paper")
         registerSoft("Nexo")
