@@ -24,7 +24,6 @@ import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
-import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 
@@ -65,15 +64,14 @@ object SurfNpcHook {
     }
 
     private fun createSurvivalNpc() {
-        survivalNpc = npc(plugin) {
+        survivalNpc = npc {
             displayName = {
                 note("Nepomuk".toSmallCaps()).decorate(TextDecoration.BOLD)
             }
             uniqueName = "survival"
             skin = SurfNpcSkins.SURVIVAL.getSkin()
 
-            location = Locations.SURVIVAL_NPC.getLocation().toNpcLocation()
-            fixedRotation = Locations.SURVIVAL_NPC.getLocation().toNpcRotation()
+            location = Locations.SURVIVAL_NPC.getLocation()
             rotationType = NpcRotationType.FIXED
 
             withEventHandler<NpcInteractEvent> {
@@ -88,7 +86,7 @@ object SurfNpcHook {
                     type(Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT)
                 }
             }
-        }.getOrNull() ?: error("Failed to create survival NPC")
+        }
     }
 
     private val eventServerDisplayName by lazy {
@@ -99,7 +97,7 @@ object SurfNpcHook {
     }
 
     private fun createEventNpc() {
-        eventNpc = npc(plugin) {
+        eventNpc = npc {
             displayName = {
                 primary(eventServerDisplayName.toSmallCaps(), TextDecoration.BOLD)
                 appendNewline()
@@ -108,8 +106,7 @@ object SurfNpcHook {
             uniqueName = "event"
             skin = SurfNpcSkins.EVENT.getSkin()
 
-            location = Locations.EVENT_NPC.getLocation().toNpcLocation()
-            fixedRotation = Locations.EVENT_NPC.getLocation().toNpcRotation()
+            location = Locations.EVENT_NPC.getLocation()
 
             withEventHandler<NpcInteractEvent> {
                 val player = it.player
@@ -141,11 +138,11 @@ object SurfNpcHook {
             }
 
             rotationType = NpcRotationType.FIXED
-        }.getOrNull() ?: error("Failed to create survival NPC")
+        }
     }
 
     private fun createSpawnSurvivalNpc() {
-        spawnSurvivalNpc = npc(plugin) {
+        spawnSurvivalNpc = npc {
             displayName = {
                 note("Survival".toSmallCaps(), TextDecoration.BOLD)
             }
@@ -169,13 +166,12 @@ object SurfNpcHook {
                     }
                 }
             }
-            fixedRotation = surfNpcApi.createRotation(-120f, 0f)
             rotationType = NpcRotationType.FIXED
-        }.getOrNull() ?: error("Failed to create spawn survival NPC")
+        }
     }
 
     private fun createSpawnEventNpc() {
-        spawnEventNpc = npc(plugin) {
+        spawnEventNpc = npc {
             displayName = {
                 note("Event".toSmallCaps(), TextDecoration.BOLD)
             }
@@ -199,13 +195,12 @@ object SurfNpcHook {
                     }
                 }
             }
-            fixedRotation = surfNpcApi.createRotation(-60f, 0f)
             rotationType = NpcRotationType.FIXED
-        }.getOrNull() ?: error("Failed to create spawn event NPC")
+        }
     }
 
     private fun createSpawnShopNpc() {
-        shopNpc = npc(plugin) {
+        shopNpc = npc {
             displayName = {
                 note("Shop".toSmallCaps(), TextDecoration.BOLD, TextDecoration.OBFUSCATED)
             }
@@ -219,13 +214,12 @@ object SurfNpcHook {
                 z = 307.5
             }
             withKickback()
-            fixedRotation = surfNpcApi.createRotation(-37f, 0f)
             rotationType = NpcRotationType.FIXED
-        }.getOrNull() ?: error("Failed to create spawn shop NPC")
+        }
     }
 
     private fun createSpawnRulesNpc() {
-        spawnRulesNpc = npc(plugin) {
+        spawnRulesNpc = npc {
             displayName = {
                 note("Regelwerk".toSmallCaps(), TextDecoration.BOLD)
             }
@@ -247,9 +241,8 @@ object SurfNpcHook {
                     clickOpensUrl("https://server.castcrafter.de/rules")
                 }
             }
-            fixedRotation = surfNpcApi.createRotation(-143f, 0f)
             rotationType = NpcRotationType.FIXED
-        }.getOrNull() ?: error("Failed to create spawn rules NPC")
+        }
     }
 
     private fun NpcCreationResult.getOrNull() = when (this) {
@@ -262,18 +255,6 @@ object SurfNpcHook {
         val player = it.player
         player.velocity = player.location.direction.multiply(-1.5)
     }
-
-    private fun Location.toNpcLocation() = surfNpcApi.createLocation(
-        x,
-        y,
-        z,
-        world.name
-    )
-
-    private fun Location.toNpcRotation() = surfNpcApi.createRotation(
-        yaw,
-        pitch
-    )
 
     private fun queueToEventServer(player: Player) {
         surfCoreApi.getServerByName(lobbyConfig.eventServerName)
