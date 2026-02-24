@@ -23,7 +23,6 @@ import dev.slne.surf.surfapi.core.api.messages.adventure.clickOpensUrl
 import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import net.kyori.adventure.text.format.TextDecoration
-import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -153,12 +152,7 @@ object SurfNpcHook {
             uniqueName = "spawn_survival"
             skin = SurfNpcSkins.SURVIVAL.getSkin()
 
-            location {
-                world = Bukkit.getWorlds().first().name
-                x = 95.5
-                y = 149.0
-                z = 319.5
-            }
+            location = Locations.SPAWN_SURVIVAL.getLocation()
             withKickback()
             withEventHandler<NpcInteractEvent> {
                 val player = it.player
@@ -183,12 +177,7 @@ object SurfNpcHook {
             uniqueName = "spawn_event"
             skin = SurfNpcSkins.EVENT.getSkin()
 
-            location {
-                world = Bukkit.getWorlds().first().name
-                x = 95.5
-                y = 149.0
-                z = 311.5
-            }
+            location = Locations.SPAWN_EVENT.getLocation()
             withKickback()
             withEventHandler<NpcInteractEvent> {
                 val player = it.player
@@ -213,12 +202,7 @@ object SurfNpcHook {
             uniqueName = "shop"
             skin = SurfNpcSkins.UNKNOWN.getSkin()
 
-            location {
-                world = Bukkit.getWorlds().first().name
-                x = 97.5
-                y = 149.0
-                z = 307.5
-            }
+            location = Locations.SPAWN_SHOP.getLocation()
             withKickback()
             rotationType = NpcRotationType.FIXED
         }
@@ -233,12 +217,7 @@ object SurfNpcHook {
             uniqueName = "spawn_rules"
             skin = SurfNpcSkins.RULES.getSkin()
 
-            location {
-                world = Bukkit.getWorlds().first().name
-                x = 97.5
-                y = 149.0
-                z = 323.5
-            }
+            location = Locations.SPAWN_RULES.getLocation()
             withKickback()
             withEventHandler<NpcInteractEvent> {
                 it.player.sendText {
