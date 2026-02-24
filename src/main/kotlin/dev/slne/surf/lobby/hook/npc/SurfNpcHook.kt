@@ -25,6 +25,7 @@ import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.Sound
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 
 object SurfNpcHook {
@@ -68,6 +69,7 @@ object SurfNpcHook {
             displayName = {
                 note("Nepomuk".toSmallCaps()).decorate(TextDecoration.BOLD)
             }
+            type = EntityType.MANNEQUIN
             uniqueName = "survival"
             skin = SurfNpcSkins.SURVIVAL.getSkin()
 
@@ -103,6 +105,7 @@ object SurfNpcHook {
                 appendNewline()
                 spacer("(Event - 1.21.11)")
             }
+            type = EntityType.MANNEQUIN
             uniqueName = "event"
             skin = SurfNpcSkins.EVENT.getSkin()
 
@@ -146,6 +149,7 @@ object SurfNpcHook {
             displayName = {
                 note("Survival".toSmallCaps(), TextDecoration.BOLD)
             }
+            type = EntityType.MANNEQUIN
             uniqueName = "spawn_survival"
             skin = SurfNpcSkins.SURVIVAL.getSkin()
 
@@ -175,6 +179,7 @@ object SurfNpcHook {
             displayName = {
                 note("Event".toSmallCaps(), TextDecoration.BOLD)
             }
+            type = EntityType.MANNEQUIN
             uniqueName = "spawn_event"
             skin = SurfNpcSkins.EVENT.getSkin()
 
@@ -204,6 +209,7 @@ object SurfNpcHook {
             displayName = {
                 note("Shop".toSmallCaps(), TextDecoration.BOLD, TextDecoration.OBFUSCATED)
             }
+            type = EntityType.MANNEQUIN
             uniqueName = "shop"
             skin = SurfNpcSkins.UNKNOWN.getSkin()
 
@@ -223,6 +229,7 @@ object SurfNpcHook {
             displayName = {
                 note("Regelwerk".toSmallCaps(), TextDecoration.BOLD)
             }
+            type = EntityType.MANNEQUIN
             uniqueName = "spawn_rules"
             skin = SurfNpcSkins.RULES.getSkin()
 
