@@ -15,7 +15,6 @@ import dev.slne.surf.npc.api.event.NpcCollisionEvent
 import dev.slne.surf.npc.api.event.NpcInteractEvent
 import dev.slne.surf.npc.api.npc.Npc
 import dev.slne.surf.npc.api.npc.rotation.NpcRotationType
-import dev.slne.surf.npc.api.result.NpcCreationResult
 import dev.slne.surf.npc.api.surfNpcApi
 import dev.slne.surf.queue.api.queue
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps
@@ -229,11 +228,6 @@ object SurfNpcHook {
             }
             rotationType = NpcRotationType.FIXED
         }
-    }
-
-    private fun NpcCreationResult.getOrNull() = when (this) {
-        is NpcCreationResult.Success -> this.npc
-        is NpcCreationResult.Failure -> null
     }
 
 
