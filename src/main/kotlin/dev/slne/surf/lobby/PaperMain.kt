@@ -38,6 +38,7 @@ class PaperMain : SuspendingJavaPlugin() {
         InventoryInteractListener.register()
         PushbackListener.register()
         PlayerMoveListener.register()
+        EntitySpawnListener.register()
 
         PushbackManager.startTask()
 
