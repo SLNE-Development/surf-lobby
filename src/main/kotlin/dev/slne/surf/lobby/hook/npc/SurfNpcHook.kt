@@ -21,10 +21,13 @@ import dev.slne.surf.surfapi.core.api.font.toSmallCaps
 import dev.slne.surf.surfapi.core.api.messages.adventure.clickOpensUrl
 import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
 import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import net.kyori.adventure.text.format.TextDecoration
+import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
+import java.util.concurrent.TimeUnit
 
 object SurfNpcHook {
     lateinit var survivalNpc: Npc
@@ -34,6 +37,8 @@ object SurfNpcHook {
     lateinit var spawnSurvivalNpc: Npc
     lateinit var spawnEventNpc: Npc
     lateinit var shopNpc: Npc
+
+    var eventServerDisplayName: String = "Event"
 
     fun initialize() {
         createSurvivalNpc()
@@ -87,13 +92,6 @@ object SurfNpcHook {
                 }
             }
         }
-    }
-
-    private val eventServerDisplayName by lazy {
-        val server = surfCoreApi.getServerByName(lobbyConfig.eventServerName)
-            ?: error("Event server with name ${lobbyConfig.eventServerName} not found")
-
-        server.displayName
     }
 
     private fun createEventNpc() {
@@ -277,5 +275,26 @@ object SurfNpcHook {
                     }
                 }
             } ?: error("Event server with name ${lobbyConfig.eventServerName} not found")
+    }
+
+    private lateinit var syncTask: ScheduledTask
+
+    fun startSyncTask() {
+        syncTask = Bukkit.getAsyncScheduler().runAtFixedRate(plugin, {
+            val server =
+                surfCoreApi.getServerByName(lobbyConfig.eventServerName) ?: return@runAtFixedRate
+
+            if (eventServerDisplayName != server.displayName) {
+                eventServerDisplayName = server.displayName
+
+                eventNpc.refresh()
+            }
+        }, 0L, 30L, TimeUnit.SECONDS)
+    }
+
+    fun stopSyncTask() {
+        if (::syncTask.isInitialized) {
+            syncTask.cancel()
+        }
     }
 }

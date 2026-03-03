@@ -23,6 +23,7 @@ class PaperMain : SuspendingJavaPlugin() {
     override fun onEnable() {
         if (surfNpcHook) {
             SurfNpcHook.initialize()
+            SurfNpcHook.startSyncTask()
         }
 
         if (surfHologramHook) {
@@ -51,6 +52,10 @@ class PaperMain : SuspendingJavaPlugin() {
     }
 
     override fun onDisable() {
+        if (surfNpcHook) {
+            SurfNpcHook.stopSyncTask()
+        }
+
         redisApi.disconnect()
     }
 
