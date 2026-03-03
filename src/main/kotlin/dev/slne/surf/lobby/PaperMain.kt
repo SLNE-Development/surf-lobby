@@ -22,8 +22,8 @@ class PaperMain : SuspendingJavaPlugin() {
     lateinit var redisApi: RedisApi
     override fun onEnable() {
         if (surfNpcHook) {
-            SurfNpcHook.startSyncTask()
             SurfNpcHook.initialize()
+            SurfNpcHook.startSyncTask()
         }
 
         if (surfHologramHook) {
