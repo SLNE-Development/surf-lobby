@@ -22,6 +22,7 @@ class PaperMain : SuspendingJavaPlugin() {
     lateinit var redisApi: RedisApi
     override fun onEnable() {
         if (surfNpcHook) {
+            SurfNpcHook.startSyncTask()
             SurfNpcHook.initialize()
         }
 
@@ -50,6 +51,10 @@ class PaperMain : SuspendingJavaPlugin() {
     }
 
     override fun onDisable() {
+        if (surfNpcHook) {
+            SurfNpcHook.stopSyncTask()
+        }
+
         redisApi.disconnect()
     }
 
