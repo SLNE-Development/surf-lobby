@@ -277,6 +277,53 @@ object SurfNpcHook {
             } ?: error("Event server with name ${lobbyConfig.eventServerName} not found")
     }
 
+    private fun queueToSurvivalServer(player: Player) {
+        surfCoreApi.getServerByName(lobbyConfig.survivalServerName)
+            ?.let { server ->
+                plugin.launch {
+                    if (player.hasPermission(PermissionRegistry.QUEUE_BYPASS)) {
+                        player.sendText {
+                            appendInfoPrefix()
+                            info("Du hast die Warteschlange umgangen und wirst nun mit dem Survival Server verbunden...")
+                        }
+                        val status = surfCoreApi.sendPlayerAwaiting(player.surfPlayer, server)
+
+                        if (status.isSuccessful()) {
+                            player.sendText {
+                                appendSuccessPrefix()
+                                success("Du wurdest erfolgreich zum Survival Server teleportiert.")
+                            }
+                        } else {
+                            player.sendText {
+                                appendErrorPrefix()
+                                error("Es gab ein Problem beim Teleportieren zum Survival Server: ${status.status}")
+                                status.velocityMessage?.let {
+                                    error(": ")
+                                    append(it)
+                                }
+                            }
+                        }
+
+                        return@launch
+                    }
+
+                    val success = server.queue().enqueue(player.uniqueId)
+
+                    if (success) {
+                        player.sendText {
+                            appendSuccessPrefix()
+                            success("Du wurdest in die Warteschlange für den Survival Server eingereiht.")
+                        }
+                    } else {
+                        player.sendText {
+                            appendErrorPrefix()
+                            error("Du bist bereits in einer Warteschlange!")
+                        }
+                    }
+                }
+            } ?: error("Survival server with name ${lobbyConfig.survivalServerName} not found")
+    }
+
     private lateinit var syncTask: ScheduledTask
 
     fun startSyncTask() {
