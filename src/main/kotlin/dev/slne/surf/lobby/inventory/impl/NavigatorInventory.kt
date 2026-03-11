@@ -202,11 +202,47 @@ private val cosmeticsItem = plugin.getInvisibleItem().apply {
     }
 }
 
-private val survivalServerItem = plugin.getInvisibleItem().apply {
-    displayName {
-        primary("Survival Server")
+private val survivalServerItem
+    get() = plugin.getInvisibleItem().apply {
+        displayName {
+            primary("Survival Server")
+        }
+
+        buildLore {
+            emptyLine()
+            line {
+                note("Status:".toSmallCaps())
+            }
+            line {
+                when (surfCoreApi.getServerByName(lobbyConfig.survivalServerName)?.state) {
+                    SurfServerState.RUNNING -> {
+                        success("Der Survival Server ist erreichbar")
+                    }
+
+                    else -> {
+                        error("Der Survival Server ist derzeit nicht erreichbar")
+                    }
+                }
+            }
+            if (surfCoreApi.getServerByName(lobbyConfig.survivalServerName)?.state == SurfServerState.RUNNING) {
+                emptyLine()
+                line {
+                    note("Spieler:".toSmallCaps())
+                }
+
+                line {
+                    val playerCount =
+                        surfCoreApi.getServerByName(lobbyConfig.survivalServerName)
+                            ?.getPlayerCount()
+                            ?: -1
+                    val maxPlayers =
+                        surfCoreApi.getServerByName(lobbyConfig.survivalServerName)?.maxPlayers
+                            ?: -1
+                    info("$playerCount / $maxPlayers Spieler online")
+                }
+            }
+        }
     }
-}
 
 private val eventServerItem
     get() = plugin.getInvisibleItem().apply {
