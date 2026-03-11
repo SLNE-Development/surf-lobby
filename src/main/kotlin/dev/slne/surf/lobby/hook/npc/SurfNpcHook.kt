@@ -15,7 +15,6 @@ import dev.slne.surf.npc.api.event.NpcCollisionEvent
 import dev.slne.surf.npc.api.event.NpcInteractEvent
 import dev.slne.surf.npc.api.npc.Npc
 import dev.slne.surf.npc.api.npc.rotation.NpcRotationType
-import dev.slne.surf.npc.api.surfNpcApi
 import dev.slne.surf.queue.api.queue
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps
 import dev.slne.surf.surfapi.core.api.messages.adventure.clickOpensUrl
@@ -49,22 +48,6 @@ object SurfNpcHook {
         createSpawnShopNpc()
 
         plugin.logger.info("Successfully loaded surf-npc integration.")
-    }
-
-    fun reload() {
-        surfNpcApi.deleteNpc(survivalNpc)
-        surfNpcApi.deleteNpc(eventNpc)
-        surfNpcApi.deleteNpc(spawnRulesNpc)
-        surfNpcApi.deleteNpc(spawnSurvivalNpc)
-        surfNpcApi.deleteNpc(spawnEventNpc)
-        surfNpcApi.deleteNpc(shopNpc)
-
-        createSurvivalNpc()
-        createEventNpc()
-        createSpawnRulesNpc()
-        createSpawnSurvivalNpc()
-        createSpawnEventNpc()
-        createSpawnShopNpc()
     }
 
     private fun createSurvivalNpc() {
