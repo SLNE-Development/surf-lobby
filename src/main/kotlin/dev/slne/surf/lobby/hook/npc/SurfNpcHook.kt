@@ -80,16 +80,7 @@ object SurfNpcHook {
             rotationType = NpcRotationType.FIXED
 
             withEventHandler<NpcInteractEvent> {
-                it.player.sendText {
-                    spacer("[")
-                    note("Nepomuk")
-                    spacer("]")
-                    appendSpace()
-                    error("Ich konnte noch keine Verbindung zum Planeten \"Survival\" herstellen...")
-                }
-                it.player.playSound(true) {
-                    type(Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT)
-                }
+                queueToSurvivalServer(it.player)
             }
         }
     }
