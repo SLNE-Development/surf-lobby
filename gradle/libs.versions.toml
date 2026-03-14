@@ -1,5 +1,0 @@
-[versions]
-nexo = "1.10.0"
-
-[libraries]
-nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
