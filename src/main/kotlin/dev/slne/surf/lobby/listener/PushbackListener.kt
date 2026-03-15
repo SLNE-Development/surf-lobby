@@ -30,7 +30,7 @@ object PushbackListener : Listener {
 
         player.playSound(true) {
             type(Sound.ENTITY_PLAYER_ATTACK_CRIT)
-            volume(0.5f)
+            volume(0.2f)
         }
     }
 }
