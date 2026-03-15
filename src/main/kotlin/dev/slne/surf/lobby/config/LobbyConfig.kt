@@ -30,9 +30,9 @@ data class LobbyConfig(
         companion object {
             fun default() = LocationConfig(
                 world = "world",
-                x = 0.0,
+                x = 0.5,
                 y = 100.0,
-                z = 0.0,
+                z = 0.5,
                 yaw = 0.0f,
                 pitch = 0.0f
             )
