@@ -10,9 +10,11 @@ import java.util.*
 
 object PushbackManager {
     private val pushbackZones = mutableObject2ObjectMapOf<UUID, CircularBoundingBox>()
+    private val lastEffectTime = mutableObject2ObjectMapOf<UUID, Long>()
     private const val RANGE = 3.0
     private const val FORCE = -0.5
     private const val Y_FORCE = 0.5
+    private const val EFFECT_COOLDOWN_MS = 1000L
 
     fun handlePlayerMove(player: Player) {
         val playerLocation = player.location
@@ -34,7 +36,12 @@ object PushbackManager {
                 .multiply(FORCE)
                 .setY(Y_FORCE)
 
-            executor.world.playEffect(executor.location, Effect.ENDER_SIGNAL, null)
+            val now = System.currentTimeMillis()
+            val lastTime = lastEffectTime.getOrDefault(executorUuid, 0L)
+            if (now - lastTime >= EFFECT_COOLDOWN_MS) {
+                executor.world.playEffect(executor.location, Effect.ENDER_SIGNAL, null)
+                lastEffectTime[executorUuid] = now
+            }
         }
     }
 
@@ -45,5 +52,6 @@ object PushbackManager {
 
     fun remove(uuid: UUID) {
         pushbackZones.remove(uuid)
+        lastEffectTime.remove(uuid)
     }
 }
