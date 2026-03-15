@@ -41,10 +41,9 @@ object PlayerConnectionListener : Listener {
         val firstSeen = event.surfPlayer.firstSeen
 
         if (firstSeen == null || firstSeen.isAfter(OffsetDateTime.now().minusMinutes(5))) {
-        }
-
-        plugin.launch {
-            playFirstJoinStuff(event.player)
+            plugin.launch {
+                playFirstJoinStuff(event.player)
+            }
         }
 
         InventoryItem.items.filter { item ->
