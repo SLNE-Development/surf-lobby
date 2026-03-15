@@ -75,13 +75,14 @@ object PlayerConnectionListener : Listener {
     private suspend fun playFirstJoinStuff(player: Player) {
         delay(3.seconds)
         player.sendText {
-            appendInfoPrefix()
+            spacer("» ")
+            note("Willkommen")
+            darkSpacer(" | ")
             info("Willkommen auf dem ")
             variableValue("CastCrafter Community Server ")
             variableValue("@${player.name}", TextDecoration.BOLD)
         }
         player.sendActionBar(buildText {
-            appendInfoPrefix()
             info("Willkommen auf dem ")
             variableValue("CastCrafter Community Server ")
             variableValue("@${player.name}", TextDecoration.BOLD)
@@ -90,18 +91,22 @@ object PlayerConnectionListener : Listener {
             type(Sound.BLOCK_NOTE_BLOCK_PLING)
         }
 
-        delay(3.seconds)
+        delay(5.seconds)
 
         player.sendText {
-            appendInfoPrefix()
+            spacer("» ")
+            note("Willkommen")
+            darkSpacer(" | ")
             info("Du bist in der Lobby. Über den ")
             white("Kompass in deinem Inventar ")
             info("kannst du das Event- oder Survivalschiff betreten.")
-            appendNewInfoPrefixedLine()
+            appendNewline()
+            spacer("» ")
+            note("Willkommen")
+            darkSpacer(" | ")
             info("Dort kannst du über den NPC den jeweiligen Modus betreten.")
         }
         player.sendActionBar(buildText {
-            appendInfoPrefix()
             info("Du bist in der Lobby. Über den ")
             white("Kompass in deinem Inventar ")
             info("kannst du das Event- oder Survivalschiff betreten. ")
@@ -110,41 +115,44 @@ object PlayerConnectionListener : Listener {
         player.playSound(true) {
             type(Sound.ENTITY_CHICKEN_EGG)
         }
-        delay(1.seconds)
+        delay(6.seconds)
 
         player.sendText {
-            appendInfoPrefix()
+            spacer("» ")
+            note("Willkommen")
+            darkSpacer(" | ")
             info("In der Lobby kannst du außerdem andere Spieler verstecken oder dein Profil ansehen.")
         }
         player.sendActionBar(buildText {
-            appendInfoPrefix()
             info("In der Lobby kannst du außerdem andere Spieler verstecken oder dein Profil ansehen.")
         })
         player.playSound(true) {
             type(Sound.ENTITY_CHICKEN_EGG)
         }
-        delay(2.seconds)
-
-        player.sendText {
-            appendInfoPrefix()
-            info("Nicht zu vergessen, ist der Lobby-Parkour, welchen du über die Schuhe in deinem Inventar betreten kannst.")
-        }
-        player.sendActionBar(buildText {
-            appendInfoPrefix()
-            info("Nicht zu vergessen, ist der Lobby-Parkour, welchen du über die Schuhe in deinem Inventar betreten kannst.")
-        })
-        player.playSound(true) {
-            type(Sound.ENTITY_CHICKEN_EGG)
-        }
-
         delay(3.seconds)
 
         player.sendText {
-            appendInfoPrefix()
+            spacer("» ")
+            note("Willkommen")
+            darkSpacer(" | ")
+            info("Nicht zu vergessen, ist der Lobby-Parkour, welchen du über die Schuhe in deinem Inventar betreten kannst.")
+        }
+        player.sendActionBar(buildText {
+            info("Nicht zu vergessen, ist der Lobby-Parkour, welchen du über die Schuhe in deinem Inventar betreten kannst.")
+        })
+        player.playSound(true) {
+            type(Sound.ENTITY_CHICKEN_EGG)
+        }
+
+        delay(4.seconds)
+
+        player.sendText {
+            spacer("» ")
+            note("Willkommen")
+            darkSpacer(" | ")
             info("Viel Spaß auf dem Server!")
         }
         player.sendActionBar(buildText {
-            appendInfoPrefix()
             info("Viel Spaß auf dem Server!")
         })
 
