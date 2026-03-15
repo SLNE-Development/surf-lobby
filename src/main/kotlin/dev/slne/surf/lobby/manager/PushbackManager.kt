@@ -1,43 +1,49 @@
 package dev.slne.surf.lobby.manager
 
-import dev.slne.surf.lobby.plugin
+import dev.slne.surf.lobby.utils.CircularBoundingBox
 import dev.slne.surf.lobby.utils.PermissionRegistry
-import dev.slne.surf.surfapi.bukkit.api.util.toPlayers
-import dev.slne.surf.surfapi.core.api.util.mutableObjectSetOf
+import dev.slne.surf.surfapi.core.api.util.mutableObject2ObjectMapOf
 import org.bukkit.Bukkit
 import org.bukkit.Effect
+import org.bukkit.entity.Player
 import java.util.*
 
 object PushbackManager {
-    private val pushbacks = mutableObjectSetOf<UUID>()
+    private val pushbackZones = mutableObject2ObjectMapOf<UUID, CircularBoundingBox>()
     private const val RANGE = 3.0
     private const val FORCE = -0.5
     private const val Y_FORCE = 0.5
 
-    fun startTask() {
-        Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, {
-            pushbacks.toPlayers().forEach { player ->
-                val nearbyPlayers = player.location.getNearbyPlayers(RANGE) { other ->
-                    other != player && !other.hasPermission(PermissionRegistry.PUSHBACK_ITEM)
-                }
+    fun handlePlayerMove(player: Player) {
+        val playerLocation = player.location
 
-                for (nearby in nearbyPlayers) {
-                    nearby.velocity = player.location.toVector()
-                        .subtract(nearby.location.toVector())
-                        .multiply(FORCE)
-                        .setY(Y_FORCE)
-                }
+        pushbackZones[player.uniqueId]?.let { boundingBox ->
+            boundingBox.center = playerLocation
+        }
 
-                player.world.playEffect(player.location, Effect.ENDER_SIGNAL, null)
-            }
-        }, 20, 20)
+        if (player.hasPermission(PermissionRegistry.PUSHBACK_ITEM)) return
+
+        for ((executorUuid, boundingBox) in pushbackZones) {
+            if (executorUuid == player.uniqueId) continue
+            if (!boundingBox.isInside(playerLocation)) continue
+
+            val executor = Bukkit.getPlayer(executorUuid) ?: continue
+
+            player.velocity = executor.location.toVector()
+                .subtract(playerLocation.toVector())
+                .multiply(FORCE)
+                .setY(Y_FORCE)
+
+            executor.world.playEffect(executor.location, Effect.ENDER_SIGNAL, null)
+        }
     }
 
     fun add(uuid: UUID) {
-        pushbacks.add(uuid)
+        val player = Bukkit.getPlayer(uuid) ?: return
+        pushbackZones[uuid] = CircularBoundingBox(player.location, RANGE)
     }
 
     fun remove(uuid: UUID) {
-        pushbacks.remove(uuid)
+        pushbackZones.remove(uuid)
     }
 }

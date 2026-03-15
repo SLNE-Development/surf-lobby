@@ -2,6 +2,7 @@ package dev.slne.surf.lobby.listener
 
 import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.manager.ElytraBoostManager
+import dev.slne.surf.lobby.manager.PushbackManager
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
@@ -10,11 +11,14 @@ object PlayerMoveListener : Listener {
     @EventHandler
     fun onMove(event: PlayerMoveEvent) {
         val player = event.player
-        val minHeight = lobbyConfig.minHeight
 
         if (!event.hasExplicitlyChangedPosition()) {
             return
         }
+
+        PushbackManager.handlePlayerMove(player)
+
+        val minHeight = lobbyConfig.minHeight
 
         if (player.location.y < minHeight) {
             player.teleportAsync(lobbyConfig.spawnPoint.toLocation()).thenRun {
