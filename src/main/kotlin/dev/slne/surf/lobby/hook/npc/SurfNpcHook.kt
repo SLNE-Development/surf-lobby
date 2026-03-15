@@ -15,7 +15,6 @@ import dev.slne.surf.npc.api.event.NpcCollisionEvent
 import dev.slne.surf.npc.api.event.NpcInteractEvent
 import dev.slne.surf.npc.api.npc.Npc
 import dev.slne.surf.npc.api.npc.rotation.NpcRotationType
-import dev.slne.surf.npc.api.surfNpcApi
 import dev.slne.surf.queue.api.queue
 import dev.slne.surf.surfapi.core.api.font.toSmallCaps
 import dev.slne.surf.surfapi.core.api.messages.adventure.clickOpensUrl
@@ -51,22 +50,6 @@ object SurfNpcHook {
         plugin.logger.info("Successfully loaded surf-npc integration.")
     }
 
-    fun reload() {
-        surfNpcApi.deleteNpc(survivalNpc)
-        surfNpcApi.deleteNpc(eventNpc)
-        surfNpcApi.deleteNpc(spawnRulesNpc)
-        surfNpcApi.deleteNpc(spawnSurvivalNpc)
-        surfNpcApi.deleteNpc(spawnEventNpc)
-        surfNpcApi.deleteNpc(shopNpc)
-
-        createSurvivalNpc()
-        createEventNpc()
-        createSpawnRulesNpc()
-        createSpawnSurvivalNpc()
-        createSpawnEventNpc()
-        createSpawnShopNpc()
-    }
-
     private fun createSurvivalNpc() {
         survivalNpc = npc {
             displayName = {
@@ -80,16 +63,7 @@ object SurfNpcHook {
             rotationType = NpcRotationType.FIXED
 
             withEventHandler<NpcInteractEvent> {
-                it.player.sendText {
-                    spacer("[")
-                    note("Nepomuk")
-                    spacer("]")
-                    appendSpace()
-                    error("Ich konnte noch keine Verbindung zum Planeten \"Survival\" herstellen...")
-                }
-                it.player.playSound(true) {
-                    type(Sound.UI_CARTOGRAPHY_TABLE_TAKE_RESULT)
-                }
+                queueToSurvivalServer(it.player)
             }
         }
     }
@@ -275,6 +249,53 @@ object SurfNpcHook {
                     }
                 }
             } ?: error("Event server with name ${lobbyConfig.eventServerName} not found")
+    }
+
+    private fun queueToSurvivalServer(player: Player) {
+        surfCoreApi.getServerByName(lobbyConfig.survivalServerName)
+            ?.let { server ->
+                plugin.launch {
+                    if (player.hasPermission(PermissionRegistry.QUEUE_BYPASS)) {
+                        player.sendText {
+                            appendInfoPrefix()
+                            info("Du hast die Warteschlange umgangen und wirst nun mit dem Survival Server verbunden...")
+                        }
+                        val status = surfCoreApi.sendPlayerAwaiting(player.surfPlayer, server)
+
+                        if (status.isSuccessful()) {
+                            player.sendText {
+                                appendSuccessPrefix()
+                                success("Du wurdest erfolgreich zum Survival Server teleportiert.")
+                            }
+                        } else {
+                            player.sendText {
+                                appendErrorPrefix()
+                                error("Es gab ein Problem beim Teleportieren zum Survival Server: ${status.status}")
+                                status.velocityMessage?.let {
+                                    error(": ")
+                                    append(it)
+                                }
+                            }
+                        }
+
+                        return@launch
+                    }
+
+                    val success = server.queue().enqueue(player.uniqueId)
+
+                    if (success) {
+                        player.sendText {
+                            appendSuccessPrefix()
+                            success("Du wurdest in die Warteschlange für den Survival Server eingereiht.")
+                        }
+                    } else {
+                        player.sendText {
+                            appendErrorPrefix()
+                            error("Du bist bereits in einer Warteschlange!")
+                        }
+                    }
+                }
+            } ?: error("Survival server with name ${lobbyConfig.survivalServerName} not found")
     }
 
     private lateinit var syncTask: ScheduledTask
