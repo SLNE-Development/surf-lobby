@@ -9,6 +9,7 @@ import dev.slne.surf.lobby.hook.hologram.SurfHologramHook
 import dev.slne.surf.lobby.hook.nexo.NexoHook
 import dev.slne.surf.lobby.hook.npc.SurfNpcHook
 import dev.slne.surf.lobby.listener.*
+import dev.slne.surf.lobby.manager.PushbackManager
 import dev.slne.surf.redis.RedisApi
 import dev.slne.surf.surfapi.bukkit.api.event.register
 import org.bukkit.Bukkit
@@ -39,6 +40,8 @@ class PaperMain : SuspendingJavaPlugin() {
         PushbackListener.register()
         PlayerMoveListener.register()
         EntitySpawnListener.register()
+
+        PushbackManager.startTask()
 
         lobbyCommand()
         spawnCommand()
