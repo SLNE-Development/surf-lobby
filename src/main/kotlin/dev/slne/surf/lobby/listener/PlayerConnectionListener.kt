@@ -82,11 +82,6 @@ object PlayerConnectionListener : Listener {
             variableValue("CastCrafter Community Server ")
             variableValue("@${player.name}", TextDecoration.BOLD)
         }
-        player.sendActionBar(buildText {
-            info("Willkommen auf dem ")
-            variableValue("CastCrafter Community Server ")
-            variableValue("@${player.name}", TextDecoration.BOLD)
-        })
         player.playSound(true) {
             type(Sound.BLOCK_NOTE_BLOCK_PLING)
         }
@@ -104,14 +99,8 @@ object PlayerConnectionListener : Listener {
             spacer("» ")
             note("Willkommen")
             darkSpacer(" | ")
-            info("Dort kannst du über den NPC den jeweiligen Modus betreten.")
+            info("Dort kannst du den jeweiligen Modus über einen NPC betreten.")
         }
-        player.sendActionBar(buildText {
-            info("Du bist in der Lobby. Über den ")
-            white("Kompass in deinem Inventar ")
-            info("kannst du das Event- oder Survivalschiff betreten. ")
-            info("Dort kannst du über den NPC den jeweiligen Modus betreten.")
-        })
         player.playSound(true) {
             type(Sound.ENTITY_CHICKEN_EGG)
         }
@@ -123,9 +112,6 @@ object PlayerConnectionListener : Listener {
             darkSpacer(" | ")
             info("In der Lobby kannst du außerdem andere Spieler verstecken oder dein Profil ansehen.")
         }
-        player.sendActionBar(buildText {
-            info("In der Lobby kannst du außerdem andere Spieler verstecken oder dein Profil ansehen.")
-        })
         player.playSound(true) {
             type(Sound.ENTITY_CHICKEN_EGG)
         }
@@ -137,9 +123,6 @@ object PlayerConnectionListener : Listener {
             darkSpacer(" | ")
             info("Nicht zu vergessen, ist der Lobby-Parkour, welchen du über die Schuhe in deinem Inventar betreten kannst.")
         }
-        player.sendActionBar(buildText {
-            info("Nicht zu vergessen, ist der Lobby-Parkour, welchen du über die Schuhe in deinem Inventar betreten kannst.")
-        })
         player.playSound(true) {
             type(Sound.ENTITY_CHICKEN_EGG)
         }
