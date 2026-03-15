@@ -30,7 +30,7 @@ object PushbackManager {
 
                 player.world.playEffect(player.location, Effect.ENDER_SIGNAL, null)
             }
-        }, 0, 10)
+        }, 10, 10)
     }
 
     fun add(uuid: UUID) {
