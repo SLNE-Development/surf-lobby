@@ -126,7 +126,7 @@ fun lobbySelectorInventory() = menu(buildText { spacer("Lobby Auswahl") }, 3) {
             surfCoreApi.getServerByCategory(lobbyConfig.lobbyCategory).sortedBy { it.displayName }
                 .map {
                     GuiItem(buildItem(ItemType.RECOVERY_COMPASS) {
-                        displayName { variableValue(it.name) }
+                        displayName { variableValue(it.displayName) }
 
                         buildLore {
                             emptyLine()
