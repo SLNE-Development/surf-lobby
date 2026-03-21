@@ -252,6 +252,18 @@ object SurfNpcHook {
     }
 
     private fun queueToSurvivalServer(player: Player) {
+        if (!lobbyConfig.survivalOpen && !player.hasPermission(PermissionRegistry.SURVIVAL_BYPASS)) {
+            player.sendText {
+                spacer("[")
+                note("Nepomuk")
+                spacer("]")
+                appendSpace()
+                error("Der Survival Server startet bald, sei bereit!")
+            }
+            return
+        }
+
+
         surfCoreApi.getServerByName(lobbyConfig.survivalServerName)
             ?.let { server ->
                 plugin.launch {

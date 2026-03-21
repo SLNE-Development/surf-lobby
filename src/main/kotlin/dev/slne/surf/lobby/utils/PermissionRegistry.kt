@@ -13,6 +13,7 @@ object PermissionRegistry : PermissionRegistry() {
 
     val EVENT_BYPASS = create("$PREFIX.event.bypass")
     val QUEUE_BYPASS = create("$PREFIX.queue.bypass")
+    val SURVIVAL_BYPASS = create("$PREFIX.survival.bypass")
 
     val PUSHBACK_ATTACK = create("$PREFIX.pushback.attack")
     val PUSHBACK_ITEM = create("$PREFIX.pushback.item")

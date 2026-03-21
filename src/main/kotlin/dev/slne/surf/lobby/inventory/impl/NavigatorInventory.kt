@@ -122,58 +122,60 @@ fun lobbySelectorInventory() = menu(buildText { spacer("Lobby Auswahl") }, 3) {
         fillWith(ItemType.GRAY_STAINED_GLASS_PANE.createItemStack())
     })
     addPane(PaginatedPane(1, 1, 7, 1, Pane.Priority.HIGHEST).apply {
-        populateWithGuiItems(surfCoreApi.getServerByCategory(lobbyConfig.lobbyCategory).map {
-            GuiItem(buildItem(ItemType.RECOVERY_COMPASS) {
-                displayName { variableValue(it.name) }
+        populateWithGuiItems(
+            surfCoreApi.getServerByCategory(lobbyConfig.lobbyCategory).sortedBy { it.displayName }
+                .map {
+                    GuiItem(buildItem(ItemType.RECOVERY_COMPASS) {
+                        displayName { variableValue(it.displayName) }
 
-                buildLore {
-                    emptyLine()
-                    line {
-                        spacer("-")
-                        appendSpace()
-                        note("Status: ")
-                        variableValue(
-                            if (it.state == SurfServerState.RUNNING) {
-                                "Online"
-                            } else {
-                                "Offline"
+                        buildLore {
+                            emptyLine()
+                            line {
+                                spacer("-")
+                                appendSpace()
+                                note("Status: ")
+                                variableValue(
+                                    if (it.state == SurfServerState.RUNNING) {
+                                        "Online"
+                                    } else {
+                                        "Offline"
+                                    }
+                                )
                             }
-                        )
-                    }
-                    line {
-                        spacer("-")
-                        appendSpace()
-                        note("Spieler: ")
-                        variableValue("${it.getPlayerCount()} / ${it.maxPlayers}")
-                    }
-                    if (it.state == SurfServerState.RUNNING) {
-                        emptyLine()
-                        line {
-                            spacer("» Klicke, um diesem Lobby Server beizutreten")
+                            line {
+                                spacer("-")
+                                appendSpace()
+                                note("Spieler: ")
+                                variableValue("${it.getPlayerCount()} / ${it.maxPlayers}")
+                            }
+                            if (it.state == SurfServerState.RUNNING) {
+                                emptyLine()
+                                line {
+                                    spacer("» Klicke, um diesem Lobby Server beizutreten")
+                                }
+                            }
                         }
-                    }
-                }
-            }) { event ->
-                val player = event.whoClicked as? Player ?: return@GuiItem
-                val updatedServer = surfCoreApi.getServerByName(it.name) ?: return@GuiItem
+                    }) { event ->
+                        val player = event.whoClicked as? Player ?: return@GuiItem
+                        val updatedServer = surfCoreApi.getServerByName(it.name) ?: return@GuiItem
 
-                if (updatedServer.state != SurfServerState.RUNNING) {
-                    player.sendText {
-                        appendInfoPrefix()
-                        error("Dieser Server ist derzeit nicht erreichbar!")
-                    }
-                    return@GuiItem
-                }
+                        if (updatedServer.state != SurfServerState.RUNNING) {
+                            player.sendText {
+                                appendInfoPrefix()
+                                error("Dieser Server ist derzeit nicht erreichbar!")
+                            }
+                            return@GuiItem
+                        }
 
-                updatedServer.pullPlayers(player.surfPlayer)
-            }
-        }.ifEmpty {
-            listOf(GuiItem(buildItem(Material.BARRIER) {
-                displayName {
-                    error("Keine Lobby Server verfügbar")
-                }
-            }))
-        })
+                        updatedServer.pullPlayers(player.surfPlayer)
+                    }
+                }.ifEmpty {
+                listOf(GuiItem(buildItem(Material.BARRIER) {
+                    displayName {
+                        error("Keine Lobby Server verfügbar")
+                    }
+                }))
+            })
     })
     setOnGlobalClick { it.cancel() }
 }
