@@ -5,6 +5,7 @@ import org.spongepowered.configurate.objectmapping.ConfigSerializable
 
 @ConfigSerializable
 data class LobbyConfig(
+    val survivalOpen: Boolean = false,
     val minHeight: Int = 0,
     val eventServerName: String = "event",
     val survivalServerName: String = "survival",
