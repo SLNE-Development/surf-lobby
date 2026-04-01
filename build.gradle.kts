@@ -15,7 +15,7 @@ dependencies {
     compileOnly("com.nexomc:nexo:1.16.1")
     implementation("dev.slne.surf.event:surf-event-base-api-common:1.21.11-1.0.0-SNAPSHOT")
     implementation("dev.slne.surf.tab:surf-tab-api:1.21.11-1.0.2-SNAPSHOT")
-    compileOnly("dev.slne.surf.parkour:surf-parkour-api:1.21.11-3.1.2-SNAPSHOT")
+    compileOnly("dev.slne.surf.parkour:surf-parkour-api:1.21.11-3.4.0-SNAPSHOT")
     compileOnly("dev.slne.surf.trophy:surf-trophy-api:1.21.11-1.0.0-SNAPSHOT")
     compileOnly("dev.slne.surf.profile:surf-profile-api:1.21.11-1.0.0-SNAPSHOT")
     compileOnly("dev.slne.surf.settings:surf-settings-api:1.21.11-2.0.0-SNAPSHOT")
