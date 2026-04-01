@@ -10,7 +10,7 @@ object TrophyHook {
 
     fun openMenu(player: Player) {
         if (isEnabled()) {
-            surfTrophyApi.showTrophyMenu(player, player)
+            surfTrophyApi.showTrophyMenu(player.uniqueId, player.uniqueId)
         } else {
             player.sendText {
                 appendErrorPrefix()
