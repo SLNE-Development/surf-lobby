@@ -26,7 +26,9 @@ object DoubleJumpListener : Listener {
             return
         }
 
-        if (parkourHook && ParkourHook.isInParkour(player)) 7
+        if (parkourHook && ParkourHook.isInParkour(player)) {
+            return
+        }
 
         val now = System.currentTimeMillis()
         val last = lastJump[player.uniqueId]
