@@ -12,7 +12,7 @@ import java.util.*
 
 object DoubleJumpListener : Listener {
     private val lastJump = mutableObject2ObjectMapOf<UUID, Long>()
-    private const val DOUBLE_JUMP_WINDOW = 400L
+    private const val DOUBLE_JUMP_WINDOW = 200L
 
     @EventHandler
     fun onInput(event: PlayerInputEvent) {
