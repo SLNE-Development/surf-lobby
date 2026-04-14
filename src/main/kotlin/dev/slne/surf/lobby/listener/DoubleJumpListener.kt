@@ -41,13 +41,8 @@ object DoubleJumpListener : Listener {
         val now = System.currentTimeMillis()
         val last = lastJump[uuid]
 
-        if (player.velocity.y > 0) {
-            return
-        }
-
         @Suppress("DEPRECATION")
-        if (player.isOnGround) {
-            lastJump[uuid] = now
+        if (!player.isOnGround) {
             return
         }
 
