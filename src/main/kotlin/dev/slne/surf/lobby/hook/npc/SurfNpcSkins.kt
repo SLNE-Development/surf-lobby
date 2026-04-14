@@ -1,7 +1,7 @@
 package dev.slne.surf.lobby.hook.npc
 
+import dev.slne.surf.api.core.util.objectSetOf
 import dev.slne.surf.npc.api.npc.skin.NpcSkin
-import dev.slne.surf.surfapi.core.api.util.objectSetOf
 
 enum class SurfNpcSkins(val skinValue: String, val skinSignature: String) {
     UNKNOWN(

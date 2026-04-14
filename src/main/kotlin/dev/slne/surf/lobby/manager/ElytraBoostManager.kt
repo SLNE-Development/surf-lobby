@@ -2,14 +2,14 @@ package dev.slne.surf.lobby.manager
 
 import com.github.shynixn.mccoroutine.folia.entityDispatcher
 import com.github.shynixn.mccoroutine.folia.launch
+import dev.slne.surf.api.core.messages.adventure.playSound
+import dev.slne.surf.api.core.util.mutableObject2ObjectMapOf
+import dev.slne.surf.api.core.util.mutableObjectSetOf
+import dev.slne.surf.api.paper.builder.displayName
+import dev.slne.surf.api.paper.builder.meta
 import dev.slne.surf.lobby.hook.parkour.ParkourHook
 import dev.slne.surf.lobby.plugin
 import dev.slne.surf.lobby.utils.PermissionRegistry
-import dev.slne.surf.surfapi.bukkit.api.builder.displayName
-import dev.slne.surf.surfapi.bukkit.api.builder.meta
-import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
-import dev.slne.surf.surfapi.core.api.util.mutableObject2ObjectMapOf
-import dev.slne.surf.surfapi.core.api.util.mutableObjectSetOf
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -28,7 +28,7 @@ object ElytraBoostManager {
             return
         }
 
-        if (ParkourHook.isInParkour(player)) {
+        if (plugin.checkParkourHook() && ParkourHook.isInParkour(player)) {
             return
         }
 
@@ -51,7 +51,7 @@ object ElytraBoostManager {
         lastBoosted[player.uniqueId] = System.currentTimeMillis()
 
         plugin.launch(plugin.entityDispatcher(player)) {
-            player.inventory.chestplate = elytraItem
+            player.inventory.setChestplate(elytraItem)
             player.isGliding = true
 
             val direction = player.location.direction.normalize()
@@ -84,7 +84,7 @@ object ElytraBoostManager {
     fun clearBoost(player: Player) {
         if (boostingPlayers.remove(player.uniqueId)) {
             plugin.launch(plugin.entityDispatcher(player)) {
-                player.inventory.chestplate = null
+                player.inventory.setChestplate(null)
             }
 
             lastBoosted.remove(player.uniqueId)

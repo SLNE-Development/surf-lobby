@@ -3,6 +3,6 @@ rootProject.name = "surf-lobby"
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven("https://repo.slne.dev/repository/maven-public/") { name = "maven-public" }
+        maven("https://reposilite.slne.dev/releases")
     }
 }

@@ -1,7 +1,11 @@
 package dev.slne.surf.lobby.hook.npc
 
 import com.github.shynixn.mccoroutine.folia.launch
-import dev.slne.surf.core.api.common.surfCoreApi
+import dev.slne.surf.api.core.font.toSmallCaps
+import dev.slne.surf.api.core.messages.adventure.clickOpensUrl
+import dev.slne.surf.api.core.messages.adventure.playSound
+import dev.slne.surf.api.core.messages.adventure.sendText
+import dev.slne.surf.core.api.common.SurfCoreApi
 import dev.slne.surf.core.api.paper.util.surfPlayer
 import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.event.eventServerBridge
@@ -16,10 +20,6 @@ import dev.slne.surf.npc.api.event.NpcInteractEvent
 import dev.slne.surf.npc.api.npc.Npc
 import dev.slne.surf.npc.api.npc.rotation.NpcRotationType
 import dev.slne.surf.queue.api.queue
-import dev.slne.surf.surfapi.core.api.font.toSmallCaps
-import dev.slne.surf.surfapi.core.api.messages.adventure.clickOpensUrl
-import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
-import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
@@ -209,7 +209,7 @@ object SurfNpcHook {
     }
 
     private fun queueToEventServer(player: Player) {
-        surfCoreApi.getServerByName(lobbyConfig.eventServerName)
+        SurfCoreApi.getServerByName(lobbyConfig.eventServerName)
             ?.let { server ->
                 plugin.launch {
                     if (player.hasPermission(PermissionRegistry.QUEUE_BYPASS)) {
@@ -217,7 +217,7 @@ object SurfNpcHook {
                             appendInfoPrefix()
                             info("Du hast die Warteschlange umgangen und wirst nun mit dem Event Server verbunden...")
                         }
-                        val status = surfCoreApi.sendPlayerAwaiting(player.surfPlayer, server)
+                        val status = SurfCoreApi.sendPlayerAwaiting(player.surfPlayer, server)
 
                         if (status.isSuccessful()) {
                             player.sendText {
@@ -264,7 +264,7 @@ object SurfNpcHook {
         }
 
 
-        surfCoreApi.getServerByName(lobbyConfig.survivalServerName)
+        SurfCoreApi.getServerByName(lobbyConfig.survivalServerName)
             ?.let { server ->
                 plugin.launch {
                     if (player.hasPermission(PermissionRegistry.QUEUE_BYPASS)) {
@@ -272,7 +272,7 @@ object SurfNpcHook {
                             appendInfoPrefix()
                             info("Du hast die Warteschlange umgangen und wirst nun mit dem Survival Server verbunden...")
                         }
-                        val status = surfCoreApi.sendPlayerAwaiting(player.surfPlayer, server)
+                        val status = SurfCoreApi.sendPlayerAwaiting(player.surfPlayer, server)
 
                         if (status.isSuccessful()) {
                             player.sendText {
@@ -315,7 +315,7 @@ object SurfNpcHook {
     fun startSyncTask() {
         syncTask = Bukkit.getAsyncScheduler().runAtFixedRate(plugin, {
             val server =
-                surfCoreApi.getServerByName(lobbyConfig.eventServerName) ?: return@runAtFixedRate
+                SurfCoreApi.getServerByName(lobbyConfig.eventServerName) ?: return@runAtFixedRate
 
             if (eventServerDisplayName != server.displayName) {
                 eventServerDisplayName = server.displayName

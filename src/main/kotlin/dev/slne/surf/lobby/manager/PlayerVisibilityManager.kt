@@ -1,10 +1,8 @@
 package dev.slne.surf.lobby.manager
 
+import dev.slne.surf.api.core.util.mutableObject2ObjectMapOf
 import dev.slne.surf.lobby.plugin
 import dev.slne.surf.lobby.utils.PermissionRegistry
-import dev.slne.surf.surfapi.core.api.util.mutableObject2ObjectMapOf
-import dev.slne.surf.tab.api.redis.TabEntryUpdateRedisEvent
-import dev.slne.surf.tab.api.redis.TabShowRedisEvent
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
@@ -39,42 +37,18 @@ object PlayerVisibilityManager {
                 when (otherState) {
                     VisibilityState.SHOW_ALL -> {
                         otherPlayer.showPlayer(plugin, player)
-
-                        plugin.redisApi.publishEvent(
-                            TabEntryUpdateRedisEvent(
-                                player.uniqueId
-                            )
-                        )
                     }
 
                     VisibilityState.SHOW_TEAM -> {
                         if (player.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
                             otherPlayer.showPlayer(plugin, player)
-
-                            plugin.redisApi.publishEvent(
-                                TabEntryUpdateRedisEvent(
-                                    player.uniqueId
-                                )
-                            )
                         } else {
                             otherPlayer.hidePlayer(plugin, player)
-
-                            plugin.redisApi.publishEvent(
-                                TabEntryUpdateRedisEvent(
-                                    player.uniqueId
-                                )
-                            )
                         }
                     }
 
                     VisibilityState.SHOW_NONE -> {
                         otherPlayer.hidePlayer(plugin, player)
-
-                        plugin.redisApi.publishEvent(
-                            TabEntryUpdateRedisEvent(
-                                player.uniqueId
-                            )
-                        )
                     }
                 }
             }
@@ -90,12 +64,6 @@ object PlayerVisibilityManager {
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
                         player.showPlayer(plugin, otherPlayer)
-
-                        plugin.redisApi.publishEvent(
-                            TabEntryUpdateRedisEvent(
-                                otherPlayer.uniqueId
-                            )
-                        )
                     }
                 }
             }
@@ -105,20 +73,8 @@ object PlayerVisibilityManager {
                     if (otherPlayer != player) {
                         if (otherPlayer.hasPermission(PermissionRegistry.PLAYER_VISIBILITY_TEAM)) {
                             player.showPlayer(plugin, otherPlayer)
-
-                            plugin.redisApi.publishEvent(
-                                TabShowRedisEvent(
-                                    player.uniqueId, otherPlayer.uniqueId
-                                )
-                            )
                         } else {
                             player.hidePlayer(plugin, otherPlayer)
-
-                            plugin.redisApi.publishEvent(
-                                TabEntryUpdateRedisEvent(
-                                    otherPlayer.uniqueId
-                                )
-                            )
                         }
                     }
                 }
@@ -128,12 +84,6 @@ object PlayerVisibilityManager {
                 Bukkit.getOnlinePlayers().forEach { otherPlayer ->
                     if (otherPlayer != player) {
                         player.hidePlayer(plugin, otherPlayer)
-
-                        plugin.redisApi.publishEvent(
-                            TabEntryUpdateRedisEvent(
-                                otherPlayer.uniqueId
-                            )
-                        )
                     }
                 }
             }

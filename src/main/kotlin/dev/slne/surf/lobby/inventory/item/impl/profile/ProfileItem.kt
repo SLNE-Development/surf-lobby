@@ -1,11 +1,12 @@
 package dev.slne.surf.lobby.inventory.item.impl.profile
 
+import dev.slne.surf.api.core.font.toSmallCaps
+import dev.slne.surf.api.core.messages.builder.SurfComponentBuilder
+import dev.slne.surf.api.paper.builder.buildLore
+import dev.slne.surf.api.paper.builder.displayName
 import dev.slne.surf.lobby.hook.profile.ProfileHook
 import dev.slne.surf.lobby.inventory.item.InventoryItem
-import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
-import dev.slne.surf.surfapi.bukkit.api.builder.displayName
-import dev.slne.surf.surfapi.core.api.font.toSmallCaps
-import dev.slne.surf.surfapi.core.api.messages.builder.SurfComponentBuilder
+import dev.slne.surf.lobby.plugin
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
@@ -18,7 +19,9 @@ object ProfileItem : InventoryItem(8, ItemType.PLAYER_HEAD.createItemStack().app
 }) {
     override val permission = null
     override fun onInteract(player: Player) {
-        ProfileHook.openMenu(player)
+        if (plugin.checkProfileHook()) {
+            ProfileHook.openMenu(player)
+        }
     }
 
     override fun getItemForPlayer(player: Player): ItemStack =

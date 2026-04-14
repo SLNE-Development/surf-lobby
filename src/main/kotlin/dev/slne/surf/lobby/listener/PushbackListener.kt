@@ -1,8 +1,8 @@
 package dev.slne.surf.lobby.listener
 
+import dev.slne.surf.api.core.messages.adventure.playSound
+import dev.slne.surf.api.paper.event.cancel
 import dev.slne.surf.lobby.utils.PermissionRegistry
-import dev.slne.surf.surfapi.bukkit.api.event.cancel
-import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
 import io.papermc.paper.event.player.PrePlayerAttackEntityEvent
 import org.bukkit.Sound
 import org.bukkit.entity.Player

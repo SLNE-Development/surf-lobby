@@ -1,6 +1,6 @@
 package dev.slne.surf.lobby.utils
 
-import dev.slne.surf.surfapi.bukkit.api.permission.PermissionRegistry
+import dev.slne.surf.api.paper.permission.PermissionRegistry
 
 object PermissionRegistry : PermissionRegistry() {
 
@@ -17,8 +17,7 @@ object PermissionRegistry : PermissionRegistry() {
 
     val PUSHBACK_ATTACK = create("$PREFIX.pushback.attack")
     val PUSHBACK_ITEM = create("$PREFIX.pushback.item")
-    val PROTECTION_BYPASS = create("$PREFIX.bypass")
-
+    
     val PLAYER_VISIBILITY_ITEM = create("$PREFIX.playervisibility.item")
     val PLAYER_VISIBILITY_TEAM = create("$PREFIX.playervisibility.team")
     val ELYTRA_BOOST = create("$PREFIX.elytraboost")

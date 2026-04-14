@@ -1,8 +1,8 @@
 package dev.slne.surf.lobby.config
 
+import dev.slne.surf.api.core.config.manager.SpongeConfigManager
+import dev.slne.surf.api.core.config.surfConfigApi
 import dev.slne.surf.lobby.plugin
-import dev.slne.surf.surfapi.core.api.config.manager.SpongeConfigManager
-import dev.slne.surf.surfapi.core.api.config.surfConfigApi
 
 class LobbyConfigHolder {
     private val configManager: SpongeConfigManager<LobbyConfig>

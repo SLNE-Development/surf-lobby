@@ -1,11 +1,12 @@
 package dev.slne.surf.lobby.inventory.item.impl.rewards
 
+import dev.slne.surf.api.core.font.toSmallCaps
+import dev.slne.surf.api.core.messages.builder.SurfComponentBuilder
+import dev.slne.surf.api.paper.builder.buildLore
+import dev.slne.surf.api.paper.builder.displayName
 import dev.slne.surf.lobby.hook.trophy.TrophyHook
 import dev.slne.surf.lobby.inventory.item.InventoryItem
-import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
-import dev.slne.surf.surfapi.bukkit.api.builder.displayName
-import dev.slne.surf.surfapi.core.api.font.toSmallCaps
-import dev.slne.surf.surfapi.core.api.messages.builder.SurfComponentBuilder
+import dev.slne.surf.lobby.plugin
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
@@ -41,7 +42,9 @@ object TrophiesItem : InventoryItem(7, ItemType.GOLD_INGOT.createItemStack().app
 }) {
     override val permission = null
     override fun onInteract(player: Player) {
-        TrophyHook.openMenu(player)
+        if (plugin.checkTrophyHook()) {
+            TrophyHook.openMenu(player)
+        }
     }
 }
 

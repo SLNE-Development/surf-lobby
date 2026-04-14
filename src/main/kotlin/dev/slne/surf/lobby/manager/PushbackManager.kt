@@ -1,9 +1,9 @@
 package dev.slne.surf.lobby.manager
 
+import dev.slne.surf.api.core.util.mutableObjectSetOf
+import dev.slne.surf.api.paper.util.toPlayers
 import dev.slne.surf.lobby.plugin
 import dev.slne.surf.lobby.utils.PermissionRegistry
-import dev.slne.surf.surfapi.bukkit.api.util.toPlayers
-import dev.slne.surf.surfapi.core.api.util.mutableObjectSetOf
 import org.bukkit.Bukkit
 import org.bukkit.Effect
 import java.util.*

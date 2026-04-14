@@ -1,8 +1,8 @@
 package dev.slne.surf.lobby.listener
 
+import dev.slne.surf.api.core.util.mutableObject2ObjectMapOf
 import dev.slne.surf.lobby.hook.parkour.ParkourHook
-import dev.slne.surf.lobby.parkourHook
-import dev.slne.surf.surfapi.core.api.util.mutableObject2ObjectMapOf
+import dev.slne.surf.lobby.plugin
 import org.bukkit.GameMode
 import org.bukkit.Particle
 import org.bukkit.event.EventHandler
@@ -12,13 +12,21 @@ import java.util.*
 
 object DoubleJumpListener : Listener {
     private val lastJump = mutableObject2ObjectMapOf<UUID, Long>()
+    private val lastJumpState = mutableObject2ObjectMapOf<UUID, Boolean>()
+
     private const val DOUBLE_JUMP_WINDOW = 200L
+    private const val DOUBLE_JUMP_COOLDOWN = 500L
 
     @EventHandler
     fun onInput(event: PlayerInputEvent) {
         val player = event.player
+        val uuid = player.uniqueId
 
-        if (!event.input.isJump) {
+        val isJumping = event.input.isJump
+        val wasJumping = lastJumpState[uuid] ?: false
+        lastJumpState[uuid] = isJumping
+
+        if (!isJumping || wasJumping) {
             return
         }
 
@@ -26,26 +34,33 @@ object DoubleJumpListener : Listener {
             return
         }
 
-        if (parkourHook && ParkourHook.isInParkour(player)) {
+        if (plugin.checkParkourHook() && ParkourHook.isInParkour(player)) {
             return
         }
 
         val now = System.currentTimeMillis()
-        val last = lastJump[player.uniqueId]
+        val last = lastJump[uuid]
 
+        if (player.velocity.y > 0) {
+            return
+        }
+
+        @Suppress("DEPRECATION")
         if (player.isOnGround) {
-            lastJump[player.uniqueId] = now
+            lastJump[uuid] = now
             return
         }
 
         if (last != null && now - last <= DOUBLE_JUMP_WINDOW) {
-            val direction = player.eyeLocation.direction
-            val loc = player.location
+            player.velocity = player.eyeLocation.direction.multiply(2).setY(1.0)
+            player.world.spawnParticle(Particle.EXPLOSION, player.location, 10)
+            lastJump.remove(uuid)
+            lastJumpState[uuid] = false
+            return
+        }
 
-            player.velocity = direction.multiply(2).setY(1)
-            loc.world.spawnParticle(Particle.EXPLOSION, loc, 10)
-
-            lastJump.remove(player.uniqueId)
+        if (last == null || now - last > DOUBLE_JUMP_COOLDOWN) {
+            lastJump[uuid] = now
         }
     }
 }

@@ -1,10 +1,11 @@
 package dev.slne.surf.lobby.listener
 
+import dev.slne.surf.api.core.messages.adventure.playSound
+import dev.slne.surf.api.paper.event.cancel
 import dev.slne.surf.lobby.hook.settings.SettingsHook
 import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.lobby.manager.ElytraBoostManager
-import dev.slne.surf.surfapi.bukkit.api.event.cancel
-import dev.slne.surf.surfapi.core.api.messages.adventure.playSound
+import dev.slne.surf.lobby.plugin
 import org.bukkit.GameMode
 import org.bukkit.Sound
 import org.bukkit.event.EventHandler
@@ -63,6 +64,10 @@ object InventoryInteractListener : Listener {
 
     @EventHandler
     fun onHoldItem(event: PlayerItemHeldEvent) {
+        if (plugin.checkSettingsHook()) {
+            return
+        }
+
         if (!SettingsHook.hasScrollSoundsEnabled(event.player.uniqueId)) {
             return
         }

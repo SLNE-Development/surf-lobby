@@ -2,9 +2,9 @@ package dev.slne.surf.lobby.command
 
 import dev.jorel.commandapi.kotlindsl.commandTree
 import dev.jorel.commandapi.kotlindsl.playerExecutor
+import dev.slne.surf.api.core.messages.adventure.sendText
 import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.utils.PermissionRegistry
-import dev.slne.surf.surfapi.core.api.messages.adventure.sendText
 
 fun spawnCommand() = commandTree("spawn") {
     withPermission(PermissionRegistry.COMMAND_SPAWN)

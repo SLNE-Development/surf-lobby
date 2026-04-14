@@ -1,8 +1,8 @@
-import dev.slne.surf.surfapi.gradle.util.registerRequired
-import dev.slne.surf.surfapi.gradle.util.registerSoft
+import dev.slne.surf.api.gradle.util.registerRequired
+import dev.slne.surf.api.gradle.util.registerSoft
 
 plugins {
-    id("dev.slne.surf.surfapi.gradle.paper-plugin") version "1.21.11+"
+    id("dev.slne.surf.api.gradle.paper-plugin") version "+"
 }
 
 repositories {
@@ -10,16 +10,15 @@ repositories {
 }
 
 dependencies {
-    compileOnly("surf-hologram:surf-hologram-api:1.21.11-1.0.2-SNAPSHOT")
-    compileOnly("dev.slne.surf.npc:surf-npc-api:1.21.11-1.6.0-SNAPSHOT")
+    compileOnly("dev.slne.surf.npc:surf-npc-api:+")
     compileOnly("com.nexomc:nexo:1.16.1")
-    implementation("dev.slne.surf.event:surf-event-base-api-common:1.21.11-1.0.0-SNAPSHOT")
-    implementation("dev.slne.surf.tab:surf-tab-api:1.21.11-1.0.2-SNAPSHOT")
-    compileOnly("dev.slne.surf.parkour:surf-parkour-api:1.21.11-3.4.0-SNAPSHOT")
-    compileOnly("dev.slne.surf.trophy:surf-trophy-api:1.21.11-1.1.0-SNAPSHOT")
-    compileOnly("dev.slne.surf.profile:surf-profile-api:1.21.11-1.0.0-SNAPSHOT")
-    compileOnly("dev.slne.surf.settings:surf-settings-api:1.21.11-2.0.0-SNAPSHOT")
-    compileOnly("dev.slne.surf:surf-queue-api:1.0.0-SNAPSHOT")
+    implementation("dev.slne.surf.event:surf-event-base-api-common:+")
+    implementation("dev.slne.surf.tab:surf-tab-api:+")
+    compileOnly("dev.slne.surf.parkour:surf-parkour-api:+")
+    compileOnly("dev.slne.surf.trophy:surf-trophy-api:+")
+    compileOnly("dev.slne.surf.profile:surf-profile-api:+")
+    compileOnly("dev.slne.surf.settings:surf-settings-api:+")
+    compileOnly("dev.slne.surf.queue:surf-queue-api:+")
 }
 
 version = findProperty("version") as String

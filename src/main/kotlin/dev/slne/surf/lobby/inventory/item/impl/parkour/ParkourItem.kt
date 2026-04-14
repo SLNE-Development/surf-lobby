@@ -1,13 +1,13 @@
 package dev.slne.surf.lobby.inventory.item.impl.parkour
 
 import com.github.shynixn.mccoroutine.folia.launch
+import dev.slne.surf.api.core.font.toSmallCaps
+import dev.slne.surf.api.core.messages.builder.SurfComponentBuilder
+import dev.slne.surf.api.paper.builder.buildLore
+import dev.slne.surf.api.paper.builder.displayName
 import dev.slne.surf.lobby.hook.parkour.ParkourHook
 import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.lobby.plugin
-import dev.slne.surf.surfapi.bukkit.api.builder.buildLore
-import dev.slne.surf.surfapi.bukkit.api.builder.displayName
-import dev.slne.surf.surfapi.core.api.font.toSmallCaps
-import dev.slne.surf.surfapi.core.api.messages.builder.SurfComponentBuilder
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Color
@@ -59,7 +59,9 @@ object ParkourItem : InventoryItem(1, ItemType.LEATHER_BOOTS.createItemStack().a
     override val permission = null
     override fun onInteract(player: Player) {
         plugin.launch {
-            ParkourHook.openParkourGui(player)
+            if (plugin.checkParkourHook()) {
+                ParkourHook.openParkourGui(player)
+            }
         }
     }
 }
