@@ -6,6 +6,7 @@ import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.shynixn.mccoroutine.folia.launch
 import com.sksamuel.aedile.core.expireAfterWrite
 import dev.slne.surf.api.core.font.toSmallCaps
+import dev.slne.surf.api.core.messages.adventure.buildText
 import dev.slne.surf.api.core.messages.adventure.clickOpensUrl
 import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.api.core.messages.adventure.sendText
@@ -15,8 +16,11 @@ import dev.slne.surf.api.paper.builder.displayName
 import dev.slne.surf.api.paper.inventory.framework.dsl.onItemClick
 import dev.slne.surf.api.paper.inventory.framework.dsl.openForPlayer
 import dev.slne.surf.api.paper.inventory.framework.dsl.slot
-import dev.slne.surf.api.paper.inventory.framework.view.*
+import dev.slne.surf.api.paper.inventory.framework.view.layoutTarget
+import dev.slne.surf.api.paper.inventory.framework.view.onFirstRender
+import dev.slne.surf.api.paper.inventory.framework.view.paginatedSurfView
 import dev.slne.surf.api.paper.inventory.framework.view.pagination.pagination
+import dev.slne.surf.api.paper.inventory.framework.view.settings
 import dev.slne.surf.api.paper.inventory.framework.view.settings.PaginationViewRows
 import dev.slne.surf.core.api.common.SurfCoreApi
 import dev.slne.surf.core.api.common.server.state.SurfServerState
@@ -26,92 +30,86 @@ import dev.slne.surf.lobby.event.eventServerBridge
 import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.plugin
 import dev.slne.surf.lobby.utils.Locations
+import me.devnatan.inventoryframework.View
+import me.devnatan.inventoryframework.ViewConfigBuilder
+import me.devnatan.inventoryframework.context.RenderContext
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.inventory.ItemType
 import java.util.*
 import kotlin.time.Duration.Companion.minutes
 
-private val connectingPlayers =
-    Caffeine.newBuilder().expireAfterWrite(5.minutes).build<UUID, Long>()
-
-fun navigatorView() = surfView("<shift:-48><glyph:server_selector>") {
-    settings {
-        rows(6)
-        cancelAllInteractions()
+object NavigatorInventory : View() {
+    override fun onInit(config: ViewConfigBuilder) {
+        config.size(6).cancelInteractions().layout(
+            "ASSSAEEEA",
+            "ASSSAEEEA",
+            "ASSSAEEEA",
+            "AAAAAAAAA",
+            "LLPPARRCC",
+            "LLPPARRCC"
+        ).title(buildText {
+            text("<shift:-48><glyph:server_selector>")
+        })
     }
 
-    onFirstRender {
-        slot(2, 2) {
-            withItem(survivalServerItem)
-            onClick { click ->
-                val player = click.player
-                player.teleportAsync(Locations.SURVIVAL_TELEPORT.getLocation()).thenRun {
-                    player.playSound(true) {
-                        type(Sound.ENTITY_ENDERMAN_TELEPORT)
-                        pitch(2.0f)
-                    }
-                }
-                player.closeInventory()
-            }
-        }
-
-        slot(6, 2) {
-            withItem(eventServerItem)
-            onClick { click ->
-                val player = click.player
-                player.teleportAsync(Locations.EVENT_TELEPORT.getLocation()).thenRun {
-                    player.playSound(true) {
-                        type(Sound.ENTITY_ENDERMAN_TELEPORT)
-                        pitch(2.0f)
-                    }
-                }
-                player.closeInventory()
-            }
-        }
-
-        slot(1, 5) {
-            withItem(lobbySelectorItem)
-            onClick { click ->
-                click.openForPlayer(lobbySelectorView())
-            }
-        }
-
-        slot(3, 5) {
-            withItem(spawnItem)
-            onClick { click ->
-                val player = click.player
-                player.closeInventory()
-                player.teleportAsync(lobbyConfig.spawnPoint.toLocation()).thenRun {
-                    player.sendText {
-                        appendInfoPrefix()
-                        info("Du wurdest zum Spawn teleportiert.")
-                    }
+    override fun onFirstRender(render: RenderContext) {
+        render.layoutSlot('S').withItem(survivalServerItem).onClick { click ->
+            val player = click.player
+            player.teleportAsync(Locations.SURVIVAL_TELEPORT.getLocation()).thenRun {
+                player.playSound(true) {
+                    type(Sound.ENTITY_ENDERMAN_TELEPORT)
+                    pitch(2.0f)
                 }
             }
+            player.closeInventory()
         }
 
-        slot(6, 5) {
-            withItem(rulesItem)
-            onClick { click ->
-                val player = click.player
-                player.closeInventory()
+        render.layoutSlot('E').withItem(eventServerItem).onClick { click ->
+            val player = click.player
+            player.teleportAsync(Locations.EVENT_TELEPORT.getLocation()).thenRun {
+                player.playSound(true) {
+                    type(Sound.ENTITY_ENDERMAN_TELEPORT)
+                    pitch(2.0f)
+                }
+            }
+            player.closeInventory()
+        }
+
+        render.layoutSlot('L').withItem(lobbySelectorItem).onClick { click ->
+            click.openForPlayer(lobbySelectorView())
+        }
+
+        render.layoutSlot('P').withItem(spawnItem).onClick { click ->
+            val player = click.player
+            player.closeInventory()
+            player.teleportAsync(lobbyConfig.spawnPoint.toLocation()).thenRun {
                 player.sendText {
                     appendInfoPrefix()
-                    info("Das Regelwerk findest du hier: ")
-                    append {
-                        variableValue("server.castcrafter.de/rules")
-                        clickOpensUrl("https://server.castcrafter.de/rules")
-                    }
+                    info("Du wurdest zum Spawn teleportiert.")
                 }
             }
         }
 
-        slot(8, 5) {
-            withItem(cosmeticsItem)
+        render.layoutSlot('R').withItem(rulesItem).onClick { click ->
+            val player = click.player
+            player.closeInventory()
+            player.sendText {
+                appendInfoPrefix()
+                info("Das Regelwerk findest du hier: ")
+                append {
+                    variableValue("server.castcrafter.de/rules")
+                    clickOpensUrl("https://server.castcrafter.de/rules")
+                }
+            }
         }
+
+        render.layoutSlot('C').withItem(cosmeticsItem)
     }
 }
+
+private val connectingPlayers =
+    Caffeine.newBuilder().expireAfterWrite(5.minutes).build<UUID, Long>()
 
 fun lobbySelectorView() = paginatedSurfView("Lobby Auswahl") {
     pagination {

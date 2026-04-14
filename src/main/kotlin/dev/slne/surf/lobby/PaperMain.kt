@@ -10,8 +10,8 @@ import dev.slne.surf.lobby.config.LobbyConfigHolder
 import dev.slne.surf.lobby.event.eventServerBridge
 import dev.slne.surf.lobby.hook.nexo.NexoHook
 import dev.slne.surf.lobby.hook.npc.SurfNpcHook
+import dev.slne.surf.lobby.inventory.impl.NavigatorInventory
 import dev.slne.surf.lobby.inventory.impl.lobbySelectorView
-import dev.slne.surf.lobby.inventory.impl.navigatorView
 import dev.slne.surf.lobby.listener.*
 import dev.slne.surf.lobby.manager.PushbackManager
 import dev.slne.surf.redis.RedisApi
@@ -24,7 +24,7 @@ class PaperMain : SuspendingJavaPlugin() {
     lateinit var redisApi: RedisApi
 
     override fun onLoad() {
-        navigatorView().register()
+        NavigatorInventory.register()
         lobbySelectorView().register()
     }
 

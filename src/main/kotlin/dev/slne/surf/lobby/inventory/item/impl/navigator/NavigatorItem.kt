@@ -5,7 +5,7 @@ import dev.slne.surf.api.core.messages.builder.SurfComponentBuilder
 import dev.slne.surf.api.paper.builder.buildLore
 import dev.slne.surf.api.paper.builder.displayName
 import dev.slne.surf.api.paper.inventory.framework.open
-import dev.slne.surf.lobby.inventory.impl.navigatorView
+import dev.slne.surf.lobby.inventory.impl.NavigatorInventory
 import dev.slne.surf.lobby.inventory.item.InventoryItem
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
@@ -42,7 +42,7 @@ object NavigatorItem : InventoryItem(4, ItemType.COMPASS.createItemStack().apply
 }) {
     override val permission = null
     override fun onInteract(player: Player) {
-        navigatorView().open(player)
+        NavigatorInventory.open(player)
     }
 }
 
