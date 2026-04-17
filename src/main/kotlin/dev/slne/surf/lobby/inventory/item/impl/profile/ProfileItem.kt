@@ -7,16 +7,17 @@ import dev.slne.surf.api.paper.builder.displayName
 import dev.slne.surf.lobby.hook.profile.ProfileHook
 import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.lobby.plugin
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.`object`.ObjectContents
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ItemType
 import org.bukkit.inventory.meta.SkullMeta
 
-object ProfileItem : InventoryItem(8, ItemType.PLAYER_HEAD.createItemStack().apply {
-    applyDisplayAndLore()
-}) {
+object ProfileItem : InventoryItem(8, ItemType.PLAYER_HEAD.createItemStack()) {
     override val permission = null
     override fun onInteract(player: Player) {
         if (plugin.checkProfileHook()) {
@@ -29,12 +30,14 @@ object ProfileItem : InventoryItem(8, ItemType.PLAYER_HEAD.createItemStack().app
             editMeta(SkullMeta::class.java) {
                 it.owningPlayer = player
             }
-            applyDisplayAndLore()
+            applyDisplayAndLore(player)
         }
 }
 
-private fun ItemStack.applyDisplayAndLore() {
+private fun ItemStack.applyDisplayAndLore(player: Player) {
     displayName {
+        append(Component.`object`(ObjectContents.playerHead(player.uniqueId))).color(NamedTextColor.WHITE)
+        appendSpace()
         localColored("Dein Profil")
     }
 

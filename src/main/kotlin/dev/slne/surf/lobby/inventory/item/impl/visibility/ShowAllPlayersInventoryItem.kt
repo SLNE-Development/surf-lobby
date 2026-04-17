@@ -1,10 +1,12 @@
 package dev.slne.surf.lobby.inventory.item.impl.visibility
 
 import dev.slne.surf.api.core.font.toSmallCaps
+import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.api.core.messages.adventure.sendText
 import dev.slne.surf.api.core.messages.builder.SurfComponentBuilder
 import dev.slne.surf.api.paper.builder.buildLore
 import dev.slne.surf.api.paper.builder.displayName
+import dev.slne.surf.api.paper.util.BukkitSound
 import dev.slne.surf.lobby.inventory.item.InventoryItem
 import dev.slne.surf.lobby.manager.PlayerVisibilityManager
 import dev.slne.surf.lobby.utils.PermissionRegistry
@@ -13,7 +15,7 @@ import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
-object ShowAllPlayersInventoryItem : InventoryItem(0, ItemType.LIME_DYE.createItemStack().apply {
+object ShowAllPlayersInventoryItem : InventoryItem(0, ItemType.LIME_CANDLE.createItemStack().apply {
     displayName {
         localColored("Spieler-Sichtbarkeit")
     }
@@ -74,11 +76,14 @@ object ShowAllPlayersInventoryItem : InventoryItem(0, ItemType.LIME_DYE.createIt
             PlayerVisibilityManager.VisibilityState.SHOW_TEAM
         )
         player.inventory.setItem(slot, ShowTeamPlayersInventoryItem.item)
+        player.playSound(true) {
+            type(BukkitSound.UI_BUTTON_CLICK)
+        }
 
         player.sendText {
             appendInfoPrefix()
             info("Du siehst jetzt nur noch ")
-            success("Teammitglieder")
+            yellow("Teammitglieder")
             info(".")
         }
     }

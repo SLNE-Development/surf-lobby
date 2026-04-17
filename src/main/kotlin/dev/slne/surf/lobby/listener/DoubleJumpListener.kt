@@ -12,10 +12,11 @@ import java.util.*
 
 object DoubleJumpListener : Listener {
     private val lastJump = mutableObject2ObjectMapOf<UUID, Long>()
+    private val lastGround = mutableObject2ObjectMapOf<UUID, Long>()
     private val lastJumpState = mutableObject2ObjectMapOf<UUID, Boolean>()
 
-    private const val DOUBLE_JUMP_WINDOW = 200L
-    private const val DOUBLE_JUMP_COOLDOWN = 500L
+    private const val DOUBLE_JUMP_WINDOW = 350L
+    private const val GROUND_GRACE = 150L
 
     @EventHandler
     fun onInput(event: PlayerInputEvent) {
@@ -39,22 +40,29 @@ object DoubleJumpListener : Listener {
         }
 
         val now = System.currentTimeMillis()
-        val last = lastJump[uuid]
 
-        @Suppress("DEPRECATION")
-        if (!player.isOnGround) {
-            return
+        if (player.isOnGround) {
+            lastGround[uuid] = now
         }
 
-        if (last != null && now - last <= DOUBLE_JUMP_WINDOW) {
+        val lastGroundTime = lastGround[uuid] ?: 0L
+        val lastJumpTime = lastJump[uuid]
+
+        val recentlyOnGround = now - lastGroundTime <= GROUND_GRACE
+
+        if (lastJumpTime != null &&
+            now - lastJumpTime <= DOUBLE_JUMP_WINDOW &&
+            recentlyOnGround
+        ) {
             player.velocity = player.eyeLocation.direction.multiply(2).setY(1.0)
             player.world.spawnParticle(Particle.EXPLOSION, player.location, 10)
+
             lastJump.remove(uuid)
             lastJumpState[uuid] = false
             return
         }
 
-        if (last == null || now - last > DOUBLE_JUMP_COOLDOWN) {
+        if (recentlyOnGround) {
             lastJump[uuid] = now
         }
     }

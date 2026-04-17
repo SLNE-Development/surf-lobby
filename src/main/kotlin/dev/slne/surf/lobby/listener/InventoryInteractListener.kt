@@ -64,7 +64,7 @@ object InventoryInteractListener : Listener {
 
     @EventHandler
     fun onHoldItem(event: PlayerItemHeldEvent) {
-        if (plugin.checkSettingsHook()) {
+        if (!plugin.checkSettingsHook()) {
             return
         }
 
