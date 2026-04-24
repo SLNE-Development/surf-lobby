@@ -248,7 +248,7 @@ object SurfNpcHook {
                         }
                     }
                 }
-            } ?: error("Event server with name ${lobbyConfig.eventServerName} not found")
+            }
     }
 
     private fun queueToSurvivalServer(player: Player) {
@@ -307,7 +307,7 @@ object SurfNpcHook {
                         }
                     }
                 }
-            } ?: error("Survival server with name ${lobbyConfig.survivalServerName} not found")
+            }
     }
 
     private lateinit var syncTask: ScheduledTask
