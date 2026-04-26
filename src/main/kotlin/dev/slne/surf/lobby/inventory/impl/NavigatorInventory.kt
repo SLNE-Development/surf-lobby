@@ -214,29 +214,33 @@ fun lobbySelectorView() = paginatedSurfView("Lobby Auswahl") {
     }
 }
 
-private val lobbySelectorItem = plugin.getInvisibleItem().apply {
-    displayName {
-        primary("Lobby Auswahl")
+private val lobbySelectorItem
+    get() = plugin.getInvisibleItem().apply {
+        displayName {
+            primary("Lobby Auswahl")
+        }
     }
-}
 
-private val spawnItem = plugin.getInvisibleItem().apply {
-    displayName {
-        primary("Spawn")
+private val spawnItem
+    get() = plugin.getInvisibleItem().apply {
+        displayName {
+            primary("Spawn")
+        }
     }
-}
 
-private val rulesItem = plugin.getInvisibleItem().apply {
-    displayName {
-        primary("Regelwerk")
+private val rulesItem
+    get() = plugin.getInvisibleItem().apply {
+        displayName {
+            primary("Regelwerk")
+        }
     }
-}
 
-private val cosmeticsItem = plugin.getInvisibleItem().apply {
-    displayName {
-        primary("???")
+private val cosmeticsItem
+    get() = plugin.getInvisibleItem().apply {
+        displayName {
+            primary("???")
+        }
     }
-}
 
 private val survivalServerItem
     get() = plugin.getInvisibleItem().apply {
