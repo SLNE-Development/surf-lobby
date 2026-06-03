@@ -78,7 +78,7 @@ object HologramHook {
         appendNewline(2)
 
         info("Dort kannst du über ")
-        white("einen Klick auf Nepomuk")
+        white("einen Klick auf den NPC")
         appendNewline()
         info(" den Survival Server betreten.")
         appendNewline(2)

@@ -55,7 +55,7 @@ object SurfNpcHook {
     private fun createSurvivalNpc() {
         survivalNpc = npc {
             displayName = {
-                note("Nepomuk".toSmallCaps()).decorate(TextDecoration.BOLD)
+                note("CASTSMP".toSmallCaps()).decorate(TextDecoration.BOLD)
             }
             type = EntityType.MANNEQUIN
             uniqueName = "survival"
@@ -265,7 +265,7 @@ object SurfNpcHook {
         if (!lobbyConfig.survivalOpen && !player.hasPermission(PermissionRegistry.SURVIVAL_BYPASS)) {
             player.sendText {
                 spacer("[")
-                note("Nepomuk")
+                note("CASTSMP")
                 spacer("]")
                 appendSpace()
                 error("Der Survival Server startet bald, sei bereit!")
