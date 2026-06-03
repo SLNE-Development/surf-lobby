@@ -1,5 +1,6 @@
 package dev.slne.surf.lobby.config
 
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.spongepowered.configurate.objectmapping.ConfigSerializable
 
@@ -11,6 +12,8 @@ data class LobbyConfig(
     val survivalServerName: String = "survival",
     val lobbyCategory: String = "lobby",
     val spawnPoint: LocationConfig = LocationConfig.default(),
+    val leftHologram: LocationConfig = LocationConfig.default(),
+    val rightHologram: LocationConfig = LocationConfig.default()
 ) {
     @ConfigSerializable
     data class LocationConfig(
@@ -30,7 +33,7 @@ data class LobbyConfig(
 
         companion object {
             fun default() = LocationConfig(
-                world = "world",
+                world = Bukkit.getWorlds().first().name,
                 x = 0.5,
                 y = 100.0,
                 z = 0.5,

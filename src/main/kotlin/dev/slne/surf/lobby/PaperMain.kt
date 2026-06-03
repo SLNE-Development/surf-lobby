@@ -8,6 +8,7 @@ import dev.slne.surf.lobby.command.lobbyCommand
 import dev.slne.surf.lobby.command.spawnCommand
 import dev.slne.surf.lobby.config.LobbyConfigHolder
 import dev.slne.surf.lobby.event.eventServerBridge
+import dev.slne.surf.lobby.hook.hologram.HologramHook
 import dev.slne.surf.lobby.hook.nexo.NexoHook
 import dev.slne.surf.lobby.hook.npc.SurfNpcHook
 import dev.slne.surf.lobby.inventory.impl.NavigatorInventory
@@ -32,6 +33,10 @@ class PaperMain : SuspendingJavaPlugin() {
         if (checkNpcHook()) {
             SurfNpcHook.initialize()
             SurfNpcHook.startSyncTask()
+        }
+
+        if (checkHologramHook()) {
+            HologramHook.init()
         }
 
         DoubleJumpListener.register()
@@ -72,6 +77,7 @@ class PaperMain : SuspendingJavaPlugin() {
     fun checkSettingsHook() = pluginManager.isPluginEnabled("surf-settings-paper")
     fun checkNpcHook() = pluginManager.isPluginEnabled("surf-npc-paper")
     fun checkNexoHook() = pluginManager.isPluginEnabled("Nexo")
+    fun checkHologramHook() = pluginManager.isPluginEnabled("FancyHolograms")
 }
 
 val lobbyConfigHolder = LobbyConfigHolder()

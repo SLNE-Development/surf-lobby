@@ -7,6 +7,7 @@ plugins {
 
 repositories {
     maven("https://repo.nexomc.com/releases")
+    maven("https://repo.fancyinnovations.com/releases")
 }
 
 dependencies {
@@ -19,6 +20,7 @@ dependencies {
     compileOnly("dev.slne.surf.profile:surf-profile-api:+")
     compileOnly("dev.slne.surf.settings:surf-settings-api:+")
     compileOnly("dev.slne.surf.queue:surf-queue-api:+")
+    compileOnly("de.oliver:FancyHolograms:2.9.1")
 }
 
 version = findProperty("version") as String
@@ -36,12 +38,12 @@ surfPaperPluginApi {
 
     serverDependencies {
         registerSoft("surf-npc-paper")
-        registerSoft("surf-hologram-paper")
         registerSoft("surf-parkour-paper")
         registerSoft("Nexo")
         registerSoft("surf-trophy-paper")
         registerSoft("surf-profile-paper")
         registerSoft("surf-settings-paper")
         registerRequired("surf-queue-paper")
+        registerSoft("FancyHolograms")
     }
 }
