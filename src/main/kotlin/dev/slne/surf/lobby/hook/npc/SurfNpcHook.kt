@@ -39,6 +39,8 @@ object SurfNpcHook {
 
     var eventServerDisplayName: String = "Event"
 
+    private const val LARGER_NPC_SCALE = 1.5
+
     fun initialize() {
         createSurvivalNpc()
         createEventNpc()
@@ -58,6 +60,7 @@ object SurfNpcHook {
             type = EntityType.MANNEQUIN
             uniqueName = "survival"
             skin = SurfNpcSkins.SURVIVAL.getSkin()
+            scale(LARGER_NPC_SCALE)
 
             location = Locations.SURVIVAL_NPC.getLocation()
             rotationType = NpcRotationType.FIXED
@@ -122,6 +125,7 @@ object SurfNpcHook {
             type = EntityType.MANNEQUIN
             uniqueName = "spawn_survival"
             skin = SurfNpcSkins.SURVIVAL.getSkin()
+            scale(LARGER_NPC_SCALE)
 
             location = Locations.SPAWN_SURVIVAL.getLocation()
             withKickback()
@@ -148,6 +152,8 @@ object SurfNpcHook {
             uniqueName = "spawn_event"
             skin = SurfNpcSkins.EVENT.getSkin()
 
+            scale(LARGER_NPC_SCALE)
+
             location = Locations.SPAWN_EVENT.getLocation()
             withKickback()
             withEventHandler<NpcInteractEvent> {
@@ -173,6 +179,8 @@ object SurfNpcHook {
             uniqueName = "shop"
             skin = SurfNpcSkins.UNKNOWN.getSkin()
 
+            scale(LARGER_NPC_SCALE)
+
             location = Locations.SPAWN_SHOP.getLocation()
             withKickback()
             rotationType = NpcRotationType.FIXED
@@ -187,6 +195,8 @@ object SurfNpcHook {
             type = EntityType.MANNEQUIN
             uniqueName = "spawn_rules"
             skin = SurfNpcSkins.RULES.getSkin()
+
+            scale(LARGER_NPC_SCALE)
 
             location = Locations.SPAWN_RULES.getLocation()
             withKickback()

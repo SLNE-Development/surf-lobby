@@ -35,10 +35,12 @@ object HologramHook {
 
         leftHologram.setPersistent(false)
         rightHologram.setPersistent(false)
-        leftHologram.setBillboard(Display.Billboard.VERTICAL)
-        rightHologram.setBillboard(Display.Billboard.VERTICAL)
+        leftHologram.setBillboard(Display.Billboard.FIXED)
+        rightHologram.setBillboard(Display.Billboard.FIXED)
         leftHologram.removeLine(0)
         rightHologram.removeLine(0)
+        leftHologram.visibilityDistance = 50
+        rightHologram.visibilityDistance = 50
         leftHologram.setBackground(backgroundColor)
         rightHologram.setBackground(backgroundColor)
 
@@ -56,6 +58,7 @@ object HologramHook {
 
 
     private val leftText = buildText {
+        appendNewline()
         variableValue("CastSMP".toSmallCaps(), TextDecoration.BOLD)
         appendNewline(2)
 
@@ -80,22 +83,22 @@ object HologramHook {
         info(" den Survival Server betreten.")
         appendNewline(2)
 
-        note("Denke an das Regelwerk!")
-        appendNewline()
         note("server.castcrafter.de/rules")
+        appendNewline()
     }
 
     private val rightText = buildText {
+        appendNewline()
         variableValue("100 Spieler Events".toSmallCaps(), TextDecoration.BOLD)
         appendNewline(2)
 
         info("Du möchtest an Events teilnehmen?")
-        appendNewline()
+        appendNewline(2)
 
         error("Sobald ein Event stattfindet,")
         appendNewline()
         error("wird es im Discord angekündigt.")
-        appendNewline()
+        appendNewline(2)
 
         info("Nutze den ")
         white("Kompass in deinem Inventar")
@@ -110,13 +113,12 @@ object HologramHook {
         appendNewline(2)
 
         info("Dort kannst du über ")
-        white("einen Klick auf den Npc")
+        white("einen Klick auf den NPC")
         appendNewline()
-        info(" den Events betreten.")
+        info(" dem Event beitreten.")
         appendNewline(2)
 
-        note("Denke an das Regelwerk!")
-        appendNewline()
         note("server.castcrafter.de/rules")
+        appendNewline()
     }
 }
