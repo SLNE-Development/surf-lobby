@@ -47,6 +47,8 @@ object DoubleJumpListener : Listener {
      */
     private val needsGroundReset = ConcurrentHashMap.newKeySet<UUID>()
 
+    private val holdingJump = ConcurrentHashMap.newKeySet<UUID>()
+
     /**
      * Handles jump input and triggers the double jump when the player presses
      * jump twice within the configured time window.
@@ -61,7 +63,14 @@ object DoubleJumpListener : Listener {
         val player = event.player
         val uuid = player.uniqueId
 
-        if (!event.input.isJump) return
+        val isJumping = event.input.isJump
+        if (isJumping) {
+            if (!holdingJump.add(uuid)) return
+        } else {
+            holdingJump.remove(uuid)
+            return
+        }
+
         if (player.gameMode == GameMode.CREATIVE || player.gameMode == GameMode.SPECTATOR) return
         if (needsGroundReset.contains(uuid)) return
         if (plugin.checkParkourHook() && ParkourHook.isInParkour(player)) return
@@ -123,6 +132,6 @@ object DoubleJumpListener : Listener {
     private fun Player.isTouchingGround(): Boolean {
         val blockLocation = location.toBlockLocation()
         blockLocation.y -= 1
-        return !blockLocation.block.isEmpty
+        return blockLocation.block.isSolid
     }
 }
