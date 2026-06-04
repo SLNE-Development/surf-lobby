@@ -5,6 +5,7 @@ import com.sksamuel.aedile.core.expireAfterWrite
 import dev.slne.surf.lobby.hook.parkour.ParkourHook
 import dev.slne.surf.lobby.listener.DoubleJumpListener.doubleJumpWindow
 import dev.slne.surf.lobby.plugin
+import org.bukkit.GameMode
 import org.bukkit.Particle
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -61,6 +62,7 @@ object DoubleJumpListener : Listener {
         val uuid = player.uniqueId
 
         if (!event.input.isJump) return
+        if (player.gameMode == GameMode.CREATIVE || player.gameMode == GameMode.SPECTATOR) return
         if (needsGroundReset.contains(uuid)) return
         if (plugin.checkParkourHook() && ParkourHook.isInParkour(player)) return
 
