@@ -54,6 +54,8 @@ object SurfNpcHook {
         survivalNpc = npc {
             displayName = {
                 note("Nepomuk".toSmallCaps()).decorate(TextDecoration.BOLD)
+                appendNewline()
+                spacer("26.1.2+")
             }
             type = EntityType.MANNEQUIN
             uniqueName = "survival"
