@@ -75,7 +75,7 @@ object SurfNpcHook {
             displayName = {
                 primary(eventServerDisplayName.toSmallCaps(), TextDecoration.BOLD)
                 appendNewline()
-                spacer("(Event - 1.21.11)")
+                spacer("26.2")
             }
             type = EntityType.MANNEQUIN
             uniqueName = "event"
