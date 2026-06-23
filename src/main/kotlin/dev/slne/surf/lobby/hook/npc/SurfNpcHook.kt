@@ -53,7 +53,7 @@ object SurfNpcHook {
     private fun createSurvivalNpc() {
         survivalNpc = npc {
             displayName = {
-                note("Nepomuk".toSmallCaps()).decorate(TextDecoration.BOLD)
+                note("CASTSMP".toSmallCaps()).decorate(TextDecoration.BOLD)
                 appendNewline()
                 spacer("26.1.2+")
             }
@@ -119,7 +119,7 @@ object SurfNpcHook {
     private fun createSpawnSurvivalNpc() {
         spawnSurvivalNpc = npc {
             displayName = {
-                note("Survival".toSmallCaps(), TextDecoration.BOLD)
+                note("CASTSMP".toSmallCaps(), TextDecoration.BOLD)
             }
             type = EntityType.MANNEQUIN
             uniqueName = "spawn_survival"
