@@ -123,7 +123,7 @@ object NavigatorInventory : View() {
 private val connectingPlayers =
     Caffeine.newBuilder().expireAfterWrite(5.minutes).build<UUID, Long>()
 
-fun lobbySelectorView() = paginatedSurfView("Lobby Auswahl") {
+fun lobbySelectorView() = paginatedSurfView("Lobbies") {
     pagination {
         lazySource {
             SurfCoreApi.getServerByCategory(lobbyConfig.lobbyCategory)
@@ -257,18 +257,34 @@ private val cosmeticsItem
 private val survivalServerItem
     get() = plugin.getInvisibleItem().apply {
         displayName {
-            primary("Survival Server")
+            primary("CASTSMP ")
+            spacer("(Survival)")
         }
 
         buildLore {
             emptyLine()
             line {
+                variableValue("Beschreibung".toSmallCaps())
+            }
+            line {
+                white("Der ")
+                info("CastSMP")
+                white(" ist ein ")
+            }
+
+            line {
+                info("friedlicher")
+                white(" Survival Server")
+                info(" ")
+            }
+        
+            line {
                 note("Status:".toSmallCaps())
             }
             line {
                 when (SurfCoreApi.getServerByName(lobbyConfig.survivalServerName)?.state) {
-                    SurfServerState.RUNNING -> success("Der Survival Server ist erreichbar")
-                    else -> error("Der Survival Server ist derzeit nicht erreichbar")
+                    SurfServerState.RUNNING -> success("Der CASTSMP ist erreichbar")
+                    else -> error("Der CASTSMP ist derzeit nicht erreichbar")
                 }
             }
 
