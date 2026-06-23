@@ -69,8 +69,13 @@ object NavigatorInventory : View() {
             val player = click.player
 
             if(lobbyConfig.externalEventEnabled && lobbyConfig.externalEventReplacesDefault) {
-
-
+                player.teleportAsync(lobbyConfig.externalEventTeleportLocation.toLocation()).thenRun {
+                   player.playSound(true) {
+                       type(Sound.ENTITY_ENDERMAN_TELEPORT)
+                       pitch(2.0f)
+                   }
+                }
+                player.closeInventory()
                 return@onClick
             }
             
