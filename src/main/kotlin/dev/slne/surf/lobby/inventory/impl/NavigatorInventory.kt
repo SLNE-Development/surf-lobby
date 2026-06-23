@@ -110,8 +110,8 @@ object NavigatorInventory : View() {
                 appendInfoPrefix()
                 info("Das Regelwerk findest du hier: ")
                 append {
-                    variableValue("server.castcrafter.de/rules")
-                    clickOpensUrl("https://server.castcrafter.de/rules")
+                    variableValue("docs.castcrafter.de/rules")
+                    clickOpensUrl("https://docs.castcrafter.de/rules")
                 }
             }
         }
