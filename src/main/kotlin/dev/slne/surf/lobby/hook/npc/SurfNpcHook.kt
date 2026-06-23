@@ -66,7 +66,7 @@ object SurfNpcHook {
             withEventHandler<NpcInteractEvent> {
                 queueToSurvivalServer(it.player)
             }
-            scale(2.0)
+            scale(1.5)
         }
     }
 
@@ -124,7 +124,7 @@ object SurfNpcHook {
             }
 
             rotationType = NpcRotationType.FIXED
-            scale(2.0)
+            scale(1.5)
         }
     }
 
@@ -145,12 +145,12 @@ object SurfNpcHook {
                 player.teleportAsync(Locations.SURVIVAL_TELEPORT.getLocation()).thenRun {
                     player.playSound(true) {
                         type(Sound.ENTITY_ENDERMAN_TELEPORT)
-                        pitch(2.0f)
+                        pitch(1.5f)
                     }
                 }
             }
             rotationType = NpcRotationType.FIXED
-            scale(2.0)
+            scale(1.5)
         }
     }
 
@@ -183,11 +183,11 @@ object SurfNpcHook {
                 player.teleportAsync(Locations.EVENT_TELEPORT.getLocation()).thenRun {
                     player.playSound(true) {
                         type(Sound.ENTITY_ENDERMAN_TELEPORT)
-                        pitch(2.0f)
+                        pitch(1.5f)
                     }
                 }
             }
-            scale(2.0)
+            scale(1.5)
             rotationType = NpcRotationType.FIXED
         }
     }
@@ -204,7 +204,7 @@ object SurfNpcHook {
             location = Locations.SPAWN_SHOP.getLocation()
             withKickback()
             rotationType = NpcRotationType.FIXED
-            scale(2.0)
+            scale(1.5)
         }
     }
 
@@ -228,7 +228,7 @@ object SurfNpcHook {
                 }
             }
             rotationType = NpcRotationType.FIXED
-            scale(2.0)
+            scale(1.5)
         }
     }
 
