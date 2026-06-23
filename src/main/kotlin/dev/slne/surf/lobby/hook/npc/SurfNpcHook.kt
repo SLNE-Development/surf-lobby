@@ -2,7 +2,6 @@ package dev.slne.surf.lobby.hook.npc
 
 import com.github.shynixn.mccoroutine.folia.launch
 import dev.slne.surf.api.core.font.toSmallCaps
-import dev.slne.surf.api.core.messages.adventure.clickOpensUrl
 import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.api.core.messages.adventure.sendText
 import dev.slne.surf.core.api.common.SurfCoreApi
@@ -53,7 +52,7 @@ object SurfNpcHook {
     private fun createSurvivalNpc() {
         survivalNpc = npc {
             displayName = {
-                note("CASTSMP".toSmallCaps()).decorate(TextDecoration.BOLD)
+                note("CastSMP".toSmallCaps()).decorate(TextDecoration.BOLD)
                 appendNewline()
                 spacer("26.1.2+")
             }
@@ -119,7 +118,7 @@ object SurfNpcHook {
     private fun createSpawnSurvivalNpc() {
         spawnSurvivalNpc = npc {
             displayName = {
-                note("CASTSMP".toSmallCaps(), TextDecoration.BOLD)
+                note("CastSMP".toSmallCaps(), TextDecoration.BOLD)
             }
             type = EntityType.MANNEQUIN
             uniqueName = "spawn_survival"
@@ -155,14 +154,15 @@ object SurfNpcHook {
             withEventHandler<NpcInteractEvent> {
                 val player = it.player
 
-                if(lobbyConfig.externalEventEnabled && lobbyConfig.externalEventReplacesDefault) {
-                   player.teleportAsync(lobbyConfig.externalEventTeleportLocation.toLocation()).thenRun {
-                      player.playSound(true) {
-                         type(Sound.ENTITY_ENDERMAN_TELEPORT) 
-                         pitch(2.0f)
-                      }
-                   }
-                   return@withEventHandler
+                if (lobbyConfig.externalEventEnabled && lobbyConfig.externalEventReplacesDefault) {
+                    player.teleportAsync(lobbyConfig.externalEventTeleportLocation.toLocation())
+                        .thenRun {
+                            player.playSound(true) {
+                                type(Sound.ENTITY_ENDERMAN_TELEPORT)
+                                pitch(2.0f)
+                            }
+                        }
+                    return@withEventHandler
                 }
 
                 player.teleportAsync(Locations.EVENT_TELEPORT.getLocation()).thenRun {

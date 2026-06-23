@@ -7,7 +7,6 @@ import com.github.shynixn.mccoroutine.folia.launch
 import com.sksamuel.aedile.core.expireAfterWrite
 import dev.slne.surf.api.core.font.toSmallCaps
 import dev.slne.surf.api.core.messages.adventure.buildText
-import dev.slne.surf.api.core.messages.adventure.clickOpensUrl
 import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.api.core.messages.adventure.sendText
 import dev.slne.surf.api.paper.builder.buildItem
@@ -68,17 +67,18 @@ object NavigatorInventory : View() {
         render.layoutSlot('E').withItem(eventServerItem).onClick { click ->
             val player = click.player
 
-            if(lobbyConfig.externalEventEnabled && lobbyConfig.externalEventReplacesDefault) {
-                player.teleportAsync(lobbyConfig.externalEventTeleportLocation.toLocation()).thenRun {
-                   player.playSound(true) {
-                       type(Sound.ENTITY_ENDERMAN_TELEPORT)
-                       pitch(2.0f)
-                   }
-                }
+            if (lobbyConfig.externalEventEnabled && lobbyConfig.externalEventReplacesDefault) {
+                player.teleportAsync(lobbyConfig.externalEventTeleportLocation.toLocation())
+                    .thenRun {
+                        player.playSound(true) {
+                            type(Sound.ENTITY_ENDERMAN_TELEPORT)
+                            pitch(2.0f)
+                        }
+                    }
                 player.closeInventory()
                 return@onClick
             }
-            
+
             player.teleportAsync(Locations.EVENT_TELEPORT.getLocation()).thenRun {
                 player.playSound(true) {
                     type(Sound.ENTITY_ENDERMAN_TELEPORT)
@@ -257,41 +257,38 @@ private val cosmeticsItem
 private val survivalServerItem
     get() = plugin.getInvisibleItem().apply {
         displayName {
-            primary("CASTSMP ")
+            primary("CastSMP ")
             spacer("(Survival)")
         }
 
         buildLore {
             emptyLine()
             line {
-                variableValue("Beschreibung".toSmallCaps())
+                note("Beschreibung:".toSmallCaps())
             }
             line {
-                white("Der ")
-                info("CastSMP")
-                white(" ist ein")
+                info("Der ")
+                variableValue("CastSMP")
+                info(" ist ein")
+                variableValue("friedlicher")
+                info(" Survival Server.")
             }
 
             line {
-                info("friedlicher")
-                white(" Survival Server.")
+                info("Hier kannst du entspannt")
+                variableValue("deine Träume")
+                info(" verwirklichen.")
             }
 
-            line {
-                white("Hier kannst du entspannt")
-            }
-            line {
-                info("deine Träume")
-                white(" verwirklichen.")
-            }
-        
+            emptyLine()
+
             line {
                 note("Status:".toSmallCaps())
             }
             line {
                 when (SurfCoreApi.getServerByName(lobbyConfig.survivalServerName)?.state) {
-                    SurfServerState.RUNNING -> success("Der CASTSMP ist erreichbar")
-                    else -> error("Der CASTSMP ist derzeit nicht erreichbar")
+                    SurfServerState.RUNNING -> success("Der CastSMP ist erreichbar")
+                    else -> error("Der CastSMP ist derzeit nicht erreichbar")
                 }
             }
 

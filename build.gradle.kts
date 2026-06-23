@@ -6,12 +6,12 @@ plugins {
 }
 
 repositories {
-    maven("https://repo.nexomc.com/releases")
+    maven("https://repo.nexomc.com/snapshots")
 }
 
 dependencies {
     compileOnly("dev.slne.surf.npc:surf-npc-api:+")
-    compileOnly("com.nexomc:nexo:1.24.0")
+    compileOnly("com.nexomc:nexo:1.25.0-dev.11")
     implementation("dev.slne.surf.event:surf-event-base-api-common:+")
     implementation("dev.slne.surf.tab:surf-tab-api:+")
     compileOnly("dev.slne.surf.parkour:surf-parkour-api:+")
