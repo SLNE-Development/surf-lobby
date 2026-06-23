@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     compileOnly("dev.slne.surf.npc:surf-npc-api:+")
-    compileOnly("com.nexomc:nexo:1.16.1")
+    compileOnly("com.nexomc:nexo:1.24.0")
     implementation("dev.slne.surf.event:surf-event-base-api-common:+")
     implementation("dev.slne.surf.tab:surf-tab-api:+")
     compileOnly("dev.slne.surf.parkour:surf-parkour-api:+")
