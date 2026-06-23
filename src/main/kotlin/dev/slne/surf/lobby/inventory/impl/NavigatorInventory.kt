@@ -269,13 +269,20 @@ private val survivalServerItem
             line {
                 white("Der ")
                 info("CastSMP")
-                white(" ist ein ")
+                white(" ist ein")
             }
 
             line {
                 info("friedlicher")
-                white(" Survival Server")
-                info(" ")
+                white(" Survival Server.")
+            }
+
+            line {
+                white("Hier kannst du entspannt")
+            }
+            line {
+                info("deine Träume")
+                white(" verwirklichen.")
             }
         
             line {
