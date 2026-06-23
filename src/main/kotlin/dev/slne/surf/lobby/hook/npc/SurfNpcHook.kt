@@ -155,6 +155,16 @@ object SurfNpcHook {
             withEventHandler<NpcInteractEvent> {
                 val player = it.player
 
+                if(lobbyConfig.externalEventEnabled && lobbyConfig.externalEventReplacesDefault) {
+                   player.teleportAsync(lobbyConfig.externalEventTeleportLocation.toLocation()).thenRun {
+                      player.playSound(true) {
+                         type(Sound.ENTITY_ENDERMAN_TELEPORT) 
+                         pitch(2.0f)
+                      }
+                   }
+                   return@withEventHandler
+                }
+
                 player.teleportAsync(Locations.EVENT_TELEPORT.getLocation()).thenRun {
                     player.playSound(true) {
                         type(Sound.ENTITY_ENDERMAN_TELEPORT)
