@@ -36,7 +36,6 @@ surfPaperPluginApi {
 
     serverDependencies {
         registerSoft("surf-npc-paper")
-        registerSoft("surf-hologram-paper")
         registerSoft("surf-parkour-paper")
         registerSoft("Nexo")
         registerSoft("surf-trophy-paper")
