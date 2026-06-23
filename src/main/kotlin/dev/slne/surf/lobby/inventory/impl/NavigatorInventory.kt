@@ -72,7 +72,7 @@ object NavigatorInventory : View() {
                     .thenRun {
                         player.playSound(true) {
                             type(Sound.ENTITY_ENDERMAN_TELEPORT)
-                            pitch(2.0f)
+                            pitch(1.1f)
                         }
                     }
                 player.closeInventory()
@@ -258,7 +258,7 @@ private val survivalServerItem
     get() = plugin.getInvisibleItem().apply {
         displayName {
             primary("CastSMP ")
-            spacer("(Survival)")
+            darkSpacer("(Survival)")
         }
 
         buildLore {
@@ -270,13 +270,13 @@ private val survivalServerItem
                 info("Der ")
                 variableValue("CastSMP")
                 info(" ist ein")
-                variableValue("friedlicher")
+                variableValue(" friedlicher")
                 info(" Survival Server.")
             }
 
             line {
                 info("Hier kannst du entspannt")
-                variableValue("deine Träume")
+                variableValue(" deine Träume")
                 info(" verwirklichen.")
             }
 

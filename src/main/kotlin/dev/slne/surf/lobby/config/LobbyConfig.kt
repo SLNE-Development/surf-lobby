@@ -1,5 +1,6 @@
 package dev.slne.surf.lobby.config
 
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.spongepowered.configurate.objectmapping.ConfigSerializable
 
@@ -25,7 +26,7 @@ data class LobbyConfig(
         val pitch: Float
     ) {
         fun toLocation(): Location {
-            val worldInstance = org.bukkit.Bukkit.getWorld(world)
+            val worldInstance = Bukkit.getWorld(world)
                 ?: throw IllegalArgumentException("World '$world' not found")
 
             return Location(worldInstance, x, y, z, yaw, pitch)
@@ -33,7 +34,7 @@ data class LobbyConfig(
 
         companion object {
             fun default() = LocationConfig(
-                world = "world",
+                world = Bukkit.getWorlds().first().name,
                 x = 0.5,
                 y = 100.0,
                 z = 0.5,

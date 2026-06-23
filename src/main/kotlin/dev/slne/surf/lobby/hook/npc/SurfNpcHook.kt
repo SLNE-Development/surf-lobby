@@ -150,6 +150,7 @@ object SurfNpcHook {
             skin = SurfNpcSkins.EVENT.getSkin()
 
             location = Locations.SPAWN_EVENT.getLocation()
+
             withKickback()
             withEventHandler<NpcInteractEvent> {
                 val player = it.player
@@ -159,7 +160,7 @@ object SurfNpcHook {
                         .thenRun {
                             player.playSound(true) {
                                 type(Sound.ENTITY_ENDERMAN_TELEPORT)
-                                pitch(2.0f)
+                                pitch(1.1f)
                             }
                         }
                     return@withEventHandler
