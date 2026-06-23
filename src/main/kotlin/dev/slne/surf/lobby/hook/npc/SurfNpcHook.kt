@@ -66,6 +66,7 @@ object SurfNpcHook {
             withEventHandler<NpcInteractEvent> {
                 queueToSurvivalServer(it.player)
             }
+            scale(2.0)
         }
     }
 
@@ -112,6 +113,7 @@ object SurfNpcHook {
             }
 
             rotationType = NpcRotationType.FIXED
+            scale(2.0)
         }
     }
 
@@ -137,6 +139,7 @@ object SurfNpcHook {
                 }
             }
             rotationType = NpcRotationType.FIXED
+            scale(2.0)
         }
     }
 
@@ -173,6 +176,7 @@ object SurfNpcHook {
                     }
                 }
             }
+            scale(2.0)
             rotationType = NpcRotationType.FIXED
         }
     }
@@ -189,6 +193,7 @@ object SurfNpcHook {
             location = Locations.SPAWN_SHOP.getLocation()
             withKickback()
             rotationType = NpcRotationType.FIXED
+            scale(2.0)
         }
     }
 
@@ -212,6 +217,7 @@ object SurfNpcHook {
                 }
             }
             rotationType = NpcRotationType.FIXED
+            scale(2.0)
         }
     }
 
