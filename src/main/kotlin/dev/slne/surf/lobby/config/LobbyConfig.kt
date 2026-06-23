@@ -11,6 +11,9 @@ data class LobbyConfig(
     val survivalServerName: String = "survival",
     val lobbyCategory: String = "lobby",
     val spawnPoint: LocationConfig = LocationConfig.default(),
+    val externalEventEnabled: Boolean = false,
+    val externalEventReplacesDefault: Boolean = false,
+    val externalEventTeleportLocation: LocationConfig = LocationConfig.default()
 ) {
     @ConfigSerializable
     data class LocationConfig(
