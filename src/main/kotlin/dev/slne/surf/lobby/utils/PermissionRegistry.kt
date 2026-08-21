@@ -17,8 +17,10 @@ object PermissionRegistry : PermissionRegistry() {
 
     val PUSHBACK_ATTACK = create("$PREFIX.pushback.attack")
     val PUSHBACK_ITEM = create("$PREFIX.pushback.item")
-    
+
     val PLAYER_VISIBILITY_ITEM = create("$PREFIX.playervisibility.item")
     val PLAYER_VISIBILITY_TEAM = create("$PREFIX.playervisibility.team")
     val ELYTRA_BOOST = create("$PREFIX.elytraboost")
+
+    val INSTANT_JOIN = create("$PREFIX.instantjoin")
 }

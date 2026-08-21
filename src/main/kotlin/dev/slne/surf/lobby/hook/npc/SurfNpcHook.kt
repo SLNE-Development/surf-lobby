@@ -1,15 +1,14 @@
 package dev.slne.surf.lobby.hook.npc
 
-import com.github.shynixn.mccoroutine.folia.launch
 import dev.slne.surf.api.core.font.toSmallCaps
 import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.api.core.messages.adventure.sendText
 import dev.slne.surf.core.api.common.SurfCoreApi
-import dev.slne.surf.core.api.paper.util.surfPlayer
 import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.event.eventServerBridge
 import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.plugin
+import dev.slne.surf.lobby.utils.LobbyQueue
 import dev.slne.surf.lobby.utils.Locations
 import dev.slne.surf.lobby.utils.PermissionRegistry
 import dev.slne.surf.npc.api.dsl.NpcDslBuilder
@@ -18,13 +17,11 @@ import dev.slne.surf.npc.api.event.NpcCollisionEvent
 import dev.slne.surf.npc.api.event.NpcInteractEvent
 import dev.slne.surf.npc.api.npc.Npc
 import dev.slne.surf.npc.api.npc.rotation.NpcRotationType
-import dev.slne.surf.queue.api.queue
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Bukkit
 import org.bukkit.Sound
 import org.bukkit.entity.EntityType
-import org.bukkit.entity.Player
 import java.util.concurrent.TimeUnit
 
 object SurfNpcHook {
@@ -64,7 +61,7 @@ object SurfNpcHook {
             rotationType = NpcRotationType.FIXED
 
             withEventHandler<NpcInteractEvent> {
-                queueToSurvivalServer(it.player)
+                LobbyQueue.queueToSurvivalServer(it.player)
             }
             scale(1.5)
         }
@@ -99,13 +96,13 @@ object SurfNpcHook {
 
                 when (eventServerBridge.state.get()) {
                     EventServerState.OPEN -> {
-                        queueToEventServer(player)
+                        LobbyQueue.queueToEventServer(player)
                         return@withEventHandler
                     }
 
                     EventServerState.CLOSED -> {
                         if (player.hasPermission(PermissionRegistry.EVENT_BYPASS)) {
-                            queueToEventServer(player)
+                            LobbyQueue.queueToEventServer(player)
                             return@withEventHandler
                         }
                         player.sendText {
@@ -236,108 +233,6 @@ object SurfNpcHook {
     private fun NpcDslBuilder.withKickback() = withEventHandler<NpcCollisionEvent> {
         val player = it.player
         player.velocity = player.location.direction.multiply(-1.5)
-    }
-
-    private fun queueToEventServer(player: Player) {
-        SurfCoreApi.getServerByName(lobbyConfig.eventServerName)
-            ?.let { server ->
-                plugin.launch {
-                    if (player.hasPermission(PermissionRegistry.QUEUE_BYPASS)) {
-                        player.sendText {
-                            appendInfoPrefix()
-                            info("Du hast die Warteschlange umgangen und wirst nun mit dem Event Server verbunden...")
-                        }
-                        val status = SurfCoreApi.sendPlayerAwaiting(player.surfPlayer, server)
-
-                        if (status.isSuccessful()) {
-                            player.sendText {
-                                appendSuccessPrefix()
-                                success("Du wurdest erfolgreich zum Event Server teleportiert.")
-                            }
-                        } else {
-                            player.sendText {
-                                appendErrorPrefix()
-                                error("Es gab ein Problem beim Teleportieren zum Event Server: ${status.status}")
-                            }
-                        }
-
-                        return@launch
-                    }
-
-                    val success = server.queue().enqueue(player.uniqueId)
-
-                    if (success) {
-                        player.sendText {
-                            appendSuccessPrefix()
-                            success("Du wurdest in die Warteschlange für den Event Server eingereiht.")
-                        }
-                    } else {
-                        player.sendText {
-                            appendErrorPrefix()
-                            error("Du bist bereits in einer Warteschlange!")
-                        }
-                    }
-                }
-            }
-    }
-
-    private fun queueToSurvivalServer(player: Player) {
-        if (!lobbyConfig.survivalOpen && !player.hasPermission(PermissionRegistry.SURVIVAL_BYPASS)) {
-            player.sendText {
-                spacer("[")
-                note("Nepomuk")
-                spacer("]")
-                appendSpace()
-                error("Der Survival Server startet bald, sei bereit!")
-            }
-            return
-        }
-
-
-        SurfCoreApi.getServerByName(lobbyConfig.survivalServerName)
-            ?.let { server ->
-                plugin.launch {
-                    if (player.hasPermission(PermissionRegistry.QUEUE_BYPASS)) {
-                        player.sendText {
-                            appendInfoPrefix()
-                            info("Du hast die Warteschlange umgangen und wirst nun mit dem Survival Server verbunden...")
-                        }
-                        val status = SurfCoreApi.sendPlayerAwaiting(player.surfPlayer, server)
-
-                        if (status.isSuccessful()) {
-                            player.sendText {
-                                appendSuccessPrefix()
-                                success("Du wurdest erfolgreich zum Survival Server teleportiert.")
-                            }
-                        } else {
-                            player.sendText {
-                                appendErrorPrefix()
-                                error("Es gab ein Problem beim Teleportieren zum Survival Server: ${status.status}")
-                                status.velocityMessage?.let {
-                                    error(": ")
-                                    append(it)
-                                }
-                            }
-                        }
-
-                        return@launch
-                    }
-
-                    val success = server.queue().enqueue(player.uniqueId)
-
-                    if (success) {
-                        player.sendText {
-                            appendSuccessPrefix()
-                            success("Du wurdest in die Warteschlange für den Survival Server eingereiht.")
-                        }
-                    } else {
-                        player.sendText {
-                            appendErrorPrefix()
-                            error("Du bist bereits in einer Warteschlange!")
-                        }
-                    }
-                }
-            }
     }
 
     private lateinit var syncTask: ScheduledTask

@@ -28,7 +28,9 @@ import dev.slne.surf.event.base.api.common.state.EventServerState
 import dev.slne.surf.lobby.event.eventServerBridge
 import dev.slne.surf.lobby.lobbyConfig
 import dev.slne.surf.lobby.plugin
+import dev.slne.surf.lobby.utils.LobbyQueue
 import dev.slne.surf.lobby.utils.Locations
+import dev.slne.surf.lobby.utils.PermissionRegistry
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.RenderContext
@@ -55,6 +57,13 @@ object NavigatorInventory : View() {
     override fun onFirstRender(render: RenderContext) {
         render.layoutSlot('S').withItem(survivalServerItem).onClick { click ->
             val player = click.player
+
+            if (player.hasPermission(PermissionRegistry.INSTANT_JOIN) && click.isLeftClick) {
+                LobbyQueue.queueToSurvivalServer(player)
+                player.closeInventory()
+                return@onClick
+            }
+
             player.teleportAsync(Locations.SURVIVAL_TELEPORT.getLocation()).thenRun {
                 player.playSound(true) {
                     type(Sound.ENTITY_ENDERMAN_TELEPORT)
@@ -75,6 +84,12 @@ object NavigatorInventory : View() {
                             pitch(1.1f)
                         }
                     }
+                player.closeInventory()
+                return@onClick
+            }
+
+            if (player.hasPermission(PermissionRegistry.INSTANT_JOIN) && click.isLeftClick) {
+                LobbyQueue.queueToEventServer(player)
                 player.closeInventory()
                 return@onClick
             }
