@@ -2,6 +2,7 @@ package dev.slne.surf.lobby.minestom.inventory
 
 import dev.slne.minestom.lobby.api.item.invisibleItem
 import dev.slne.minestom.lobby.api.player.requireLobbyPlayer
+import dev.slne.surf.api.core.messages.Colors
 import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.api.minestom.inventory.framework.dsl.onItemClick
 import dev.slne.surf.api.minestom.inventory.framework.dsl.openForPlayer
@@ -45,7 +46,7 @@ object NavigatorView : View() {
             "LLPPARRCC",
             "LLPPARRCC"
         ).titleBuilder {
-            text("\uE106\uE105ꑈ")
+            text("\uE106\uE105ꑈ", Colors.WHITE)
         }
     }
 
