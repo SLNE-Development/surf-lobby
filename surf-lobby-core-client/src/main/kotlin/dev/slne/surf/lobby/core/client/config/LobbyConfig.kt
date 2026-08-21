@@ -1,0 +1,38 @@
+package dev.slne.surf.lobby.core.client.config
+
+import dev.slne.surf.lobby.core.client.platform.LobbyPlatform
+import org.spongepowered.configurate.objectmapping.ConfigSerializable
+
+@ConfigSerializable
+data class LobbyConfig(
+    val survivalOpen: Boolean = false,
+    val minHeight: Int = 0,
+    val eventServerName: String = "event",
+    val survivalServerName: String = "survival",
+    val lobbyCategory: String = "lobby",
+    val spawnPoint: LocationConfig = LocationConfig.default(),
+    val externalEventEnabled: Boolean = false,
+    val externalEventReplacesDefault: Boolean = false,
+    val externalEventTeleportLocation: LocationConfig = LocationConfig.default()
+) {
+    @ConfigSerializable
+    data class LocationConfig(
+        val world: String,
+        val x: Double,
+        val y: Double,
+        val z: Double,
+        val yaw: Float,
+        val pitch: Float
+    ) {
+        companion object {
+            fun default() = LocationConfig(
+                world = LobbyPlatform.defaultWorldName,
+                x = 0.5,
+                y = 100.0,
+                z = 0.5,
+                yaw = 0.0f,
+                pitch = 0.0f
+            )
+        }
+    }
+}

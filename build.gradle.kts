@@ -1,46 +1,28 @@
-import dev.slne.surf.api.gradle.util.registerRequired
-import dev.slne.surf.api.gradle.util.registerSoft
+import dev.slne.surf.api.gradle.util.slneReleases
 
-plugins {
-    id("dev.slne.surf.api.gradle.paper-plugin") version "+"
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        maven("https://reposilite.slne.dev/releases")
+    }
+    dependencies {
+        classpath("dev.slne.surf.api:surf-api-gradle-plugin:+")
+    }
 }
 
-repositories {
-    maven("https://repo.nexomc.com/snapshots")
+allprojects {
+    group = "dev.slne.surf.lobby"
+    version = findProperty("version") as String
 }
 
-dependencies {
-    compileOnly("dev.slne.surf.npc:surf-npc-api:+")
-    compileOnly("com.nexomc:nexo:1.25.0-dev.11")
-    implementation("dev.slne.surf.event:surf-event-base-api-common:+")
-    implementation("dev.slne.surf.tab:surf-tab-api:+")
-    compileOnly("dev.slne.surf.parkour:surf-parkour-api:+")
-    compileOnly("dev.slne.surf.trophy:surf-trophy-api:+")
-    compileOnly("dev.slne.surf.profile:surf-profile-api:+")
-    compileOnly("dev.slne.surf.settings:surf-settings-api:+")
-    compileOnly("dev.slne.surf.queue:surf-queue-api:+")
-}
-
-version = findProperty("version") as String
-group = "dev.slne.surf.lobby"
-
-surfPaperPluginApi {
-    mainClass("dev.slne.surf.lobby.PaperMain")
-    generateLibraryLoader(false)
-    foliaSupported(false)
-
-    withSurfRedis()
-    withCorePaper()
-
-    authors.add("red")
-
-    serverDependencies {
-        registerSoft("surf-npc-paper")
-        registerSoft("surf-parkour-paper")
-        registerSoft("Nexo")
-        registerSoft("surf-trophy-paper")
-        registerSoft("surf-profile-paper")
-        registerSoft("surf-settings-paper")
-        registerRequired("surf-queue-paper")
+subprojects {
+    afterEvaluate {
+        plugins.withType<PublishingPlugin> {
+            configure<PublishingExtension> {
+                repositories {
+                    slneReleases()
+                }
+            }
+        }
     }
 }
