@@ -3,27 +3,27 @@ package dev.slne.surf.lobby.core.client.elytra
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.sksamuel.aedile.core.expireAfterWrite
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.Duration.Companion.seconds
 
 /**
  * Tracks which players are currently boosting with the elytra and whether they are on cooldown.
  */
 object ElytraBoostTracker {
-    private val boostingPlayers = Caffeine.newBuilder()
-        .build<UUID, Unit>()
+    private val boostingPlayers: MutableSet<UUID> = ConcurrentHashMap.newKeySet()
 
     private val boostCooldowns = Caffeine.newBuilder()
         .expireAfterWrite(2.seconds)
         .build<UUID, Unit>()
 
-    fun isBoosting(uuid: UUID): Boolean = boostingPlayers.getIfPresent(uuid) != null
+    fun isBoosting(uuid: UUID): Boolean = boostingPlayers.contains(uuid)
 
     /**
      * Marks the player identified by [uuid] as boosting.
      *
      * @return `true` if this call started the boost, or `false` if the player was already boosting
      */
-    fun startBoosting(uuid: UUID): Boolean = boostingPlayers.asMap().putIfAbsent(uuid, Unit) == null
+    fun startBoosting(uuid: UUID): Boolean = boostingPlayers.add(uuid)
 
     /**
      * Returns whether the player identified by [uuid] is currently on boost cooldown.
@@ -42,5 +42,5 @@ object ElytraBoostTracker {
      *
      * @return whether the player was boosting
      */
-    fun clear(uuid: UUID): Boolean = boostingPlayers.asMap().remove(uuid, Unit)
+    fun clear(uuid: UUID): Boolean = boostingPlayers.remove(uuid)
 }

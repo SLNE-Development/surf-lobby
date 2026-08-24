@@ -67,16 +67,21 @@ object InventoryInteractListener : Listener {
             return
         }
 
-        if (!SettingsHook.hasScrollSoundsEnabled(event.player.uniqueId)) {
+        val player = event.player
+
+        if (!SettingsHook.hasScrollSoundsEnabled(player.uniqueId)) {
             return
         }
 
-        if (InventoryItem.items.values.filter { item ->
-                item.permission?.let { event.player.hasPermission(it) } ?: true
-            }.any { it.slot == event.newSlot }) {
-            event.player.playSound(true) {
-                type(Sound.UI_BUTTON_CLICK)
-            }
+        val item = InventoryItem.bySlot[event.newSlot] ?: return
+        val permission = item.permission
+
+        if (permission != null && !player.hasPermission(permission)) {
+            return
+        }
+
+        player.playSound(true) {
+            type(Sound.UI_BUTTON_CLICK)
         }
     }
 }

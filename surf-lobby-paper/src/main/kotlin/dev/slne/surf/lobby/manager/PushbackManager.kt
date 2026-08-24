@@ -12,19 +12,19 @@ object PushbackManager {
     fun startTask() {
         Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, {
             PushbackStates.all().toPlayers().forEach { player ->
-                val nearbyPlayers =
-                    player.location.getNearbyPlayers(PushbackStates.RANGE) { other ->
-                        other != player && !other.hasPermission(LobbyPermissions.PUSHBACK_ITEM)
-                    }
+                val location = player.location
+                val nearbyPlayers = location.getNearbyPlayers(PushbackStates.RANGE) { other ->
+                    other != player && !other.hasPermission(LobbyPermissions.PUSHBACK_ITEM)
+                }
 
                 for (nearby in nearbyPlayers) {
-                    nearby.velocity = player.location.toVector()
+                    nearby.velocity = location.toVector()
                         .subtract(nearby.location.toVector())
                         .multiply(PushbackStates.FORCE)
                         .setY(PushbackStates.Y_FORCE)
                 }
 
-                player.world.playEffect(player.location, Effect.ENDER_SIGNAL, null)
+                player.world.playEffect(location, Effect.ENDER_SIGNAL, null)
             }
         }, 10, 10)
     }

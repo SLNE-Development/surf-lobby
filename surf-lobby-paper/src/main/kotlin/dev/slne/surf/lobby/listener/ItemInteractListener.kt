@@ -16,9 +16,18 @@ object ItemInteractListener : Listener {
             return
         }
 
-        InventoryItem.items.values.forEach {
-            if (item.isSimilar(it.item) || item.isSimilar(it.getItemForPlayer(event.player))) {
-                it.onInteract(event.player)
+        val player = event.player
+        val type = item.type
+
+        for (candidate in InventoryItem.all) {
+            if (type != candidate.item.type) {
+                continue
+            }
+
+            if (item.isSimilar(candidate.item) ||
+                item.isSimilar(candidate.getItemForPlayer(player))
+            ) {
+                candidate.onInteract(player)
                 event.cancel()
             }
         }

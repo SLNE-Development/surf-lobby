@@ -49,7 +49,8 @@ object DoubleJumpListener : Listener {
     }
 
     private fun canUseDoubleJump(player: Player): Boolean {
-        if (player.gameMode == GameMode.CREATIVE || player.gameMode == GameMode.SPECTATOR) return false
+        val gameMode = player.gameMode
+        if (gameMode == GameMode.CREATIVE || gameMode == GameMode.SPECTATOR) return false
         if (ParkourHook.available && ParkourHook.isInParkour(player.uniqueId)) return false
         return true
     }

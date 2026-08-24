@@ -11,7 +11,9 @@ val eventServerBridge = EventServerBridge()
 class EventServerBridge {
     private val logger = ComponentLogger.logger("surf-lobby")
 
+    @Volatile
     lateinit var state: SyncValue<EventServerState>
+
     fun init() {
         state = lobbyRedisApi.createSyncValue(
             "surf-event:event-server-state",

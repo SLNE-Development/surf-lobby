@@ -21,6 +21,7 @@ object ShowNonePlayersInventoryItem : InventoryItem(
     }
 ) {
     override val permission: String = LobbyPermissions.PLAYER_VISIBILITY_ITEM
+    override val placedOnJoin = false
     override fun onInteract(player: Player) {
         PlayerVisibilityManager.setState(
             player.uniqueId,

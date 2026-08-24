@@ -7,46 +7,52 @@ import dev.slne.minestom.lobby.api.player.getLobbyPlayer
 import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
 import dev.slne.surf.lobby.core.client.pushback.PushbackStates
 import dev.slne.surf.lobby.minestom.util.blocksPerTick
+import net.minestom.server.instance.EntityTracker
 import net.minestom.server.network.packet.server.play.WorldEventPacket
 import net.minestom.server.timer.Task
 import net.minestom.server.timer.TaskSchedule
 import net.minestom.server.worldevent.WorldEvent
 
 object PushbackTask {
+    @Volatile
     private var task: Task? = null
 
     fun start() {
         task = SchedulerManager.scheduleTask({
-            PushbackStates.all()
-                .mapNotNull { ConnectionManager.getLobbyPlayer(it) }
-                .forEach { player ->
-                    val instance = player.instance ?: return@forEach
+            for (uuid in PushbackStates.all()) {
+                val player = ConnectionManager.getLobbyPlayer(uuid) ?: continue
+                val instance = player.instance ?: continue
+                val position = player.position
 
-                    val nearbyPlayers = instance
-                        .getNearbyEntities(player.position, PushbackStates.RANGE)
-                        .filterIsInstance<LobbyPlayer>()
-                        .filter { other ->
-                            other != player
-                                    && !other.hasPermission(LobbyPermissions.PUSHBACK_ITEM)
+                instance.entityTracker.nearbyEntities(
+                    position,
+                    PushbackStates.RANGE,
+                    EntityTracker.Target.PLAYERS,
+                    fun(nearby) {
+                        if (nearby !is LobbyPlayer ||
+                            nearby == player ||
+                            nearby.hasPermission(LobbyPermissions.PUSHBACK_ITEM)
+                        ) {
+                            return
                         }
 
-                    for (nearby in nearbyPlayers) {
-                        nearby.velocity = player.position.sub(nearby.position)
+                        nearby.velocity = position.sub(nearby.position)
                             .asVec()
                             .mul(PushbackStates.FORCE)
                             .withY(PushbackStates.Y_FORCE)
                             .blocksPerTick()
                     }
+                )
 
-                    player.sendPacketToViewersAndSelf(
-                        WorldEventPacket(
-                            WorldEvent.PARTICLES_EYE_OF_ENDER_DEATH.id(),
-                            player.position,
-                            0,
-                            false
-                        )
+                player.sendPacketToViewersAndSelf(
+                    WorldEventPacket(
+                        WorldEvent.PARTICLES_EYE_OF_ENDER_DEATH.id(),
+                        position,
+                        0,
+                        false
                     )
-                }
+                )
+            }
         }, TaskSchedule.tick(10), TaskSchedule.tick(10))
     }
 

@@ -24,21 +24,24 @@ class LobbyPlayerListener @Inject constructor() : EventRegistrar {
             if (!event.isFirstSpawn) return@addListener
 
             val player = event.lobbyPlayer
+            val inventory = player.inventory
 
             player.setHeldItemSlot(4)
 
             calcYearXp(player)
 
             for (i in 0..8) {
-                player.inventory.setItemStack(i, ItemStack.AIR)
+                inventory.setItemStack(i, ItemStack.AIR)
             }
 
             player.setEquipment(EquipmentSlot.CHESTPLATE, ItemStack.AIR)
 
-            HotbarItem.items.values.filter { item ->
-                item.permission?.let { player.hasPermission(it) } ?: true
-            }.forEach {
-                player.inventory.setItemStack(it.slot, it.getItemForPlayer(player))
+            for (item in HotbarItem.bySlot.values) {
+                val permission = item.permission
+
+                if (permission == null || player.hasPermission(permission)) {
+                    inventory.setItemStack(item.slot, item.getItemForPlayer(player))
+                }
             }
 
             PlayerVisibilityService.onPlayerJoin(player)

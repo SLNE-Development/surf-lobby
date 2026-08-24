@@ -20,6 +20,7 @@ object ShowTeamPlayersInventoryItem : InventoryItem(
     }
 ) {
     override val permission = null
+    override val placedOnJoin = false
     override fun onInteract(player: Player) {
         PlayerVisibilityManager.setState(
             player.uniqueId,

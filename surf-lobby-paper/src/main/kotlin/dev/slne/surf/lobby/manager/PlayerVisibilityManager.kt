@@ -24,61 +24,58 @@ object PlayerVisibilityManager {
     }
 
     fun onPlayerJoin(player: Player) {
-        updatePlayerVisibility(player.uniqueId)
-        Bukkit.getOnlinePlayers().forEach { otherPlayer ->
-            if (otherPlayer != player) {
-                val otherState = getState(otherPlayer.uniqueId)
-                when (otherState) {
-                    VisibilityState.SHOW_ALL -> {
-                        otherPlayer.showPlayer(plugin, player)
-                    }
+        updatePlayerVisibility(player)
 
-                    VisibilityState.SHOW_TEAM -> {
-                        if (player.hasPermission(LobbyPermissions.PLAYER_VISIBILITY_TEAM)) {
-                            otherPlayer.showPlayer(plugin, player)
-                        } else {
-                            otherPlayer.hidePlayer(plugin, player)
-                        }
-                    }
+        val joiningIsTeamMember = player.hasPermission(LobbyPermissions.PLAYER_VISIBILITY_TEAM)
+        val lobbyPlugin = plugin
 
-                    VisibilityState.SHOW_NONE -> {
-                        otherPlayer.hidePlayer(plugin, player)
-                    }
+        for (otherPlayer in Bukkit.getOnlinePlayers()) {
+            if (otherPlayer == player) {
+                continue
+            }
+
+            when (getState(otherPlayer.uniqueId)) {
+                VisibilityState.SHOW_ALL -> otherPlayer.showPlayer(lobbyPlugin, player)
+
+                VisibilityState.SHOW_TEAM -> if (joiningIsTeamMember) {
+                    otherPlayer.showPlayer(lobbyPlugin, player)
+                } else {
+                    otherPlayer.hidePlayer(lobbyPlugin, player)
                 }
+
+                VisibilityState.SHOW_NONE -> otherPlayer.hidePlayer(lobbyPlugin, player)
             }
         }
     }
 
     private fun updatePlayerVisibility(uuid: UUID) {
-        val player = Bukkit.getPlayer(uuid) ?: return
-        val state = getState(uuid)
+        updatePlayerVisibility(Bukkit.getPlayer(uuid) ?: return)
+    }
 
-        when (state) {
-            VisibilityState.SHOW_ALL -> {
-                Bukkit.getOnlinePlayers().forEach { otherPlayer ->
-                    if (otherPlayer != player) {
-                        player.showPlayer(plugin, otherPlayer)
+    private fun updatePlayerVisibility(player: Player) {
+        val lobbyPlugin = plugin
+        val onlinePlayers = Bukkit.getOnlinePlayers()
+
+        when (getState(player.uniqueId)) {
+            VisibilityState.SHOW_ALL -> for (otherPlayer in onlinePlayers) {
+                if (otherPlayer != player) {
+                    player.showPlayer(lobbyPlugin, otherPlayer)
+                }
+            }
+
+            VisibilityState.SHOW_TEAM -> for (otherPlayer in onlinePlayers) {
+                if (otherPlayer != player) {
+                    if (otherPlayer.hasPermission(LobbyPermissions.PLAYER_VISIBILITY_TEAM)) {
+                        player.showPlayer(lobbyPlugin, otherPlayer)
+                    } else {
+                        player.hidePlayer(lobbyPlugin, otherPlayer)
                     }
                 }
             }
 
-            VisibilityState.SHOW_TEAM -> {
-                Bukkit.getOnlinePlayers().forEach { otherPlayer ->
-                    if (otherPlayer != player) {
-                        if (otherPlayer.hasPermission(LobbyPermissions.PLAYER_VISIBILITY_TEAM)) {
-                            player.showPlayer(plugin, otherPlayer)
-                        } else {
-                            player.hidePlayer(plugin, otherPlayer)
-                        }
-                    }
-                }
-            }
-
-            VisibilityState.SHOW_NONE -> {
-                Bukkit.getOnlinePlayers().forEach { otherPlayer ->
-                    if (otherPlayer != player) {
-                        player.hidePlayer(plugin, otherPlayer)
-                    }
+            VisibilityState.SHOW_NONE -> for (otherPlayer in onlinePlayers) {
+                if (otherPlayer != player) {
+                    player.hidePlayer(lobbyPlugin, otherPlayer)
                 }
             }
         }

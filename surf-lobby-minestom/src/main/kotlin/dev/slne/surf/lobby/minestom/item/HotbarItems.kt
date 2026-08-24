@@ -102,6 +102,7 @@ object TrophiesHotbarItem : HotbarItem(LobbyItemContents.Trophies.SLOT, "trophie
 
 object PushbackDisableHotbarItem : HotbarItem(LobbyItemContents.Pushback.SLOT, "pushback_disable") {
     override val permission: String = LobbyPermissions.PUSHBACK_ITEM
+    override val placedOnJoin = false
 
     override fun buildItem() = buildItem(Material.ENDER_EYE) {
         displayName(LobbyItemContents.Pushback.name)
@@ -156,6 +157,7 @@ object ShowAllPlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT, 
 
 object ShowTeamPlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT, "visibility_team") {
     override val permission = null
+    override val placedOnJoin = false
 
     override fun buildItem() = buildItem(Material.YELLOW_CANDLE) {
         displayName(LobbyItemContents.Visibility.name)
@@ -178,6 +180,7 @@ object ShowTeamPlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT,
 
 object ShowNonePlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT, "visibility_none") {
     override val permission: String = LobbyPermissions.PLAYER_VISIBILITY_ITEM
+    override val placedOnJoin = false
 
     override fun buildItem() = buildItem(Material.RED_CANDLE) {
         displayName(LobbyItemContents.Visibility.name)

@@ -6,6 +6,7 @@ val lobbyRedisLoader = LobbyRedisLoader()
 val lobbyRedisApi get() = lobbyRedisLoader.redisApi
 
 class LobbyRedisLoader {
+    @Volatile
     lateinit var redisApi: RedisApi
 
     fun onLoad() {

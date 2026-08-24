@@ -33,6 +33,7 @@ object NavigatorContents {
 
     fun survivalServerLore(): List<Component> = buildList {
         val survivalSurfServer = SurfCoreApi.getServerByName(lobbyConfig.survivalServerName)
+        val survivalState = survivalSurfServer?.state
 
         add(empty())
         add(buildText { note("Beschreibung:".toSmallCaps()) })
@@ -53,13 +54,13 @@ object NavigatorContents {
 
         add(buildText { note("Status:".toSmallCaps()) })
         add(buildText {
-            when (survivalSurfServer?.state) {
+            when (survivalState) {
                 SurfServerState.RUNNING -> success("Der CastSMP ist erreichbar")
                 else -> error("Der CastSMP ist derzeit nicht erreichbar")
             }
         })
 
-        if (survivalSurfServer?.state == SurfServerState.RUNNING) {
+        if (survivalState == SurfServerState.RUNNING) {
             add(empty())
             add(buildText { note("Spieler:".toSmallCaps()) })
             add(buildText {
@@ -72,18 +73,19 @@ object NavigatorContents {
 
     fun eventServerLore(): List<Component> = buildList {
         val eventSurfServer = SurfCoreApi.getServerByName(lobbyConfig.eventServerName)
+        val eventState = eventServerBridge.state.get()
 
         add(empty())
         add(buildText { note("Status:".toSmallCaps()) })
         add(buildText {
-            when (eventServerBridge.state.get()) {
+            when (eventState) {
                 EventServerState.OPEN -> success("Klicke, um dem Event Server beizutreten")
                 EventServerState.CLOSED -> error("Der Event Server ist aktuell geschlossen")
                 EventServerState.UNKNOWN -> error("Aktuell findet kein Event statt")
             }
         })
 
-        if (eventServerBridge.state.get() != EventServerState.UNKNOWN) {
+        if (eventState != EventServerState.UNKNOWN) {
             add(empty())
             add(buildText { note("Spieler:".toSmallCaps()) })
             add(buildText {
@@ -97,13 +99,15 @@ object NavigatorContents {
     fun lobbyServerName(server: SurfServer) = buildText { variableValue(server.displayName) }
 
     fun lobbyServerLore(server: SurfServer): List<Component> = buildList {
+        val state = server.state
+
         add(empty())
         add(buildText {
             spacer("-")
             appendSpace()
             note("Status: ")
             variableValue(
-                if (server.state == SurfServerState.RUNNING) "Online" else "Offline"
+                if (state == SurfServerState.RUNNING) "Online" else "Offline"
             )
         })
         add(buildText {
@@ -113,7 +117,7 @@ object NavigatorContents {
             variableValue("${server.getPlayerCount()} / ${server.maxPlayers}")
         })
 
-        if (server.state == SurfServerState.RUNNING) {
+        if (state == SurfServerState.RUNNING) {
             add(empty())
             add(buildText {
                 spacer("» Klicke zum Verbinden")

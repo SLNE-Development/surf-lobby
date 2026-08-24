@@ -22,11 +22,13 @@ object ElytraBoostManager {
             return
         }
 
-        if (ParkourHook.available && ParkourHook.isInParkour(player.uniqueId)) {
+        val uuid = player.uniqueId
+
+        if (ParkourHook.available && ParkourHook.isInParkour(uuid)) {
             return
         }
 
-        if (ElytraBoostTracker.isBoosting(player.uniqueId)) {
+        if (ElytraBoostTracker.isBoosting(uuid)) {
             boostFlight(player)
             return
         }
@@ -35,14 +37,15 @@ object ElytraBoostManager {
             return
         }
 
-        ElytraBoostTracker.startBoosting(player.uniqueId)
+        ElytraBoostTracker.startBoosting(uuid)
 
-        player.location.world.spawnParticle(Particle.CLOUD, player.location, 25, 0.5, 0.0, 0.5, 0.1)
+        val location = player.location
+        player.world.spawnParticle(Particle.CLOUD, location, 25, 0.5, 0.0, 0.5, 0.1)
         player.playSound(true) {
             type(Sound.ENTITY_EGG_THROW)
         }
 
-        ElytraBoostTracker.markBoosted(player.uniqueId)
+        ElytraBoostTracker.markBoosted(uuid)
 
         plugin.launch(plugin.entityDispatcher(player)) {
             player.inventory.setChestplate(elytraItem)
@@ -55,24 +58,28 @@ object ElytraBoostManager {
 
 
     fun boostFlight(player: Player) {
-        if (!ElytraBoostTracker.isBoosting(player.uniqueId)) {
+        val uuid = player.uniqueId
+
+        if (!ElytraBoostTracker.isBoosting(uuid)) {
             return
         }
 
-        if (ElytraBoostTracker.isOnCooldown(player.uniqueId)) {
+        if (ElytraBoostTracker.isOnCooldown(uuid)) {
             return
         }
 
         player.startRiptideAttack(20, 1.0f, null)
-        player.location.world.spawnParticle(Particle.CLOUD, player.location, 25, 0.5, 0.0, 0.5, 0.1)
+
+        val location = player.location
+        player.world.spawnParticle(Particle.CLOUD, location, 25, 0.5, 0.0, 0.5, 0.1)
         player.playSound(true) {
             type(Sound.ITEM_TRIDENT_RIPTIDE_1)
         }
 
-        val direction = player.location.direction.normalize()
+        val direction = location.direction.normalize()
         player.velocity = direction.multiply(2.5)
 
-        ElytraBoostTracker.markBoosted(player.uniqueId)
+        ElytraBoostTracker.markBoosted(uuid)
     }
 
     fun clearBoost(player: Player) {

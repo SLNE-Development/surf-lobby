@@ -138,12 +138,15 @@ object LobbyNpcs {
     private fun LobbyNpcSkins.toResolvableProfile() =
         ResolvableProfile(PlayerSkin(skinValue, skinSignature))
 
+    @Volatile
     private var syncTask: Task? = null
 
     fun startSyncTask() {
         syncTask = SchedulerManager.buildTask {
-            if (EventServerDisplayName.refresh() != null) {
-                eventNpc.updateDisplayName(LobbyNpcContents.eventNpcName(EventServerDisplayName.current))
+            val displayName = EventServerDisplayName.refresh()
+
+            if (displayName != null) {
+                eventNpc.updateDisplayName(LobbyNpcContents.eventNpcName(displayName))
             }
         }.repeat(30, ChronoUnit.SECONDS).schedule()
     }

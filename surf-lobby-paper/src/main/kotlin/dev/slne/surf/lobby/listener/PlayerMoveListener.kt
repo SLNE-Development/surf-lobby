@@ -10,14 +10,13 @@ import org.bukkit.event.player.PlayerMoveEvent
 object PlayerMoveListener : Listener {
     @EventHandler
     fun onMove(event: PlayerMoveEvent) {
-        val player = event.player
-        val minHeight = lobbyConfig.minHeight
-
         if (!event.hasExplicitlyChangedPosition()) {
             return
         }
 
-        if (player.location.y < minHeight) {
+        val player = event.player
+
+        if (player.y < lobbyConfig.minHeight) {
             player.teleportAsync(lobbyConfig.spawnPoint.toLocation()).thenRun {
                 player.velocity.setY(0)
             }

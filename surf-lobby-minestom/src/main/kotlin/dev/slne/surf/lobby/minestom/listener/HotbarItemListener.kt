@@ -71,13 +71,15 @@ class HotbarItemListener @Inject constructor() : EventRegistrar {
 
             val player = event.lobbyPlayer
 
-            if (HotbarItem.items.values.filter { item ->
-                    item.permission?.let { player.hasPermission(it) } ?: true
-                }.any { it.slot == event.newSlot.toInt() }
-            ) {
-                player.playSound(true) {
-                    type(SoundEvent.UI_BUTTON_CLICK)
-                }
+            val item = HotbarItem.bySlot[event.newSlot.toInt()] ?: return@addListener
+            val permission = item.permission
+
+            if (permission != null && !player.hasPermission(permission)) {
+                return@addListener
+            }
+
+            player.playSound(true) {
+                type(SoundEvent.UI_BUTTON_CLICK)
             }
         }
     }

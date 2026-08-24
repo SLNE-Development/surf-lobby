@@ -18,6 +18,7 @@ object PushbackDisableInventoryItem : InventoryItem(
     }
 ) {
     override val permission: String = LobbyPermissions.PUSHBACK_ITEM
+    override val placedOnJoin = false
 
     override fun onInteract(player: Player) {
         PushbackManager.remove(player.uniqueId)

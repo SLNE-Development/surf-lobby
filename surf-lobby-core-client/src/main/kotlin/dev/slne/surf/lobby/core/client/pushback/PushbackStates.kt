@@ -1,10 +1,10 @@
 package dev.slne.surf.lobby.core.client.pushback
 
-import dev.slne.surf.api.core.util.mutableObjectSetOf
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 object PushbackStates {
-    private val pushbacks = mutableObjectSetOf<UUID>()
+    private val pushbacks: MutableSet<UUID> = ConcurrentHashMap.newKeySet()
 
     /**
      * The radius in blocks within which other players are pushed away.

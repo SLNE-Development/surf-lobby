@@ -16,24 +16,29 @@ import java.time.LocalDate
 object PlayerConnectionListener : Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        event.player.gameMode = GameMode.ADVENTURE
-        event.player.inventory.heldItemSlot = 4
+        val player = event.player
+        val inventory = player.inventory
 
-        calcYearXp(event.player)
+        player.gameMode = GameMode.ADVENTURE
+        inventory.heldItemSlot = 4
+
+        calcYearXp(player)
 
         for (i in 0..8) {
-            event.player.inventory.clear(i)
+            inventory.clear(i)
         }
 
-        event.player.inventory.setChestplate(null)
+        inventory.setChestplate(null)
 
-        InventoryItem.items.values.filter { item ->
-            item.permission?.let { event.player.hasPermission(it) } ?: true
-        }.forEach {
-            event.player.inventory.setItem(it.slot, it.getItemForPlayer(event.player))
+        for (item in InventoryItem.bySlot.values) {
+            val permission = item.permission
+
+            if (permission == null || player.hasPermission(permission)) {
+                inventory.setItem(item.slot, item.getItemForPlayer(player))
+            }
         }
 
-        PlayerVisibilityManager.onPlayerJoin(event.player)
+        PlayerVisibilityManager.onPlayerJoin(player)
     }
 
     @EventHandler

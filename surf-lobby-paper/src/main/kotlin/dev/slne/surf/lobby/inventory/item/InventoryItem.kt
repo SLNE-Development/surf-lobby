@@ -10,7 +10,8 @@ import dev.slne.surf.lobby.inventory.item.impl.rewards.TrophiesItem
 import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowAllPlayersInventoryItem
 import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowNonePlayersInventoryItem
 import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowTeamPlayersInventoryItem
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
@@ -22,13 +23,25 @@ abstract class InventoryItem(
     abstract fun onInteract(player: Player)
 
     /**
+     * Whether a joining player starts with this item in [slot].
+     */
+    open val placedOnJoin: Boolean get() = true
+
+    /**
      * Gets the item for a specific player. Override this method to provide player-specific items.
      * By default, returns the static item.
+     *
+     * An override must keep the item type of [item]: `ItemInteractListener` rules a candidate out
+     * by comparing types before it asks for the player-specific item, so that it does not have to
+     * build one for every item on every interaction.
      */
     open fun getItemForPlayer(player: Player): ItemStack = item
 
     companion object {
-        val items = listOf(
+        /**
+         * Every hotbar item, including the ones that only appear once a player toggles a slot.
+         */
+        val all: List<InventoryItem> = listOf(
             PushbackDisableInventoryItem,
             PushbackEnableInventoryItem,
             NavigatorItem,
@@ -38,6 +51,25 @@ abstract class InventoryItem(
             ProfileItem,
             ParkourItem,
             TrophiesItem
-        ).associateByTo(Object2ObjectOpenHashMap()) { it.slot }.freeze()
+        )
+
+        /**
+         * The item each slot starts with, keyed by slot.
+         */
+        val bySlot: Int2ObjectMap<InventoryItem> =
+            Int2ObjectOpenHashMap<InventoryItem>(all.size).apply {
+                for (item in all) {
+                    if (!item.placedOnJoin) {
+                        continue
+                    }
+
+                    val clash = put(item.slot, item)
+
+                    require(clash == null) {
+                        "Slot ${item.slot} is placed on join by both " +
+                                "${clash?.javaClass?.simpleName} and ${item.javaClass.simpleName}"
+                    }
+                }
+            }.freeze()
     }
 }
