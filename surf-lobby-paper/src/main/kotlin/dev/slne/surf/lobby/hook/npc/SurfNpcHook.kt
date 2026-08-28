@@ -1,7 +1,11 @@
+@file:Suppress("UnstableApiUsage")
+
 package dev.slne.surf.lobby.hook.npc
 
+import dev.slne.surf.api.core.messages.adventure.key
 import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.api.core.util.objectSetOf
+import dev.slne.surf.api.paper.builder.buildItem
 import dev.slne.surf.lobby.config.toLocation
 import dev.slne.surf.lobby.core.client.config.lobbyConfig
 import dev.slne.surf.lobby.core.client.event.EventJoinAction
@@ -24,10 +28,13 @@ import dev.slne.surf.npc.api.npc.Npc
 import dev.slne.surf.npc.api.npc.rotation.NpcRotationType
 import dev.slne.surf.npc.api.npc.skin.NpcSkin
 import dev.slne.surf.npc.api.npc.skin.NpcSkinPart
+import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.EntityType
+import org.bukkit.inventory.EquipmentSlot
 import java.util.concurrent.TimeUnit
 
 object SurfNpcHook {
@@ -67,6 +74,9 @@ object SurfNpcHook {
             }
             scale(1.5)
         }
+        survivalNpc.setEquipment(EquipmentSlot.HAND, buildItem(Material.PAPER) {
+            setData(DataComponentTypes.ITEM_MODEL, key("nexo:stoned-pickaxe"))
+        })
     }
 
     private fun createEventNpc() {
@@ -105,6 +115,9 @@ object SurfNpcHook {
             rotationType = NpcRotationType.FIXED
             scale(1.5)
         }
+        eventNpc.setEquipment(EquipmentSlot.HAND, buildItem(Material.PAPER) {
+            setData(DataComponentTypes.ITEM_MODEL, key("nexo:astronaut-hat"))
+        })
     }
 
     private fun createSpawnSurvivalNpc() {
