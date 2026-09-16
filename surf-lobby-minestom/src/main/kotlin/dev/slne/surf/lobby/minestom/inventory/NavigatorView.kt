@@ -2,18 +2,14 @@ package dev.slne.surf.lobby.minestom.inventory
 
 import dev.slne.minestom.lobby.api.item.invisibleItem
 import dev.slne.minestom.lobby.api.player.requireLobbyPlayer
-import dev.slne.surf.api.core.messages.Colors
 import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.api.minestom.inventory.framework.dsl.onItemClick
 import dev.slne.surf.api.minestom.inventory.framework.dsl.openForPlayer
 import dev.slne.surf.api.minestom.inventory.framework.dsl.slot
 import dev.slne.surf.api.minestom.inventory.framework.dsl.withItem
-import dev.slne.surf.api.minestom.inventory.framework.titleBuilder
-import dev.slne.surf.api.minestom.inventory.framework.view.layoutTarget
-import dev.slne.surf.api.minestom.inventory.framework.view.onFirstRender
-import dev.slne.surf.api.minestom.inventory.framework.view.paginatedSurfView
+import dev.slne.surf.api.minestom.inventory.framework.view.*
+import dev.slne.surf.api.minestom.inventory.framework.view.container.dsl.blockRow
 import dev.slne.surf.api.minestom.inventory.framework.view.pagination.pagination
-import dev.slne.surf.api.minestom.inventory.framework.view.settings
 import dev.slne.surf.api.minestom.inventory.framework.view.settings.PaginationViewRows
 import dev.slne.surf.lobby.core.client.config.lobbyConfig
 import dev.slne.surf.lobby.core.client.location.LobbyLocations
@@ -25,7 +21,6 @@ import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
 import dev.slne.surf.lobby.core.client.queue.LobbyQueue
 import dev.slne.surf.lobby.minestom.location.toPos
 import me.devnatan.inventoryframework.View
-import me.devnatan.inventoryframework.ViewConfigBuilder
 import me.devnatan.inventoryframework.context.RenderContext
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextDecoration
@@ -36,22 +31,31 @@ import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
 import net.minestom.server.sound.SoundEvent
 
-object NavigatorView : View() {
-    override fun onInit(config: ViewConfigBuilder) {
-        config.size(6).cancelInteractions().layout(
-            "ASSSAEEEA",
-            "ASSSAEEEA",
-            "ASSSAEEEA",
-            "AAAAAAAAA",
-            "LLPPARRCC",
-            "LLPPARRCC"
-        ).titleBuilder {
-            text("\uE106\uE105ꑈ", Colors.WHITE)
-        }
+val navigatorView = surfView("Navigator") {
+    settings {
+        rows(5)
     }
 
-    override fun onFirstRender(render: RenderContext) {
-        render.layoutSlot('S').withItem(survivalServerItem).onClick { click ->
+    containerDefaults {
+        blockRow(1)
+        blockRow(2, exemptColumns = intArrayOf(3, 4, 5))
+        blockRow(3)
+        blockRow(4)
+        blockRow(5)
+    }
+
+    onInit {
+        layout(
+            "         ",
+            "   SEG   ",
+            "         ",
+            " XXXXX L ",
+            "         "
+        )
+    }
+
+    onFirstRender {
+        layoutSlot('S').withItem(survivalServerItem).onClick { click ->
             val player = click.player.requireLobbyPlayer()
 
             if (player.hasPermission(LobbyPermissions.INSTANT_JOIN) && click.isLeftClick) {
@@ -64,7 +68,7 @@ object NavigatorView : View() {
             player.closeInventory()
         }
 
-        render.layoutSlot('E').withItem(eventServerItem).onClick { click ->
+        layoutSlot('E').withItem(eventServerItem).onClick { click ->
             val player = click.player.requireLobbyPlayer()
 
             if (lobbyConfig.externalEventEnabled && lobbyConfig.externalEventReplacesDefault) {
@@ -88,9 +92,14 @@ object NavigatorView : View() {
             player.closeInventory()
         }
 
-        render.layoutSlot('L').withItem(lobbySelectorItem).onClick { click ->
+        layoutSlot('L').withItem(lobbySelectorItem).onClick { click ->
             click.openForPlayer(lobbySelectorView())
         }
+    }
+}
+
+object NavigatorView : View() {
+    override fun onFirstRender(render: RenderContext) {
 
         render.layoutSlot('P').withItem(spawnItem).onClick { click ->
             val player = click.player
@@ -108,13 +117,13 @@ object NavigatorView : View() {
 
         render.layoutSlot('C').withItem(cosmeticsItem)
     }
+}
 
-    private fun Player.teleportWithSound(pos: Pos) {
-        teleport(pos).thenRun {
-            playSound(true) {
-                type(SoundEvent.ENTITY_ENDERMAN_TELEPORT)
-                pitch(2.0f)
-            }
+private fun Player.teleportWithSound(pos: Pos) {
+    teleport(pos).thenRun {
+        playSound(true) {
+            type(SoundEvent.ENTITY_ENDERMAN_TELEPORT)
+            pitch(2.0f)
         }
     }
 }
@@ -132,6 +141,12 @@ fun lobbySelectorView() = paginatedSurfView("Lobbies") {
             }.onItemClick {
                 LobbySelectorService.connect(this.player.uuid, server)
             }
+        }
+    }
+
+    onClick {
+        if (this.isOutsideClick) {
+            this.back()
         }
     }
 
@@ -169,7 +184,9 @@ private fun labeledInvisibleItem(name: Component, lore: List<Component> = emptyL
 }
 
 private val lobbySelectorItem
-    get() = labeledInvisibleItem(NavigatorContents.lobbySelectorName)
+    get() = ItemStack.builder(Material.RECOVERY_COMPASS)
+        .set(DataComponents.ITEM_NAME, NavigatorContents.lobbySelectorName)
+        .build()
 
 private val spawnItem
     get() = labeledInvisibleItem(NavigatorContents.spawnName)
@@ -181,13 +198,17 @@ private val cosmeticsItem
     get() = labeledInvisibleItem(NavigatorContents.cosmeticsName)
 
 private val survivalServerItem
-    get() = labeledInvisibleItem(
-        NavigatorContents.survivalServerName,
-        NavigatorContents.survivalServerLore()
-    )
+    get() = ItemStack.builder(Material.GRASS_BLOCK)
+        .set(DataComponents.ITEM_NAME, NavigatorContents.survivalServerName)
+        .set(DataComponents.LORE, NavigatorContents.survivalServerLore().map {
+            it.decoration(TextDecoration.ITALIC, false)
+        })
+        .build()
 
 private val eventServerItem
-    get() = labeledInvisibleItem(
-        NavigatorContents.eventServerName,
-        NavigatorContents.eventServerLore()
-    )
+    get() = ItemStack.builder(Material.CAKE)
+        .set(DataComponents.ITEM_NAME, NavigatorContents.eventServerName)
+        .set(DataComponents.LORE, NavigatorContents.eventServerLore().map {
+            it.decoration(TextDecoration.ITALIC, false)
+        })
+        .build()

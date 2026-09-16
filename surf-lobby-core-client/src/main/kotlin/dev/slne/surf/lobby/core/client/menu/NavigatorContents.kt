@@ -10,6 +10,7 @@ import dev.slne.surf.lobby.core.client.config.lobbyConfig
 import dev.slne.surf.lobby.core.client.event.eventServerBridge
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.Component.empty
+import net.kyori.adventure.text.format.TextDecoration
 
 /**
  * The names and lore lines of the navigator and lobby selector menus, shared between the
@@ -24,7 +25,7 @@ object NavigatorContents {
 
     val survivalServerName = buildText {
         primary("CastSMP ")
-        darkSpacer("(Survival)")
+        darkSpacer("[Survival]")
     }
 
     val eventServerName = buildText { primary("Event Server") }
@@ -36,37 +37,63 @@ object NavigatorContents {
         val survivalState = survivalSurfServer?.state
 
         add(empty())
-        add(buildText { note("Beschreibung:".toSmallCaps()) })
         add(buildText {
-            info("Der ")
-            variableValue("CastSMP")
-            info(" ist ein")
-            variableValue(" friedlicher")
-            info(" Survival Server.")
+            spacer("Erlebe das Survival Abenteuer, mit")
+        })
+
+        add(buildText {
+            spacer("Freunden oder alleine.")
+        })
+
+        add(empty())
+        add(buildText {
+            spacer("Unter anderem:")
+        })
+
+        add(buildText {
+            appendSpace()
+            white("▪ ")
+            spacer("Grundstücke: ")
+            white("/protect", TextDecoration.UNDERLINED)
         })
         add(buildText {
-            info("Hier kannst du entspannt")
-            variableValue(" deine Träume")
-            info(" verwirklichen.")
+            appendSpace()
+            white("▪ ")
+            spacer("Shopsystem: ")
+            white("/shop", TextDecoration.UNDERLINED)
+        })
+        add(buildText {
+            appendSpace()
+            white("▪ ")
+            spacer("Köpfe: ")
+            white("/hdb", TextDecoration.UNDERLINED)
         })
 
         add(empty())
 
-        add(buildText { note("Status:".toSmallCaps()) })
-        add(buildText {
-            when (survivalState) {
-                SurfServerState.RUNNING -> success("Der CastSMP ist erreichbar")
-                else -> error("Der CastSMP ist derzeit nicht erreichbar")
-            }
-        })
-
         if (survivalState == SurfServerState.RUNNING) {
-            add(empty())
-            add(buildText { note("Spieler:".toSmallCaps()) })
             add(buildText {
-                val playerCount = survivalSurfServer.getPlayerCount()
-                val maxPlayers = survivalSurfServer.maxPlayers
-                info("$playerCount / $maxPlayers Spieler online")
+                darkSpacer("» ")
+                info("Spieler: ")
+                append(coloredPlayerCount(survivalSurfServer.getPlayerCount(), " 👥"))
+            })
+
+            add(empty())
+            add(buildText {
+                white("꒑ ")
+                note("Direkt Teleport auf den Survival Server ")
+                darkSpacer("[")
+                gold("Premium")
+                darkSpacer("]")
+            })
+            add(buildText {
+                white("ꊐ ")
+                note("Teleport zum Survivalschiff")
+            })
+        } else {
+            add(buildText {
+                darkSpacer("» ")
+                error("Derzeit nicht verfügbar")
             })
         }
     }
@@ -131,4 +158,12 @@ object NavigatorContents {
     fun lobbyServers(): List<SurfServer> = SurfCoreApi
         .getServerByCategory(lobbyConfig.lobbyCategory)
         .sortedBy { it.displayName }
+
+    private fun coloredPlayerCount(playerCount: Int, extra: String) = buildText {
+        when (playerCount) {
+            0 -> error("${0}$extra")
+            in 1..10 -> warning("$playerCount$extra")
+            else -> success("$playerCount$extra")
+        }
+    }
 }

@@ -17,7 +17,7 @@ import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
 import dev.slne.surf.lobby.core.client.platform.LobbyPlatform
 import dev.slne.surf.lobby.core.client.pushback.PushbackStates
 import dev.slne.surf.lobby.core.client.visibility.PlayerVisibilityStates
-import dev.slne.surf.lobby.minestom.inventory.NavigatorView
+import dev.slne.surf.lobby.minestom.inventory.navigatorView
 import dev.slne.surf.lobby.minestom.visibility.PlayerVisibilityService
 import net.kyori.adventure.text.format.TextColor
 import net.minestom.server.component.DataComponents
@@ -37,7 +37,7 @@ object NavigatorHotbarItem : HotbarItem(LobbyItemContents.Navigator.SLOT, "navig
     }
 
     override fun onInteract(player: LobbyPlayer) {
-        NavigatorView.open(player)
+        navigatorView.open(player)
     }
 }
 
@@ -48,7 +48,10 @@ object ParkourHotbarItem : HotbarItem(LobbyItemContents.Parkour.SLOT, "parkour")
         builder.set(DataComponents.DYED_COLOR, TextColor.color(3, 252, 198))
         builder.set(
             DataComponents.TOOLTIP_DISPLAY,
-            TooltipDisplay(false, setOf(DataComponents.DYED_COLOR, DataComponents.ATTRIBUTE_MODIFIERS))
+            TooltipDisplay(
+                false,
+                setOf(DataComponents.DYED_COLOR, DataComponents.ATTRIBUTE_MODIFIERS)
+            )
         )
 
         displayName(LobbyItemContents.Parkour.name)
@@ -155,7 +158,8 @@ object ShowAllPlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT, 
     }
 }
 
-object ShowTeamPlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT, "visibility_team") {
+object ShowTeamPlayersHotbarItem :
+    HotbarItem(LobbyItemContents.Visibility.SLOT, "visibility_team") {
     override val permission = null
     override val placedOnJoin = false
 
@@ -178,7 +182,8 @@ object ShowTeamPlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT,
     }
 }
 
-object ShowNonePlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT, "visibility_none") {
+object ShowNonePlayersHotbarItem :
+    HotbarItem(LobbyItemContents.Visibility.SLOT, "visibility_none") {
     override val permission: String = LobbyPermissions.PLAYER_VISIBILITY_ITEM
     override val placedOnJoin = false
 
