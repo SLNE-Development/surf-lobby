@@ -17,7 +17,7 @@ import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
 import dev.slne.surf.lobby.core.client.platform.LobbyPlatform
 import dev.slne.surf.lobby.core.client.pushback.PushbackStates
 import dev.slne.surf.lobby.core.client.visibility.PlayerVisibilityStates
-import dev.slne.surf.lobby.minestom.inventory.navigatorView
+import dev.slne.surf.lobby.minestom.inventory.NavigatorView
 import dev.slne.surf.lobby.minestom.visibility.PlayerVisibilityService
 import net.kyori.adventure.text.format.TextColor
 import net.minestom.server.component.DataComponents
@@ -37,7 +37,7 @@ object NavigatorHotbarItem : HotbarItem(LobbyItemContents.Navigator.SLOT, "navig
     }
 
     override fun onInteract(player: LobbyPlayer) {
-        navigatorView.open(player)
+        NavigatorView.open(player)
     }
 }
 

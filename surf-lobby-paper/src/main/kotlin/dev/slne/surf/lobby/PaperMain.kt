@@ -1,12 +1,13 @@
 package dev.slne.surf.lobby
 
 import com.github.shynixn.mccoroutine.folia.SuspendingJavaPlugin
+import com.github.shynixn.mccoroutine.folia.scope
 import dev.slne.surf.api.paper.event.register
 import dev.slne.surf.api.paper.extensions.pluginManager
 import dev.slne.surf.api.paper.inventory.framework.register
 import dev.slne.surf.lobby.command.lobbyCommand
 import dev.slne.surf.lobby.command.spawnCommand
-import dev.slne.surf.lobby.core.client.event.eventServerBridge
+import dev.slne.surf.lobby.core.client.event.EventServerBridge
 import dev.slne.surf.lobby.core.client.redis.lobbyRedisLoader
 import dev.slne.surf.lobby.hook.nexo.NexoHook
 import dev.slne.surf.lobby.hook.npc.SurfNpcHook
@@ -48,7 +49,7 @@ class PaperMain : SuspendingJavaPlugin() {
         spawnCommand()
 
         lobbyRedisLoader.onLoad()
-        eventServerBridge.init()
+        EventServerBridge.init(scope)
         lobbyRedisLoader.onEnable()
     }
 

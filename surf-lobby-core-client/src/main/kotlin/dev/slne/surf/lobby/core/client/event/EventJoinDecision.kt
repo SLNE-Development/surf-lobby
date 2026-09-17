@@ -39,7 +39,7 @@ fun decideEventJoin(playerUuid: UUID): EventJoinAction {
         return EventJoinAction.EXTERNAL_TELEPORT
     }
 
-    return when (eventServerBridge.state.get()) {
+    return when (EventServerBridge.state.get()) {
         EventServerState.OPEN -> EventJoinAction.QUEUE
 
         EventServerState.CLOSED ->
