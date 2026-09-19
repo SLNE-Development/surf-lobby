@@ -7,10 +7,6 @@ surfCoreApi {
     withSurfRedis()
 }
 
-repositories {
-    mavenLocal()
-}
-
 dependencies {
     api("dev.slne.surf.event:surf-event-base-api-common:+")
 
@@ -20,6 +16,10 @@ dependencies {
     compileOnly("dev.slne.surf.profile:surf-profile-api:+")
     compileOnly("dev.slne.surf.settings:surf-settings-api:+")
     implementation("dev.slne.surf.event.data:surf-event-data-source:+")
+}
+
+tasks.shadowJar {
+    relocate("dev.slne.surf.event.data", "dev.slne.surf.lobby.libs")
 }
 
 sourceSets.test {

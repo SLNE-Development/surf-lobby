@@ -57,7 +57,7 @@ object LobbyNpcs {
                 withEquipment(
                     EquipmentSlot.MAIN_HAND,
                     ItemStack.builder(Material.fromKey(ItemTypeKeys.PAPER)).set(
-                        DataComponents.ITEM_MODEL, "nexo:astronaut-hat"
+                        DataComponents.ITEM_MODEL, "nexo:stoned-pickaxe"
                     ).build()
                 )
             }
@@ -87,7 +87,7 @@ object LobbyNpcs {
             withEquipment(
                 EquipmentSlot.MAIN_HAND,
                 ItemStack.builder(Material.fromKey(ItemTypeKeys.PAPER)).set(
-                    DataComponents.ITEM_MODEL, "nexo:stoned-pickaxe"
+                    DataComponents.ITEM_MODEL, "nexo:astronaut-hat"
                 ).build()
             )
         }

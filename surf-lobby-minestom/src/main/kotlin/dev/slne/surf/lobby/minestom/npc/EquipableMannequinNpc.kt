@@ -20,6 +20,7 @@ import net.minestom.server.network.packet.server.play.EntityAttributesPacket
 import net.minestom.server.network.packet.server.play.EntityEquipmentPacket
 import net.minestom.server.network.player.ResolvableProfile
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 class EquipableMannequinNpc(
     private val name: String,
@@ -31,7 +32,7 @@ class EquipableMannequinNpc(
     uuid: UUID = UUID.randomUUID(),
 ) : AbstractNpcEntity(EntityType.MANNEQUIN, uuid),
     EquipmentHandler { // TODO: Make MannequinNpc not final to be able to extend it and implement EquipmentHandler
-    private val equipment = mutableMapOf<EquipmentSlot, ItemStack>()
+    private val equipment = ConcurrentHashMap<EquipmentSlot, ItemStack>()
 
     init {
         editEntityMeta<MannequinMeta> { meta ->
