@@ -1,5 +1,6 @@
 package dev.slne.surf.lobby.core.client.menu
 
+import dev.slne.surf.api.core.font.toSmallCaps
 import dev.slne.surf.api.core.messages.adventure.buildText
 import dev.slne.surf.api.core.minimessage.miniMessage
 import dev.slne.surf.core.api.common.SurfCoreApi
@@ -86,15 +87,15 @@ object NavigatorContents {
 
             add(empty())
             add(buildText {
-                white("꒑ ")
-                white("Verbinden zum Survival Server ")
+                white("ꑰ ")
+                white("Verbinden zum Survival Server ".toSmallCaps())
                 darkSpacer("[")
                 note("Premium")
                 darkSpacer("]")
             })
             add(buildText {
-                white("ꊐ ")
-                white("Teleport zum Survival-Schiff")
+                white("ꑲ ")
+                white("Teleport zum Survival-Schiff".toSmallCaps())
             })
         } else {
             add(buildText {
@@ -160,15 +161,15 @@ object NavigatorContents {
             if (eventState == EventServerState.OPEN) {
                 add(empty())
                 add(buildText {
-                    white("꒑ ")
-                    white("Verbinden zum Event Server ")
+                    white("ꑰ ")
+                    white("Verbinden zum Event Server ".toSmallCaps())
                     darkSpacer("[")
                     note("Premium")
                     darkSpacer("]")
                 })
                 add(buildText {
-                    white("ꊐ ")
-                    white("Teleport zum Event-Schiff")
+                    white("ꑲ ")
+                    white("Teleport zum Event-Schiff".toSmallCaps())
                 })
             } else {
                 add(buildText {
