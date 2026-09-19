@@ -3,7 +3,6 @@ package dev.slne.surf.lobby.minestom.npc
 import dev.slne.minestom.lobby.api.extension.SchedulerManager
 import dev.slne.minestom.lobby.api.npc.MannequinNpc
 import dev.slne.minestom.lobby.api.npc.mannequinNpc
-import dev.slne.surf.api.core.generated.ItemTypeKeys
 import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.lobby.core.client.config.lobbyConfig
 import dev.slne.surf.lobby.core.client.event.EventJoinAction
@@ -56,7 +55,7 @@ object LobbyNpcs {
 
                 withEquipment(
                     EquipmentSlot.MAIN_HAND,
-                    ItemStack.builder(Material.fromKey(ItemTypeKeys.PAPER)).set(
+                    ItemStack.builder(Material.PAPER).set(
                         DataComponents.ITEM_MODEL, "nexo:stoned-pickaxe"
                     ).build()
                 )
@@ -77,16 +76,14 @@ object LobbyNpcs {
                     )
 
                     EventJoinAction.QUEUE -> LobbyQueue.queueToEventServer(player.uuid)
-
                     EventJoinAction.CLOSED_MESSAGE -> player.sendEventServerClosed()
-
                     EventJoinAction.NO_EVENT_MESSAGE -> player.sendNoEventRunning()
                 }
             }
 
             withEquipment(
                 EquipmentSlot.MAIN_HAND,
-                ItemStack.builder(Material.fromKey(ItemTypeKeys.PAPER)).set(
+                ItemStack.builder(Material.PAPER).set(
                     DataComponents.ITEM_MODEL, "nexo:astronaut-hat"
                 ).build()
             )
