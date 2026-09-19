@@ -226,5 +226,5 @@ object NavigatorContents {
         }
     }
 
-    private val COLOR_GOLD = TextColor.fromHexString("#FCC500")!!
+    private val COLOR_GOLD = TextColor.color(0xFCC500)
 }
