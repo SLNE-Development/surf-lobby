@@ -17,9 +17,13 @@ import dev.slne.surf.lobby.core.client.npc.LobbyNpcSkins
 import dev.slne.surf.lobby.core.client.queue.LobbyQueue
 import dev.slne.surf.lobby.minestom.LobbyMinestomEntrypoint
 import dev.slne.surf.lobby.minestom.location.toPos
+import net.minestom.server.component.DataComponents
 import net.minestom.server.coordinate.Pos
+import net.minestom.server.entity.EquipmentSlot
 import net.minestom.server.entity.Player
 import net.minestom.server.entity.PlayerSkin
+import net.minestom.server.item.ItemStack
+import net.minestom.server.item.Material
 import net.minestom.server.network.player.ResolvableProfile
 import net.minestom.server.sound.SoundEvent
 import net.minestom.server.timer.Task
@@ -39,15 +43,23 @@ object LobbyNpcs {
     fun spawnAll() {
         val instance = LobbyMinestomEntrypoint.lobbyInstance
 
-        survivalNpc = mannequinNpc("survival", instance, LobbyLocations.SURVIVAL_NPC.toPos()) {
-            displayName = LobbyNpcContents.survivalNpcName
-            profile = LobbyNpcSkins.SURVIVAL.toResolvableProfile()
-            scale = NPC_SCALE
+        survivalNpc =
+            mannequinNpc("survival", instance, LobbyLocations.SURVIVAL_NPC.toPos()) {
+                displayName = LobbyNpcContents.survivalNpcName
+                profile = LobbyNpcSkins.SURVIVAL.toResolvableProfile()
+                scale = NPC_SCALE
 
-            onInteract {
-                LobbyQueue.queueToSurvivalServer(it.player.uuid)
+                onInteract {
+                    LobbyQueue.queueToSurvivalServer(it.player.uuid)
+                }
+
+                setEquipment(
+                    EquipmentSlot.MAIN_HAND,
+                    ItemStack.builder(Material.PAPER).set(
+                        DataComponents.ITEM_MODEL, "nexo:stoned-pickaxe"
+                    ).build()
+                )
             }
-        }
 
         eventNpc = mannequinNpc("event", instance, LobbyLocations.EVENT_NPC.toPos()) {
             displayName = LobbyNpcContents.eventNpcName(EventServerDisplayName.current)
@@ -64,12 +76,17 @@ object LobbyNpcs {
                     )
 
                     EventJoinAction.QUEUE -> LobbyQueue.queueToEventServer(player.uuid)
-
                     EventJoinAction.CLOSED_MESSAGE -> player.sendEventServerClosed()
-
                     EventJoinAction.NO_EVENT_MESSAGE -> player.sendNoEventRunning()
                 }
             }
+
+            setEquipment(
+                EquipmentSlot.MAIN_HAND,
+                ItemStack.builder(Material.PAPER).set(
+                    DataComponents.ITEM_MODEL, "nexo:astronaut-hat"
+                ).build()
+            )
         }
 
         spawnRulesNpc = mannequinNpc("spawn_rules", instance, LobbyLocations.SPAWN_RULES.toPos()) {

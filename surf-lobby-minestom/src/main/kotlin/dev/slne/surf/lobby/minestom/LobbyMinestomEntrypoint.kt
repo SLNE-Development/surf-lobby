@@ -3,12 +3,13 @@ package dev.slne.surf.lobby.minestom
 import com.google.inject.Inject
 import com.google.inject.Provider
 import com.google.inject.Singleton
+import dev.slne.minestom.lobby.api.coroutine.minestomAsyncScope
 import dev.slne.minestom.lobby.api.instance.LobbyInstance
 import dev.slne.minestom.lobby.api.plugin.MinestomPluginEntrypoint
 import dev.slne.minestom.lobby.api.plugin.annotation.DataDirectory
 import dev.slne.surf.api.minestom.inventory.framework.register
 import dev.slne.surf.lobby.core.client.config.lobbyConfigHolder
-import dev.slne.surf.lobby.core.client.event.eventServerBridge
+import dev.slne.surf.lobby.core.client.event.EventServerBridge
 import dev.slne.surf.lobby.core.client.redis.lobbyRedisLoader
 import dev.slne.surf.lobby.minestom.inventory.NavigatorView
 import dev.slne.surf.lobby.minestom.inventory.lobbySelectorView
@@ -32,7 +33,7 @@ class LobbyMinestomEntrypoint @Inject constructor(
         lobbyConfigHolder.reload()
 
         lobbyRedisLoader.onLoad()
-        eventServerBridge.init()
+        EventServerBridge.init(minestomAsyncScope)
         lobbyRedisLoader.onEnable()
 
         NavigatorView.register()

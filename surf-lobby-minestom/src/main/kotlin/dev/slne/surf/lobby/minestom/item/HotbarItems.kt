@@ -48,7 +48,10 @@ object ParkourHotbarItem : HotbarItem(LobbyItemContents.Parkour.SLOT, "parkour")
         builder.set(DataComponents.DYED_COLOR, TextColor.color(3, 252, 198))
         builder.set(
             DataComponents.TOOLTIP_DISPLAY,
-            TooltipDisplay(false, setOf(DataComponents.DYED_COLOR, DataComponents.ATTRIBUTE_MODIFIERS))
+            TooltipDisplay(
+                false,
+                setOf(DataComponents.DYED_COLOR, DataComponents.ATTRIBUTE_MODIFIERS)
+            )
         )
 
         displayName(LobbyItemContents.Parkour.name)
@@ -155,7 +158,8 @@ object ShowAllPlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT, 
     }
 }
 
-object ShowTeamPlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT, "visibility_team") {
+object ShowTeamPlayersHotbarItem :
+    HotbarItem(LobbyItemContents.Visibility.SLOT, "visibility_team") {
     override val permission = null
     override val placedOnJoin = false
 
@@ -178,7 +182,8 @@ object ShowTeamPlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT,
     }
 }
 
-object ShowNonePlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT, "visibility_none") {
+object ShowNonePlayersHotbarItem :
+    HotbarItem(LobbyItemContents.Visibility.SLOT, "visibility_none") {
     override val permission: String = LobbyPermissions.PLAYER_VISIBILITY_ITEM
     override val placedOnJoin = false
 
