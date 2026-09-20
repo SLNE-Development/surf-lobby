@@ -32,8 +32,8 @@ import java.time.temporal.ChronoUnit
 object LobbyNpcs {
     private const val NPC_SCALE = 1.5
 
-    lateinit var survivalNpc: EquipableMannequinNpc
-    lateinit var eventNpc: EquipableMannequinNpc
+    lateinit var survivalNpc: MannequinNpc
+    lateinit var eventNpc: MannequinNpc
 
     lateinit var spawnRulesNpc: MannequinNpc
     lateinit var spawnSurvivalNpc: MannequinNpc
@@ -44,7 +44,7 @@ object LobbyNpcs {
         val instance = LobbyMinestomEntrypoint.lobbyInstance
 
         survivalNpc =
-            equipableMannequinNpc("survival", instance, LobbyLocations.SURVIVAL_NPC.toPos()) {
+            mannequinNpc("survival", instance, LobbyLocations.SURVIVAL_NPC.toPos()) {
                 displayName = LobbyNpcContents.survivalNpcName
                 profile = LobbyNpcSkins.SURVIVAL.toResolvableProfile()
                 scale = NPC_SCALE
@@ -53,7 +53,7 @@ object LobbyNpcs {
                     LobbyQueue.queueToSurvivalServer(it.player.uuid)
                 }
 
-                withEquipment(
+                setEquipment(
                     EquipmentSlot.MAIN_HAND,
                     ItemStack.builder(Material.PAPER).set(
                         DataComponents.ITEM_MODEL, "nexo:stoned-pickaxe"
@@ -61,7 +61,7 @@ object LobbyNpcs {
                 )
             }
 
-        eventNpc = equipableMannequinNpc("event", instance, LobbyLocations.EVENT_NPC.toPos()) {
+        eventNpc = mannequinNpc("event", instance, LobbyLocations.EVENT_NPC.toPos()) {
             displayName = LobbyNpcContents.eventNpcName(EventServerDisplayName.current)
             profile = LobbyNpcSkins.EVENT.toResolvableProfile()
             scale = NPC_SCALE
@@ -81,7 +81,7 @@ object LobbyNpcs {
                 }
             }
 
-            withEquipment(
+            setEquipment(
                 EquipmentSlot.MAIN_HAND,
                 ItemStack.builder(Material.PAPER).set(
                     DataComponents.ITEM_MODEL, "nexo:astronaut-hat"
