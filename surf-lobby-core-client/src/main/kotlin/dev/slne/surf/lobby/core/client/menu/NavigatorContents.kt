@@ -124,29 +124,21 @@ object NavigatorContents {
                 })
             }
 
-            add(empty())
-            add(buildText {
-                spacer("Unter anderem:")
-            }) // TODO: add event feature filter, only show "header: unter anderem" if there are features to show
+            if (currentEvent.features.isNotEmpty()) {
+                add(empty())
+                add(buildText {
+                    spacer("Unter anderem:")
+                })
 
-            add(buildText {
-                appendSpace()
-                white("▪ ")
-                spacer("Teleportation: ")
-                white("/tpa", TextDecoration.UNDERLINED)
-            })
-            add(buildText {
-                appendSpace()
-                white("▪ ")
-                spacer("Homes: ")
-                white("/home", TextDecoration.UNDERLINED)
-            })
-            add(buildText {
-                appendSpace()
-                white("▪ ")
-                spacer("Spawn: ")
-                white("/spawn", TextDecoration.UNDERLINED)
-            })
+                currentEvent.features.shuffled().take(3).forEach { feature ->
+                    add(buildText {
+                        appendSpace()
+                        white("▪ ")
+                        spacer("${feature.displayName}: ")
+                        white(feature.additions, TextDecoration.UNDERLINED)
+                    })
+                }
+            }
         }
 
         add(empty())
