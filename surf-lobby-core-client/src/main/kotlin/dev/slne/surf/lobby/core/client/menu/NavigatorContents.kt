@@ -147,48 +147,48 @@ object NavigatorContents {
                     })
                 }
             }
-        }
 
-        add(empty())
+            add(empty())
 
-        if (eventSurfServer?.state == SurfServerState.RUNNING) {
-            add(buildText {
-                darkSpacer("» ")
-                info("Spieler: ")
-                append(coloredPlayerCount(eventSurfServer.getPlayerCount(), " 👤"))
-            })
-
-            if (eventState == EventServerState.OPEN) {
-                add(empty())
+            if (eventSurfServer?.state == SurfServerState.RUNNING) {
                 add(buildText {
-                    append {
-                        white("ꑰ ")
-                        font(key("surf:menu"))
-                    }
+                    darkSpacer("» ")
+                    info("Spieler: ")
+                    append(coloredPlayerCount(eventSurfServer.getPlayerCount(), " 👤"))
+                })
 
-                    white("Verbinden zum Event Server ".toSmallCaps())
-                    darkSpacer("[")
-                    note("Premium")
-                    darkSpacer("]")
-                })
-                add(buildText {
-                    append {
-                        white("ꑲ ")
-                        font(key("surf:menu"))
-                    }
-                    white("Teleport zum Event-Schiff".toSmallCaps())
-                })
+                if (eventState == EventServerState.OPEN) {
+                    add(empty())
+                    add(buildText {
+                        append {
+                            white("ꑰ ")
+                            font(key("surf:menu"))
+                        }
+
+                        white("Verbinden zum Event Server ".toSmallCaps())
+                        darkSpacer("[")
+                        note("Premium")
+                        darkSpacer("]")
+                    })
+                    add(buildText {
+                        append {
+                            white("ꑲ ")
+                            font(key("surf:menu"))
+                        }
+                        white("Teleport zum Event-Schiff".toSmallCaps())
+                    })
+                } else {
+                    add(buildText {
+                        darkSpacer("» ")
+                        error("Derzeit geschlossen")
+                    })
+                }
             } else {
                 add(buildText {
                     darkSpacer("» ")
-                    error("Derzeit geschlossen")
+                    error("Derzeit nicht verfügbar")
                 })
             }
-        } else {
-            add(buildText {
-                darkSpacer("» ")
-                error("Derzeit nicht verfügbar")
-            })
         }
     }
 
