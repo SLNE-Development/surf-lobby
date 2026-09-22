@@ -89,9 +89,10 @@ object NavigatorContents {
             add(empty())
             add(buildText {
                 append {
-                    white("ꑰ ")
+                    white("ꑰ")
                     font(key("surf:menu"))
                 }
+                appendSpace()
                 white("Verbinden zum Survival Server ".toSmallCaps())
                 darkSpacer("[")
                 note("Premium")
@@ -99,9 +100,10 @@ object NavigatorContents {
             })
             add(buildText {
                 append {
-                    white("ꑲ ")
+                    white("ꑲ")
                     font(key("surf:menu"))
                 }
+                appendSpace()
 
                 white("Teleport zum Survival-Schiff".toSmallCaps())
             })
@@ -161,9 +163,10 @@ object NavigatorContents {
                     add(empty())
                     add(buildText {
                         append {
-                            white("ꑰ ")
+                            white("ꑰ")
                             font(key("surf:menu"))
                         }
+                        appendSpace()
 
                         white("Verbinden zum Event Server ".toSmallCaps())
                         darkSpacer("[")
@@ -172,9 +175,10 @@ object NavigatorContents {
                     })
                     add(buildText {
                         append {
-                            white("ꑲ ")
+                            white("ꑲ")
                             font(key("surf:menu"))
                         }
+                        appendSpace()
                         white("Teleport zum Event-Schiff".toSmallCaps())
                     })
                 } else {
