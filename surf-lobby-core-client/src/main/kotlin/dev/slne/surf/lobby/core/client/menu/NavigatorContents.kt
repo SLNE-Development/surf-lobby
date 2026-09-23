@@ -7,7 +7,7 @@ import dev.slne.surf.api.core.minimessage.miniMessage
 import dev.slne.surf.core.api.common.SurfCoreApi
 import dev.slne.surf.core.api.common.server.SurfServer
 import dev.slne.surf.core.api.common.server.state.SurfServerState
-import dev.slne.surf.event.base.api.common.state.EventServerState
+import dev.slne.surf.event.state.EventServerState
 import dev.slne.surf.event.data.EventDataSource
 import dev.slne.surf.lobby.core.client.config.lobbyConfig
 import dev.slne.surf.lobby.core.client.event.EventServerBridge

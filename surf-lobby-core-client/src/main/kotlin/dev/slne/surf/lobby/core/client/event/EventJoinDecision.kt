@@ -1,6 +1,6 @@
 package dev.slne.surf.lobby.core.client.event
 
-import dev.slne.surf.event.base.api.common.state.EventServerState
+import dev.slne.surf.event.state.EventServerState
 import dev.slne.surf.lobby.core.client.config.lobbyConfig
 import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
 import dev.slne.surf.lobby.core.client.platform.LobbyPlatform
@@ -48,7 +48,5 @@ fun decideEventJoin(playerUuid: UUID): EventJoinAction {
             } else {
                 EventJoinAction.CLOSED_MESSAGE
             }
-
-        EventServerState.UNKNOWN -> EventJoinAction.NO_EVENT_MESSAGE
     }
 }

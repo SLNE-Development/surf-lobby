@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import dev.slne.surf.api.gradle.util.slneReleases
 
 buildscript {
@@ -16,6 +17,11 @@ allprojects {
 }
 
 subprojects {
+    tasks.withType<ShadowJar>().configureEach {
+        relocate("dev.slne.surf.event.data", "dev.slne.surf.lobby.libs.event.data")
+        relocate("dev.slne.surf.event.state", "dev.slne.surf.lobby.libs.event.state")
+    }
+
     afterEvaluate {
         plugins.withType<PublishingPlugin> {
             configure<PublishingExtension> {
