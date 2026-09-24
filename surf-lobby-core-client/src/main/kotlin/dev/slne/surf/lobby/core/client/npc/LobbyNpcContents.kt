@@ -18,7 +18,7 @@ object LobbyNpcContents {
     fun eventNpcName(eventServerDisplayName: String) = buildText {
         primary(eventServerDisplayName.toSmallCaps(), TextDecoration.BOLD)
         appendNewline()
-        spacer("26.2")
+        spacer("26.3")
     }
 
     val spawnSurvivalNpcName = buildText {
