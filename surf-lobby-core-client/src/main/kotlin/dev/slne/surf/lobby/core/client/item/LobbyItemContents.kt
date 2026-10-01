@@ -180,17 +180,17 @@ object LobbyItemContents {
                 appendSpace()
                 spacer("-")
                 appendSpace()
-                success("Nur Teammitglieder")
+                success("Nur Teammitglieder", TextDecoration.BOLD)
             },
             buildText {
                 spacer("-")
                 appendSpace()
-                error("Nur Freunde", TextDecoration.BOLD)
+                error("Nur Freunde")
             },
             buildText {
                 spacer("-")
                 appendSpace()
-                error("Keine Spieler", TextDecoration.BOLD)
+                error("Keine Spieler")
             }
         )
 
