@@ -8,6 +8,7 @@ import dev.slne.surf.lobby.inventory.item.impl.pushback.PushbackDisableInventory
 import dev.slne.surf.lobby.inventory.item.impl.pushback.PushbackEnableInventoryItem
 import dev.slne.surf.lobby.inventory.item.impl.rewards.TrophiesItem
 import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowAllPlayersInventoryItem
+import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowFriendsPlayersInventoryItem
 import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowNonePlayersInventoryItem
 import dev.slne.surf.lobby.inventory.item.impl.visibility.ShowTeamPlayersInventoryItem
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap
@@ -48,6 +49,7 @@ abstract class InventoryItem(
             ShowNonePlayersInventoryItem,
             ShowTeamPlayersInventoryItem,
             ShowAllPlayersInventoryItem,
+            ShowFriendsPlayersInventoryItem,
             ProfileItem,
             ParkourItem,
             TrophiesItem

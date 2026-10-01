@@ -43,6 +43,7 @@ abstract class HotbarItem(
             ShowNonePlayersHotbarItem,
             ShowTeamPlayersHotbarItem,
             ShowAllPlayersHotbarItem,
+            ShowFriendsHotbarItem,
             ProfileHotbarItem,
             ParkourHotbarItem,
             TrophiesHotbarItem
