@@ -203,7 +203,7 @@ object ShowFriendsHotbarItem :
             type(SoundEvent.UI_BUTTON_CLICK)
         }
 
-        player.sendVisibilityShowFriends()
+        player.sendVisibilityShowNone()
     }
 }
 
