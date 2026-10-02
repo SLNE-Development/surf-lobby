@@ -179,7 +179,7 @@ object ShowTeamPlayersHotbarItem :
             type(SoundEvent.UI_BUTTON_CLICK)
         }
 
-        player.sendVisibilityShowNone()
+        player.sendVisibilityShowFriends()
     }
 }
 
