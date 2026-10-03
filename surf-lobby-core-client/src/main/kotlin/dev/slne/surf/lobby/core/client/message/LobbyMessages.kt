@@ -68,6 +68,13 @@ object LobbyMessages {
         info(".")
     }
 
+    fun Audience.sendVisibilityShowFriends() = sendText {
+        appendInfoPrefix()
+        info("Du siehst jetzt ")
+        success("nur noch Freunde")
+        info(".")
+    }
+
     fun Audience.sendVisibilityShowTeam() = sendText {
         appendInfoPrefix()
         info("Du siehst jetzt nur noch ")

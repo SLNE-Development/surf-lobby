@@ -161,6 +161,11 @@ object LobbyItemContents {
             buildText {
                 spacer("-")
                 appendSpace()
+                error("Nur Freunde")
+            },
+            buildText {
+                spacer("-")
+                appendSpace()
                 error("Keine Spieler")
             }
         )
@@ -180,7 +185,12 @@ object LobbyItemContents {
             buildText {
                 spacer("-")
                 appendSpace()
-                error("Keine Spieler", TextDecoration.BOLD)
+                error("Nur Freunde")
+            },
+            buildText {
+                spacer("-")
+                appendSpace()
+                error("Keine Spieler")
             }
         )
 
@@ -196,10 +206,39 @@ object LobbyItemContents {
                 error("Nur Teammitglieder")
             },
             buildText {
+                spacer("-")
+                appendSpace()
+                error("Nur Freunde")
+            },
+            buildText {
                 appendSpace()
                 spacer("-")
                 appendSpace()
                 success("Keine Spieler", TextDecoration.BOLD)
+            }
+        )
+
+        val showFriendsLore = lore(
+            buildText {
+                spacer("-")
+                appendSpace()
+                error("Alle Spieler")
+            },
+            buildText {
+                spacer("-")
+                appendSpace()
+                error("Nur Teammitglieder")
+            },
+            buildText {
+                appendSpace()
+                spacer("-")
+                appendSpace()
+                success("Nur Freunde", TextDecoration.BOLD)
+            },
+            buildText {
+                spacer("-")
+                appendSpace()
+                error("Keine Spieler")
             }
         )
 

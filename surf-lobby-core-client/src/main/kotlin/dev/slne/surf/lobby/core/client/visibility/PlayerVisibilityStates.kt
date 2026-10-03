@@ -8,6 +8,7 @@ object PlayerVisibilityStates {
 
     enum class VisibilityState {
         SHOW_ALL,
+        SHOW_FRIENDS,
         SHOW_TEAM,
         SHOW_NONE
     }

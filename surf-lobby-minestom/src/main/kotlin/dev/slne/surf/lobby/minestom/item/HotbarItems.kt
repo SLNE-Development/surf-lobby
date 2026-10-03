@@ -11,6 +11,7 @@ import dev.slne.surf.lobby.core.client.item.LobbyItemContents
 import dev.slne.surf.lobby.core.client.message.LobbyMessages.sendPushbackDisabled
 import dev.slne.surf.lobby.core.client.message.LobbyMessages.sendPushbackEnabled
 import dev.slne.surf.lobby.core.client.message.LobbyMessages.sendVisibilityShowAll
+import dev.slne.surf.lobby.core.client.message.LobbyMessages.sendVisibilityShowFriends
 import dev.slne.surf.lobby.core.client.message.LobbyMessages.sendVisibilityShowNone
 import dev.slne.surf.lobby.core.client.message.LobbyMessages.sendVisibilityShowTeam
 import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
@@ -166,6 +167,30 @@ object ShowTeamPlayersHotbarItem :
     override fun buildItem() = buildItem(Material.YELLOW_CANDLE) {
         displayName(LobbyItemContents.Visibility.name)
         lore(*LobbyItemContents.Visibility.showTeamLore)
+    }
+
+    override fun onInteract(player: LobbyPlayer) {
+        PlayerVisibilityService.setState(
+            player,
+            PlayerVisibilityStates.VisibilityState.SHOW_FRIENDS
+        )
+        player.inventory.setItemStack(slot, ShowFriendsHotbarItem.item)
+        player.playSound(true) {
+            type(SoundEvent.UI_BUTTON_CLICK)
+        }
+
+        player.sendVisibilityShowFriends()
+    }
+}
+
+object ShowFriendsHotbarItem :
+    HotbarItem(LobbyItemContents.Visibility.SLOT, "visibility_friends") {
+    override val permission: String = LobbyPermissions.PLAYER_VISIBILITY_ITEM
+    override val placedOnJoin = false
+
+    override fun buildItem() = buildItem(Material.PINK_CANDLE) {
+        displayName(LobbyItemContents.Visibility.name)
+        lore(*LobbyItemContents.Visibility.showFriendsLore)
     }
 
     override fun onInteract(player: LobbyPlayer) {

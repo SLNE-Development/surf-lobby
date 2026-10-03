@@ -14,4 +14,5 @@ dependencies {
     compileOnly("dev.slne.surf.trophy:surf-trophy-api:+")
     compileOnly("dev.slne.surf.profile:surf-profile-api:+")
     compileOnly("dev.slne.surf.settings:surf-settings-api:+")
+    compileOnly("dev.slne.surf.friends:surf-friends-api:+")
 }

@@ -1,5 +1,6 @@
 package dev.slne.surf.lobby.manager
 
+import dev.slne.surf.friends.api.player.FriendsPlayer
 import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
 import dev.slne.surf.lobby.core.client.visibility.PlayerVisibilityStates
 import dev.slne.surf.lobby.core.client.visibility.PlayerVisibilityStates.VisibilityState
@@ -9,7 +10,6 @@ import org.bukkit.entity.Player
 import java.util.*
 
 object PlayerVisibilityManager {
-
     fun getState(uuid: UUID): VisibilityState {
         return PlayerVisibilityStates.getState(uuid)
     }
@@ -29,6 +29,8 @@ object PlayerVisibilityManager {
         val joiningIsTeamMember = player.hasPermission(LobbyPermissions.PLAYER_VISIBILITY_TEAM)
         val lobbyPlugin = plugin
 
+        val joiningFriendPlayerFriends = FriendsPlayer[player.uniqueId].onlineFriendUuids
+
         for (otherPlayer in Bukkit.getOnlinePlayers()) {
             if (otherPlayer == player) {
                 continue
@@ -44,6 +46,11 @@ object PlayerVisibilityManager {
                 }
 
                 VisibilityState.SHOW_NONE -> otherPlayer.hidePlayer(lobbyPlugin, player)
+                VisibilityState.SHOW_FRIENDS -> if (joiningFriendPlayerFriends.contains(otherPlayer.uniqueId)) {
+                    otherPlayer.showPlayer(lobbyPlugin, player)
+                } else {
+                    otherPlayer.hidePlayer(lobbyPlugin, player)
+                }
             }
         }
     }
@@ -55,6 +62,7 @@ object PlayerVisibilityManager {
     private fun updatePlayerVisibility(player: Player) {
         val lobbyPlugin = plugin
         val onlinePlayers = Bukkit.getOnlinePlayers()
+        val playerFriends = FriendsPlayer[player.uniqueId].onlineFriendUuids
 
         when (getState(player.uniqueId)) {
             VisibilityState.SHOW_ALL -> for (otherPlayer in onlinePlayers) {
@@ -76,6 +84,16 @@ object PlayerVisibilityManager {
             VisibilityState.SHOW_NONE -> for (otherPlayer in onlinePlayers) {
                 if (otherPlayer != player) {
                     player.hidePlayer(lobbyPlugin, otherPlayer)
+                }
+            }
+
+            VisibilityState.SHOW_FRIENDS -> for (otherPlayer in onlinePlayers) {
+                if (otherPlayer != player) {
+                    if (playerFriends.contains(otherPlayer.uniqueId)) {
+                        player.showPlayer(lobbyPlugin, otherPlayer)
+                    } else {
+                        player.hidePlayer(lobbyPlugin, otherPlayer)
+                    }
                 }
             }
         }

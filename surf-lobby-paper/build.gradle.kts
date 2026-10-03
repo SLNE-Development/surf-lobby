@@ -15,6 +15,7 @@ dependencies {
     compileOnly("dev.slne.surf.npc:surf-npc-api:+")
     compileOnly("com.nexomc:nexo:1.25.0-dev.11")
     compileOnly("dev.slne.surf.parkour:surf-parkour-api:+")
+    compileOnly("dev.slne.surf.friends:surf-friends-api:+")
     implementation("dev.slne.surf.tab:surf-tab-api:+")
 }
 
@@ -36,6 +37,7 @@ surfPaperPluginApi {
         registerSoft("surf-profile-paper")
         registerSoft("surf-settings-paper")
         registerRequired("surf-queue-paper")
+        registerRequired("surf-friends-paper")
     }
 }
 
