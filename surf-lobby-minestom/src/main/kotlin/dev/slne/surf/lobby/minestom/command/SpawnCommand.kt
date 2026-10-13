@@ -1,7 +1,7 @@
 package dev.slne.surf.lobby.minestom.command
 
-import dev.slne.minestom.lobby.api.command.commandapi.dsl.commandTree
-import dev.slne.minestom.lobby.api.command.commandapi.dsl.playerExecutor
+import dev.slne.surf.api.minestom.command.dsl.commandTree
+import dev.slne.surf.api.minestom.command.dsl.playerExecutor
 import dev.slne.surf.lobby.core.client.config.lobbyConfig
 import dev.slne.surf.lobby.core.client.message.LobbyMessages.sendSpawnTeleported
 import dev.slne.surf.lobby.core.client.permission.LobbyPermissions

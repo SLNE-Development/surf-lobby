@@ -6,6 +6,7 @@ plugins {
 }
 
 repositories {
+    mavenLocal()
     maven("https://repo.nexomc.com/snapshots")
 }
 

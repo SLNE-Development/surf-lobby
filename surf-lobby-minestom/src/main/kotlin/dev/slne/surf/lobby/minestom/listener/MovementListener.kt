@@ -1,9 +1,7 @@
 package dev.slne.surf.lobby.minestom.listener
 
-import com.google.inject.Inject
-import dev.slne.minestom.lobby.api.event.EventRegistrar
-import dev.slne.minestom.lobby.api.extension.addListener
-import dev.slne.minestom.lobby.api.player.lobbyPlayer
+import dev.slne.surf.api.minestom.event.EventRegistrar
+import dev.slne.surf.api.minestom.extension.addListener
 import dev.slne.surf.lobby.core.client.config.lobbyConfig
 import dev.slne.surf.lobby.core.client.jump.DoubleJumpTracker
 import dev.slne.surf.lobby.minestom.elytra.ElytraBoostHandler
@@ -12,10 +10,10 @@ import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerMoveEvent
 
-class MovementListener @Inject constructor() : EventRegistrar {
+object MovementListener : EventRegistrar {
     override fun register(node: EventNode<Event>) {
         node.addListener<PlayerMoveEvent> { event ->
-            val player = event.lobbyPlayer
+            val player = event.player
             val minHeight = lobbyConfig.minHeight
 
             if (event.newPosition.y < minHeight) {
