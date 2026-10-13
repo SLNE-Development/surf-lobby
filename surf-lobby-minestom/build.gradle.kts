@@ -7,10 +7,6 @@ surfMinestomApi {
     withSurfRedis()
 }
 
-repositories {
-    mavenLocal()
-}
-
 minestomPluginFile {
     main = "dev.slne.surf.lobby.minestom.LobbyMinestomPlugin"
     authors = listOf("red")
