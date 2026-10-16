@@ -1,8 +1,7 @@
 package dev.slne.surf.lobby.minestom.listener
 
-import com.google.inject.Inject
-import dev.slne.minestom.lobby.api.event.EventRegistrar
-import dev.slne.minestom.lobby.api.extension.addListener
+import dev.slne.surf.api.minestom.event.EventRegistrar
+import dev.slne.surf.api.minestom.extension.addListener
 import dev.slne.surf.lobby.core.client.hook.ParkourHook
 import dev.slne.surf.lobby.core.client.jump.DoubleJumpTracker
 import dev.slne.surf.lobby.minestom.util.blocksPerTick
@@ -16,7 +15,7 @@ import net.minestom.server.event.player.PlayerInputEvent
 import net.minestom.server.network.packet.server.play.ParticlePacket
 import net.minestom.server.particle.Particle
 
-class DoubleJumpListener @Inject constructor() : EventRegistrar {
+object DoubleJumpListener : EventRegistrar {
     override fun register(node: EventNode<Event>) {
         node.addListener<PlayerInputEvent> { event ->
             val player = event.player

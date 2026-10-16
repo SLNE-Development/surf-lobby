@@ -1,14 +1,14 @@
 package dev.slne.surf.lobby.minestom.elytra
 
-import dev.slne.minestom.lobby.api.player.LobbyPlayer
-import dev.slne.minestom.lobby.api.player.playSpinAttackAnimation
 import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.api.minestom.builder.buildItem
+import dev.slne.surf.api.minestom.permission.hasPermission
 import dev.slne.surf.lobby.core.client.elytra.ElytraBoostTracker
 import dev.slne.surf.lobby.core.client.hook.ParkourHook
 import dev.slne.surf.lobby.core.client.item.LobbyItemContents
 import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
 import dev.slne.surf.lobby.minestom.util.blocksPerTick
+import dev.slne.surf.lobby.minestom.util.playSpinAttackAnimation
 import net.minestom.server.component.DataComponents
 import net.minestom.server.coordinate.Point
 import net.minestom.server.coordinate.Vec
@@ -22,7 +22,7 @@ import net.minestom.server.sound.SoundEvent
 import net.minestom.server.utils.Unit
 
 object ElytraBoostHandler {
-    fun checkAndBoost(player: LobbyPlayer) {
+    fun checkAndBoost(player: Player) {
         if (!player.hasPermission(LobbyPermissions.ELYTRA_BOOST)) {
             return
         }
@@ -57,7 +57,7 @@ object ElytraBoostHandler {
     }
 
 
-    fun boostFlight(player: LobbyPlayer) {
+    fun boostFlight(player: Player) {
         if (!ElytraBoostTracker.isBoosting(player.uuid)) {
             return
         }
@@ -78,7 +78,7 @@ object ElytraBoostHandler {
         ElytraBoostTracker.markBoosted(player.uuid)
     }
 
-    fun clearBoost(player: LobbyPlayer) {
+    fun clearBoost(player: Player) {
         if (ElytraBoostTracker.clear(player.uuid)) {
             player.setEquipment(EquipmentSlot.CHESTPLATE, ItemStack.AIR)
         }

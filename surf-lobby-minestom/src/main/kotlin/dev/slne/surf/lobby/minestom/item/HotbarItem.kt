@@ -1,10 +1,10 @@
 package dev.slne.surf.lobby.minestom.item
 
-import dev.slne.minestom.lobby.api.player.LobbyPlayer
 import dev.slne.surf.api.core.util.freeze
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
+import net.minestom.server.entity.Player
 import net.minestom.server.item.ItemStack
 import net.minestom.server.tag.Tag
 
@@ -13,7 +13,7 @@ abstract class HotbarItem(
     private val id: String
 ) {
     abstract val permission: String?
-    abstract fun onInteract(player: LobbyPlayer)
+    abstract fun onInteract(player: Player)
 
     protected abstract fun buildItem(): ItemStack
 
@@ -28,9 +28,9 @@ abstract class HotbarItem(
      * Builds the item for a specific player. Override this method to provide player-specific
      * items. By default, the static item is used.
      */
-    protected open fun buildItemForPlayer(player: LobbyPlayer): ItemStack? = null
+    protected open fun buildItemForPlayer(player: Player): ItemStack? = null
 
-    fun getItemForPlayer(player: LobbyPlayer): ItemStack =
+    fun getItemForPlayer(player: Player): ItemStack =
         buildItemForPlayer(player)?.withTag(TAG, id) ?: item
 
     companion object {

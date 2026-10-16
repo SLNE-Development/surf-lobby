@@ -1,9 +1,8 @@
 package dev.slne.surf.lobby.minestom.listener
 
-import com.google.inject.Inject
-import dev.slne.minestom.lobby.api.event.EventRegistrar
-import dev.slne.minestom.lobby.api.extension.addListener
-import dev.slne.minestom.lobby.api.player.lobbyPlayer
+import dev.slne.surf.api.minestom.event.EventRegistrar
+import dev.slne.surf.api.minestom.extension.addListener
+import dev.slne.surf.api.minestom.permission.hasPermission
 import dev.slne.surf.lobby.core.client.pushback.PushbackStates
 import dev.slne.surf.lobby.core.client.util.yearProgress
 import dev.slne.surf.lobby.minestom.elytra.ElytraBoostHandler
@@ -18,12 +17,12 @@ import net.minestom.server.event.player.PlayerSpawnEvent
 import net.minestom.server.item.ItemStack
 import java.time.LocalDate
 
-class LobbyPlayerListener @Inject constructor() : EventRegistrar {
+object LobbyPlayerListener : EventRegistrar {
     override fun register(node: EventNode<Event>) {
         node.addListener<PlayerSpawnEvent> { event ->
             if (!event.isFirstSpawn) return@addListener
 
-            val player = event.lobbyPlayer
+            val player = event.player
             val inventory = player.inventory
 
             player.setHeldItemSlot(4)
@@ -50,7 +49,7 @@ class LobbyPlayerListener @Inject constructor() : EventRegistrar {
         node.addListener<PlayerDisconnectEvent> { event ->
             PushbackStates.remove(event.player.uuid)
             PlayerVisibilityService.remove(event.player.uuid)
-            ElytraBoostHandler.clearBoost(event.lobbyPlayer)
+            ElytraBoostHandler.clearBoost(event.player)
         }
     }
 

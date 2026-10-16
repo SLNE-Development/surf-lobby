@@ -1,9 +1,9 @@
 package dev.slne.surf.lobby.minestom.npc
 
-import dev.slne.minestom.lobby.api.extension.SchedulerManager
-import dev.slne.minestom.lobby.api.npc.MannequinNpc
-import dev.slne.minestom.lobby.api.npc.mannequinNpc
 import dev.slne.surf.api.core.messages.adventure.playSound
+import dev.slne.surf.api.minestom.extension.SchedulerManager
+import dev.slne.surf.api.minestom.npc.MannequinNpc
+import dev.slne.surf.api.minestom.npc.mannequinNpc
 import dev.slne.surf.lobby.core.client.config.lobbyConfig
 import dev.slne.surf.lobby.core.client.event.EventJoinAction
 import dev.slne.surf.lobby.core.client.event.EventServerDisplayName
@@ -15,7 +15,7 @@ import dev.slne.surf.lobby.core.client.message.LobbyMessages.sendNpcRules
 import dev.slne.surf.lobby.core.client.npc.LobbyNpcContents
 import dev.slne.surf.lobby.core.client.npc.LobbyNpcSkins
 import dev.slne.surf.lobby.core.client.queue.LobbyQueue
-import dev.slne.surf.lobby.minestom.LobbyMinestomEntrypoint
+import dev.slne.surf.lobby.minestom.LobbyMinestomPlugin
 import dev.slne.surf.lobby.minestom.location.toPos
 import net.minestom.server.component.DataComponents
 import net.minestom.server.coordinate.Pos
@@ -41,7 +41,7 @@ object LobbyNpcs {
     lateinit var shopNpc: MannequinNpc
 
     fun spawnAll() {
-        val instance = LobbyMinestomEntrypoint.lobbyInstance
+        val instance = LobbyMinestomPlugin.lobbyInstance
 
         survivalNpc =
             mannequinNpc("survival", instance, LobbyLocations.SURVIVAL_NPC.toPos()) {

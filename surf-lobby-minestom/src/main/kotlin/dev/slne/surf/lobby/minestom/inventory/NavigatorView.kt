@@ -1,7 +1,5 @@
 package dev.slne.surf.lobby.minestom.inventory
 
-import dev.slne.minestom.lobby.api.item.invisibleItem
-import dev.slne.minestom.lobby.api.player.requireLobbyPlayer
 import dev.slne.surf.api.core.messages.Colors
 import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.api.minestom.inventory.framework.dsl.onItemClick
@@ -15,6 +13,7 @@ import dev.slne.surf.api.minestom.inventory.framework.view.paginatedSurfView
 import dev.slne.surf.api.minestom.inventory.framework.view.pagination.pagination
 import dev.slne.surf.api.minestom.inventory.framework.view.settings
 import dev.slne.surf.api.minestom.inventory.framework.view.settings.PaginationViewRows
+import dev.slne.surf.api.minestom.permission.hasPermission
 import dev.slne.surf.lobby.core.client.config.lobbyConfig
 import dev.slne.surf.lobby.core.client.location.LobbyLocations
 import dev.slne.surf.lobby.core.client.menu.LobbySelectorService
@@ -23,6 +22,7 @@ import dev.slne.surf.lobby.core.client.message.LobbyMessages.sendNavigatorRules
 import dev.slne.surf.lobby.core.client.message.LobbyMessages.sendNavigatorSpawnTeleported
 import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
 import dev.slne.surf.lobby.core.client.queue.LobbyQueue
+import dev.slne.surf.lobby.minestom.item.invisibleItem
 import dev.slne.surf.lobby.minestom.location.toPos
 import me.devnatan.inventoryframework.View
 import me.devnatan.inventoryframework.ViewConfigBuilder
@@ -52,7 +52,7 @@ object NavigatorView : View() {
 
     override fun onFirstRender(render: RenderContext) {
         render.layoutSlot('S').withItem(survivalServerItem).onClick { click ->
-            val player = click.player.requireLobbyPlayer()
+            val player = click.player
 
             if (player.hasPermission(LobbyPermissions.INSTANT_JOIN) && click.isLeftClick) {
                 LobbyQueue.queueToSurvivalServer(player.uuid)
@@ -65,7 +65,7 @@ object NavigatorView : View() {
         }
 
         render.layoutSlot('E').withItem(eventServerItem).onClick { click ->
-            val player = click.player.requireLobbyPlayer()
+            val player = click.player
 
             if (lobbyConfig.externalEventEnabled && lobbyConfig.externalEventReplacesDefault) {
                 player.teleport(lobbyConfig.externalEventTeleportLocation.toPos()).thenRun {

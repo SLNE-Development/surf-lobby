@@ -1,6 +1,5 @@
 package dev.slne.surf.lobby.minestom.item
 
-import dev.slne.minestom.lobby.api.player.LobbyPlayer
 import dev.slne.surf.api.core.messages.adventure.playSound
 import dev.slne.surf.api.minestom.builder.buildItem
 import dev.slne.surf.api.minestom.inventory.framework.open
@@ -22,6 +21,7 @@ import dev.slne.surf.lobby.minestom.inventory.NavigatorView
 import dev.slne.surf.lobby.minestom.visibility.PlayerVisibilityService
 import net.kyori.adventure.text.format.TextColor
 import net.minestom.server.component.DataComponents
+import net.minestom.server.entity.Player
 import net.minestom.server.entity.PlayerSkin
 import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
@@ -37,7 +37,7 @@ object NavigatorHotbarItem : HotbarItem(LobbyItemContents.Navigator.SLOT, "navig
         lore(*LobbyItemContents.Navigator.lore)
     }
 
-    override fun onInteract(player: LobbyPlayer) {
+    override fun onInteract(player: Player) {
         NavigatorView.open(player)
     }
 }
@@ -59,7 +59,7 @@ object ParkourHotbarItem : HotbarItem(LobbyItemContents.Parkour.SLOT, "parkour")
         lore(*LobbyItemContents.Parkour.lore)
     }
 
-    override fun onInteract(player: LobbyPlayer) {
+    override fun onInteract(player: Player) {
         LobbyPlatform.launch {
             if (ParkourHook.available) {
                 ParkourHook.openParkourGui(player.uuid)
@@ -73,13 +73,13 @@ object ProfileHotbarItem : HotbarItem(LobbyItemContents.Profile.SLOT, "profile")
 
     override fun buildItem() = buildItem(Material.PLAYER_HEAD) {}
 
-    override fun onInteract(player: LobbyPlayer) {
+    override fun onInteract(player: Player) {
         if (ProfileHook.available) {
             ProfileHook.openMenu(player.uuid)
         }
     }
 
-    override fun buildItemForPlayer(player: LobbyPlayer): ItemStack =
+    override fun buildItemForPlayer(player: Player): ItemStack =
         buildItem(Material.PLAYER_HEAD) {
             player.skin?.let { skin: PlayerSkin ->
                 builder.set(DataComponents.PROFILE, ResolvableProfile(skin))
@@ -97,7 +97,7 @@ object TrophiesHotbarItem : HotbarItem(LobbyItemContents.Trophies.SLOT, "trophie
         lore(*LobbyItemContents.Trophies.lore)
     }
 
-    override fun onInteract(player: LobbyPlayer) {
+    override fun onInteract(player: Player) {
         if (TrophyHook.available) {
             TrophyHook.openMenu(player.uuid)
         }
@@ -113,7 +113,7 @@ object PushbackDisableHotbarItem : HotbarItem(LobbyItemContents.Pushback.SLOT, "
         lore(*LobbyItemContents.Pushback.enabledLore)
     }
 
-    override fun onInteract(player: LobbyPlayer) {
+    override fun onInteract(player: Player) {
         PushbackStates.remove(player.uuid)
         player.inventory.setItemStack(slot, PushbackEnableHotbarItem.item)
 
@@ -129,7 +129,7 @@ object PushbackEnableHotbarItem : HotbarItem(LobbyItemContents.Pushback.SLOT, "p
         lore(*LobbyItemContents.Pushback.disabledLore)
     }
 
-    override fun onInteract(player: LobbyPlayer) {
+    override fun onInteract(player: Player) {
         PushbackStates.add(player.uuid)
         player.inventory.setItemStack(slot, PushbackDisableHotbarItem.item)
 
@@ -145,7 +145,7 @@ object ShowAllPlayersHotbarItem : HotbarItem(LobbyItemContents.Visibility.SLOT, 
         lore(*LobbyItemContents.Visibility.showAllLore)
     }
 
-    override fun onInteract(player: LobbyPlayer) {
+    override fun onInteract(player: Player) {
         PlayerVisibilityService.setState(
             player,
             PlayerVisibilityStates.VisibilityState.SHOW_TEAM
@@ -169,7 +169,7 @@ object ShowTeamPlayersHotbarItem :
         lore(*LobbyItemContents.Visibility.showTeamLore)
     }
 
-    override fun onInteract(player: LobbyPlayer) {
+    override fun onInteract(player: Player) {
         PlayerVisibilityService.setState(
             player,
             PlayerVisibilityStates.VisibilityState.SHOW_FRIENDS
@@ -193,7 +193,7 @@ object ShowFriendsHotbarItem :
         lore(*LobbyItemContents.Visibility.showFriendsLore)
     }
 
-    override fun onInteract(player: LobbyPlayer) {
+    override fun onInteract(player: Player) {
         PlayerVisibilityService.setState(
             player,
             PlayerVisibilityStates.VisibilityState.SHOW_NONE
@@ -217,7 +217,7 @@ object ShowNonePlayersHotbarItem :
         lore(*LobbyItemContents.Visibility.showNoneLore)
     }
 
-    override fun onInteract(player: LobbyPlayer) {
+    override fun onInteract(player: Player) {
         PlayerVisibilityService.setState(
             player,
             PlayerVisibilityStates.VisibilityState.SHOW_ALL

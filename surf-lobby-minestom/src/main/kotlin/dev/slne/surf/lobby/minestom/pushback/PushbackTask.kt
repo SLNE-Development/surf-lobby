@@ -1,9 +1,8 @@
 package dev.slne.surf.lobby.minestom.pushback
 
-import dev.slne.minestom.lobby.api.extension.ConnectionManager
-import dev.slne.minestom.lobby.api.extension.SchedulerManager
-import dev.slne.minestom.lobby.api.player.LobbyPlayer
-import dev.slne.minestom.lobby.api.player.getLobbyPlayer
+import dev.slne.surf.api.minestom.extension.ConnectionManager
+import dev.slne.surf.api.minestom.extension.SchedulerManager
+import dev.slne.surf.api.minestom.permission.hasPermission
 import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
 import dev.slne.surf.lobby.core.client.pushback.PushbackStates
 import dev.slne.surf.lobby.minestom.util.blocksPerTick
@@ -20,7 +19,7 @@ object PushbackTask {
     fun start() {
         task = SchedulerManager.scheduleTask({
             for (uuid in PushbackStates.all()) {
-                val player = ConnectionManager.getLobbyPlayer(uuid) ?: continue
+                val player = ConnectionManager.getOnlinePlayerByUuid(uuid) ?: continue
                 val instance = player.instance ?: continue
                 val position = player.position
 
@@ -29,8 +28,7 @@ object PushbackTask {
                     PushbackStates.RANGE,
                     EntityTracker.Target.PLAYERS,
                     fun(nearby) {
-                        if (nearby !is LobbyPlayer ||
-                            nearby == player ||
+                        if (nearby == player ||
                             nearby.hasPermission(LobbyPermissions.PUSHBACK_ITEM)
                         ) {
                             return
