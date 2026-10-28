@@ -12,7 +12,7 @@ object LobbyNpcContents {
     val survivalNpcName = buildText {
         note("CastSMP".toSmallCaps()).decorate(TextDecoration.BOLD)
         appendNewline()
-        spacer("26.2")
+        spacer("26.3")
     }
 
     fun eventNpcName(eventServerDisplayName: String) = buildText {
