@@ -5,7 +5,7 @@ import dev.slne.surf.core.api.common.SurfCoreApi
 import dev.slne.surf.lobby.core.client.config.lobbyConfig
 import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
 import dev.slne.surf.lobby.core.client.platform.LobbyPlatform
-import dev.slne.surf.queue.api.queue
+import dev.slne.surf.player.api.queue.SurfQueueApi
 import java.util.*
 
 object LobbyQueue {
@@ -79,7 +79,7 @@ object LobbyQueue {
                         return@launch
                     }
 
-                    val success = server.queue().enqueue(playerUuid)
+                    val success = SurfQueueApi.queue(server).enqueue(playerUuid)
 
                     if (success) {
                         LobbyPlatform.audience(playerUuid)?.sendText {

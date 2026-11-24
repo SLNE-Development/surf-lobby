@@ -1,10 +1,10 @@
 package dev.slne.surf.lobby.manager
 
-import dev.slne.surf.friends.api.player.FriendsPlayer
 import dev.slne.surf.lobby.core.client.permission.LobbyPermissions
 import dev.slne.surf.lobby.core.client.visibility.PlayerVisibilityStates
 import dev.slne.surf.lobby.core.client.visibility.PlayerVisibilityStates.VisibilityState
 import dev.slne.surf.lobby.plugin
+import dev.slne.surf.player.api.friends.SurfFriendsApi
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
@@ -29,7 +29,7 @@ object PlayerVisibilityManager {
         val joiningIsTeamMember = player.hasPermission(LobbyPermissions.PLAYER_VISIBILITY_TEAM)
         val lobbyPlugin = plugin
 
-        val joiningFriendPlayerFriends = FriendsPlayer[player.uniqueId].onlineFriendUuids
+        val joiningFriendPlayerFriends = SurfFriendsApi.onlineFriendUuids(player.uniqueId)
 
         for (otherPlayer in Bukkit.getOnlinePlayers()) {
             if (otherPlayer == player) {
@@ -62,7 +62,7 @@ object PlayerVisibilityManager {
     private fun updatePlayerVisibility(player: Player) {
         val lobbyPlugin = plugin
         val onlinePlayers = Bukkit.getOnlinePlayers()
-        val playerFriends = FriendsPlayer[player.uniqueId].onlineFriendUuids
+        val playerFriends = SurfFriendsApi.onlineFriendUuids(player.uniqueId)
 
         when (getState(player.uniqueId)) {
             VisibilityState.SHOW_ALL -> for (otherPlayer in onlinePlayers) {
