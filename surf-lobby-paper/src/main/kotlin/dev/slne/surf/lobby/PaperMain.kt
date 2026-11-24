@@ -65,9 +65,9 @@ class PaperMain : SuspendingJavaPlugin() {
         if (checkNexoHook()) NexoHook.getInvisibleItem() else ItemType.BARRIER.createItemStack()
 
     fun checkTrophyHook() = pluginManager.isPluginEnabled("surf-trophy-paper")
-    fun checkProfileHook() = pluginManager.isPluginEnabled("surf-profile-paper")
+    fun checkProfileHook() = pluginManager.isPluginEnabled("surf-player-paper")
     fun checkParkourHook() = pluginManager.isPluginEnabled("surf-parkour-paper")
-    fun checkSettingsHook() = pluginManager.isPluginEnabled("surf-settings-paper")
+    fun checkSettingsHook() = pluginManager.isPluginEnabled("surf-player-paper")
     fun checkNpcHook() = pluginManager.isPluginEnabled("surf-npc-paper")
     fun checkNexoHook() = pluginManager.isPluginEnabled("Nexo")
 }
